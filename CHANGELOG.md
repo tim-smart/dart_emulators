@@ -1,3 +1,7 @@
+## 0.1.7+1
+
+- Add link to example project to README
+
 ## 0.1.7
 
 - Create directories for screenshots
