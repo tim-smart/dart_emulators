@@ -30,11 +30,10 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
 
       return device.process.fold(
         () => process
-            .run(config.adbPath, ["-s", device.id, "emu", "kill"])
-            .then((_) => Future.delayed(Duration(seconds: 3)))
-            .then((_) => device.copyWith(booted: false)),
+            .run(config.adbPath, ["-s", device.id, "emu", "kill"]).then(
+                (_) => device.copyWith(booted: false)),
         (process) {
-          process.kill();
+          process.kill(ProcessSignal.sigint);
           return process.stdout.last.then((_) => device.copyWith(
                 booted: false,
                 process: none(),
@@ -62,7 +61,7 @@ Future<void> exitDemoMode(Config config) => adb(config)(
 
 Future<List<int>> Function(Device) screenshot(Config config) => (device) async {
       await demoMode(config);
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(seconds: 2));
       final image = await process.runBinary(config.adbPath, [
         '-s',
         device.id,

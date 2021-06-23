@@ -3,6 +3,12 @@ import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
 
+final simctl =
+    (Config config) => (List<String> args) => process.run(config.xcrunPath, [
+          "simctl",
+          ...args,
+        ]);
+
 Future<List<Device>> list(Config config) => process
     .runJson(config.xcrunPath, [
       "simctl",
@@ -25,22 +31,19 @@ Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
                 booted: device["state"] == "Booted")))
         .toList());
 
-Future<Device> Function(Device) boot(Config config) =>
-    (device) => process.run(config.xcrunPath, [
-          "simctl",
-          "boot",
-          device.id,
-        ]).then((_) => device.copyWith(booted: true));
+final boot = (Config config) => (Device device) => simctl(config)([
+      "boot",
+      device.id,
+    ]).then((_) => device.copyWith(booted: true));
 
-Future<void> Function(Device) shutdown(Config config) =>
-    (device) => process.run(config.xcrunPath, [
-          "simctl",
-          "shutdown",
-          device.id,
-        ]).then((_) => Future.delayed(Duration(seconds: 3)));
+final shutdown = (Config config) => (Device device) => simctl(config)([
+      "shutdown",
+      device.id,
+    ]);
 
 final screenshot = (Config config) => (Device device) =>
-    Future.delayed(Duration(seconds: 1))
+    cleanStatusBar(config)(device)
+        .then((_) => Future.delayed(Duration(seconds: 2)))
         .then((_) => process.runBinary(config.xcrunPath, [
               'simctl',
               'io',
@@ -48,3 +51,23 @@ final screenshot = (Config config) => (Device device) =>
               'screenshot',
               '-',
             ]));
+
+final cleanStatusBar = (Config config) => (Device device) => simctl(config)([
+      "status_bar",
+      device.id,
+      "override",
+      "--time",
+      "12:00",
+      "--dataNetwork",
+      "wifi",
+      "--wifiMode",
+      "active",
+      "--wifiBars",
+      "3",
+      "--cellularMode",
+      "active",
+      "--batteryState",
+      "discharging",
+      "--batteryLevel",
+      "100",
+    ]);
