@@ -1,3 +1,7 @@
+## 0.1.7
+
+- Create directories for screenshots
+
 ## 0.1.6
 
 - Add `cleanStatusBarFromEnv` for use with flutter driver
