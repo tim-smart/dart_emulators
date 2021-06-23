@@ -20,6 +20,9 @@ Future<void> main() async {
   // Create a flutter drive helper
   final drive = emu.drive(config);
 
+  // Shutdown all running devices
+  await emu.shutdownAll(config);
+
   // Use the adb / avdmanager / emulator / simctl helpers
   await emu.emulator(config)(['-list-avds']);
 

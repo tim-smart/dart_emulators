@@ -1,6 +1,7 @@
 ## 0.1.8
 
 - Set wifi signal in android `cleanStatusBar`
+- Remove `shutdownAll` from `forEach`
 
 ## 0.1.7+1
 
