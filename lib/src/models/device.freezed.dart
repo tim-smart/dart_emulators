@@ -12,6 +12,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Device _$DeviceFromJson(Map<String, dynamic> json) {
+  return _Device.fromJson(json);
+}
+
 /// @nodoc
 class _$DeviceTearOff {
   const _$DeviceTearOff();
@@ -21,7 +25,7 @@ class _$DeviceTearOff {
       required String name,
       required DevicePlatform platform,
       bool booted = false,
-      Option<Process> process = const None()}) {
+      @JsonKey(ignore: true) Option<Process> process = const None()}) {
     return _Device(
       id: id,
       name: name,
@@ -29,6 +33,10 @@ class _$DeviceTearOff {
       booted: booted,
       process: process,
     );
+  }
+
+  Device fromJson(Map<String, Object> json) {
+    return Device.fromJson(json);
   }
 }
 
@@ -41,8 +49,10 @@ mixin _$Device {
   String get name => throw _privateConstructorUsedError;
   DevicePlatform get platform => throw _privateConstructorUsedError;
   bool get booted => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   Option<Process> get process => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $DeviceCopyWith<Device> get copyWith => throw _privateConstructorUsedError;
 }
@@ -56,7 +66,7 @@ abstract class $DeviceCopyWith<$Res> {
       String name,
       DevicePlatform platform,
       bool booted,
-      Option<Process> process});
+      @JsonKey(ignore: true) Option<Process> process});
 }
 
 /// @nodoc
@@ -110,7 +120,7 @@ abstract class _$DeviceCopyWith<$Res> implements $DeviceCopyWith<$Res> {
       String name,
       DevicePlatform platform,
       bool booted,
-      Option<Process> process});
+      @JsonKey(ignore: true) Option<Process> process});
 }
 
 /// @nodoc
@@ -156,14 +166,17 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Device implements _Device {
   _$_Device(
       {required this.id,
       required this.name,
       required this.platform,
       this.booted = false,
-      this.process = const None()});
+      @JsonKey(ignore: true) this.process = const None()});
+
+  factory _$_Device.fromJson(Map<String, dynamic> json) =>
+      _$_$_DeviceFromJson(json);
 
   @override
   final String id;
@@ -174,8 +187,8 @@ class _$_Device implements _Device {
   @JsonKey(defaultValue: false)
   @override
   final bool booted;
-  @JsonKey(defaultValue: const None())
   @override
+  @JsonKey(ignore: true)
   final Option<Process> process;
 
   @override
@@ -213,6 +226,11 @@ class _$_Device implements _Device {
   @override
   _$DeviceCopyWith<_Device> get copyWith =>
       __$DeviceCopyWithImpl<_Device>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_DeviceToJson(this);
+  }
 }
 
 abstract class _Device implements Device {
@@ -221,7 +239,9 @@ abstract class _Device implements Device {
       required String name,
       required DevicePlatform platform,
       bool booted,
-      Option<Process> process}) = _$_Device;
+      @JsonKey(ignore: true) Option<Process> process}) = _$_Device;
+
+  factory _Device.fromJson(Map<String, dynamic> json) = _$_Device.fromJson;
 
   @override
   String get id => throw _privateConstructorUsedError;
@@ -232,6 +252,7 @@ abstract class _Device implements Device {
   @override
   bool get booted => throw _privateConstructorUsedError;
   @override
+  @JsonKey(ignore: true)
   Option<Process> get process => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)

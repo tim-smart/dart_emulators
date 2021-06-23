@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:emulators/emulators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:emulators/src/utils/process.dart' as process;
@@ -44,3 +46,8 @@ Future<Config> buildConfig() async {
     xcrunPath: xcrunPath,
   );
 }
+
+Option<Device> currentDevice() =>
+    optionOf(Platform.environment['EMULATORS_DEVICE'])
+        .bind((s) => catching(() => json.decode(s)).toOption())
+        .map((json) => Device.fromJson(json));

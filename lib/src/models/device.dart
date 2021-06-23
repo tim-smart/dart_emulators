@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device.freezed.dart';
+part 'device.g.dart';
 
 enum DevicePlatform {
   IOS,
@@ -18,6 +19,8 @@ class Device with _$Device {
     required String name,
     required DevicePlatform platform,
     @Default(false) bool booted,
-    @Default(None()) Option<Process> process,
+    @JsonKey(ignore: true) @Default(None()) Option<Process> process,
   }) = _Device;
+
+  factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:emulators/src/config.dart';
@@ -6,11 +8,14 @@ import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
 import 'package:rxdart/rxdart.dart' hide Kind;
 
-Future<String> current() async => '';
+final flutter = (Config config) => (
+      List<String> args, {
+      Map<String, String>? env,
+    }) =>
+        process.run(config.flutterPath, args, env: env);
 
-Future<List<Device>> running(Config config) => process.run(config.flutterPath, [
-      'devices',
-    ]).then((out) => strings.splitLines(out).fold<List<Device>>(
+Future<List<Device>> running(Config config) => flutter(config)(['devices'])
+    .then((out) => strings.splitLines(out).fold<List<Device>>(
           [],
           (devices, line) => _parseDevicesLine(line).fold(
             () => devices,
@@ -25,11 +30,7 @@ Option<Device> _parseDevicesLine(String input) {
   final name =
       parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
   final id = parts[1];
-  final kind = parts[2] == 'ios'
-      ? DevicePlatform.IOS
-      : (parts[2].contains('web')
-          ? DevicePlatform.WEB
-          : DevicePlatform.ANDROID);
+  final kind = _parseKind(parts[2]);
 
   return some(Device(
     id: id,
@@ -37,6 +38,16 @@ Option<Device> _parseDevicesLine(String input) {
     platform: kind,
     booted: true,
   ));
+}
+
+DevicePlatform _parseKind(String input) {
+  if (input.contains('ios')) {
+    return DevicePlatform.IOS;
+  } else if (input.contains('android')) {
+    return DevicePlatform.ANDROID;
+  }
+
+  return DevicePlatform.WEB;
 }
 
 Future<Option<Device>> Function(DevicePlatform) firstOfKind(Config config) =>
@@ -55,5 +66,15 @@ Future<Device> Function(DevicePlatform) waitUntilRunning(Config config) => (
             .asyncMap((_) => firstOfKind(config)(kind))
             .where((d) => d.isSome())
             .map((d) => d.toNullable()!)
-            .last
+            .first
             .timeout(timeout);
+
+final drive =
+    (Config config) => (Device device, String target) => flutter(config)([
+          'drive',
+          '-d',
+          device.id,
+          '--target=$target',
+        ], env: {
+          'EMULATORS_DEVICE': json.encode(device.toJson()),
+        });

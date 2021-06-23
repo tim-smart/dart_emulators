@@ -25,12 +25,12 @@ Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
                 booted: device["state"] == "Booted")))
         .toList());
 
-Future<void> Function(Device) boot(Config config) =>
+Future<Device> Function(Device) boot(Config config) =>
     (device) => process.run(config.xcrunPath, [
           "simctl",
           "boot",
           device.id,
-        ]);
+        ]).then((_) => device.copyWith(booted: true));
 
 Future<void> Function(Device) shutdown(Config config) =>
     (device) => process.run(config.xcrunPath, [
@@ -39,11 +39,11 @@ Future<void> Function(Device) shutdown(Config config) =>
           device.id,
         ]).then((_) => Future.delayed(Duration(seconds: 3)));
 
-Future<List<int>> screenshot(Config config) =>
-    process.runBinary(config.xcrunPath, [
-      'simctl',
-      'io',
-      'booted',
-      'screenshot',
-      '-',
-    ]);
+final screenshot =
+    (Config config) => (Device device) => process.runBinary(config.xcrunPath, [
+          'simctl',
+          'io',
+          device.id,
+          'screenshot',
+          '-',
+        ]);

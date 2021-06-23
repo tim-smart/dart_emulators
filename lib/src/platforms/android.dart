@@ -60,14 +60,16 @@ Future<void> demoMode(Config config) => Stream.fromIterable([
 Future<void> exitDemoMode(Config config) => adb(config)(
     'shell am broadcast -a com.android.systemui.demo -e command exit');
 
-Future<List<int>> screenshot(Config config) async {
-  await demoMode(config);
-  final image = await process.runBinary(config.adbPath, [
-    'exec-out',
-    'screencap',
-    '-p',
-  ]);
-  await exitDemoMode(config);
+Future<List<int>> Function(Device) screenshot(Config config) => (device) async {
+      await demoMode(config);
+      final image = await process.runBinary(config.adbPath, [
+        '-s',
+        device.id,
+        'exec-out',
+        'screencap',
+        '-p',
+      ]);
+      await exitDemoMode(config);
 
-  return image;
-}
+      return image;
+    };
