@@ -1,3 +1,7 @@
+## 0.1.3
+
+- Increase timeout to 60s for `waitUntilRunning`
+
 ## 0.1.2
 
 - Add `avdmanager` and expose helper functions

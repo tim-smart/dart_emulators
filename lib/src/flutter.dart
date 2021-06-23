@@ -58,7 +58,7 @@ Future<Option<Device>> Function(DevicePlatform) firstOfKind(Config config) =>
 
 Future<Device> Function(DevicePlatform) waitUntilRunning(Config config) => (
       DevicePlatform kind, {
-      Duration timeout = const Duration(seconds: 30),
+      Duration timeout = const Duration(seconds: 60),
     }) =>
         Rx.merge([
           Stream.value(null),

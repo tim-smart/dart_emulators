@@ -1,6 +1,6 @@
 name: emulators
 description: A utility library to automate mobile emulators.
-version: 0.1.2
+version: 0.1.3
 repository: https://github.com/tim-smart/dart_emulators.git
 
 environment:
