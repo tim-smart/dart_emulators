@@ -37,9 +37,9 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
       if (!device.booted) return Future.value(device);
 
       return device.process.fold(
-        () => process
-            .run(config.adbPath, ["-s", device.id, "emu", "kill"]).then(
-                (_) => device.copyWith(booted: false)),
+        () => adb(config)(['-s', device.id, 'emu', 'kill'])
+            .then((_) => Future.delayed(Duration(seconds: 3)))
+            .then((_) => device.copyWith(booted: false)),
         (process) {
           process.kill(ProcessSignal.sigint);
           return process.stdout.last.then((_) => device.copyWith(
@@ -51,6 +51,8 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
     };
 
 Future<void> demoMode(Config config) => Stream.fromIterable([
+      // enable
+      'shell settings put global sysui_demo_allowed 1',
       // display time 12:00
       'shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200',
       // Display full mobile data without type

@@ -39,7 +39,7 @@ final boot = (Config config) => (Device device) => simctl(config)([
 final shutdown = (Config config) => (Device device) => simctl(config)([
       "shutdown",
       device.id,
-    ]);
+    ]).then((_) => Future.delayed(Duration(seconds: 3)));
 
 final screenshot = (Config config) => (Device device) =>
     cleanStatusBar(config)(device)

@@ -1,3 +1,8 @@
+## 0.1.4
+
+- Add some delay after `shutdown`
+- Fix android demo mode
+
 ## 0.1.3
 
 - Increase timeout to 60s for `waitUntilRunning`
