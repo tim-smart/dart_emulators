@@ -6,7 +6,7 @@ Can be used to automate screenshots on multiple devices.
 
 ## Example project
 
-https://github.com/tim-smart/flutter-emulators-screenshosts-demo
+https://github.com/tim-smart/flutter-emulators-screenshots-demo
 
 This project demonstrates how to use this package to generate screenshots for a
 Flutter project.
