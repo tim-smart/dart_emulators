@@ -17,6 +17,9 @@ Future<void> main() async {
     iosPath: 'directory/for/ios/screenshots',
   );
 
+  // Create a flutter drive helper
+  final drive = emu.drive(config);
+
   // This will try to sequentially launch the given devices, running the given
   // function on each one.
   await emu.forEach(config)([
@@ -26,5 +29,9 @@ Future<void> main() async {
   ])((device) async {
     // Take a screenshot and write it to a file
     await screenshot(device)('home_screen');
+
+    // Or you can run flutter drive, and send the output to stdout
+    final process = await drive(device, 'test_driver/main.dart');
+    await stdout.addStream(process.stdout);
   });
 }
