@@ -1,3 +1,7 @@
+## 0.1.8
+
+- Set wifi signal in android `cleanStatusBar`
+
 ## 0.1.7+1
 
 - Add link to example project to README
