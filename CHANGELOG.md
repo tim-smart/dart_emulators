@@ -1,3 +1,7 @@
+## 0.1.6
+
+- Add `cleanStatusBarFromEnv` for use with flutter driver
+
 ## 0.1.5
 
 - Refactor `cleanStatusBar` into it's own function

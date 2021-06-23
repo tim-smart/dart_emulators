@@ -35,6 +35,11 @@ final cleanStatusBar = (c.Config config) => (Device device) =>
         ? ios.cleanStatusBar(config)(device)
         : android.cleanStatusBar(config)(device);
 
+final cleanStatusBarFromEnv = (c.Config config) => c.currentDevice().fold(
+      () => Future.value(),
+      cleanStatusBar(config),
+    );
+
 final screenshot = (c.Config config) => (Device device) =>
     device.platform == DevicePlatform.IOS
         ? ios.screenshot(config)(device)
