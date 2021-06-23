@@ -15,9 +15,11 @@ Future<List<Device>> list(c.Config config) => Future.wait([
     ]).then((results) => results.expand((i) => i).toList());
 
 Future<Device> Function(Device) boot(c.Config config) =>
-    (device) => device.platform == DevicePlatform.IOS
-        ? ios.boot(config)(device)
-        : android.boot(config)(device);
+    (device) => device.booted
+        ? Future.value(device)
+        : device.platform == DevicePlatform.IOS
+            ? ios.boot(config)(device)
+            : android.boot(config)(device);
 
 Future<void> Function(Device) shutdown(c.Config config) =>
     (device) => device.platform == DevicePlatform.IOS
@@ -77,9 +79,7 @@ final writeScreenshotFromEnv = (c.Config config) => ({
             );
 
 final forEach = (c.Config config) => (List<String> nameOrIds) =>
-    (Future<void> Function(Device) process) =>
-        Stream.fromFuture(shutdownAll(config))
-            .asyncMap((event) => list(config))
+    (Future<void> Function(Device) process) => Stream.fromFuture(list(config))
             .flatMap((i) => Stream.fromIterable(i))
             .where(
                 (d) => nameOrIds.contains(d.id) || nameOrIds.contains(d.name))
