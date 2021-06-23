@@ -13,6 +13,7 @@ part 'config.freezed.dart';
 class Config with _$Config {
   factory Config({
     required String adbPath,
+    required String avdmanagerPath,
     required String emulatorPath,
     required String flutterPath,
     required String xcrunPath,
@@ -31,6 +32,14 @@ Future<Config> buildConfig() async {
       .orElse(() => androidSdk.map((sdk) => p.join(sdk, 'platform-tools/adb')))
       .getOrElse(() => 'adb');
 
+  final avdmanagerPath = await androidSdk
+      .map((sdk) => p.join(sdk, 'cmdline-tools/latest/bin/avdmanager'))
+      .fold(
+        () => _which('avdmanager'),
+        (path) => Future.value(some(path)),
+      )
+      .then((o) => o.getOrElse(() => 'avdmanager'));
+
   final emulatorPath = (await _which('emulator'))
       .orElse(() => androidSdk.map((sdk) => p.join(sdk, 'emulator/emulator')))
       .getOrElse(() => 'emulator');
@@ -41,6 +50,7 @@ Future<Config> buildConfig() async {
 
   return Config(
     adbPath: adbPath,
+    avdmanagerPath: avdmanagerPath,
     emulatorPath: emulatorPath,
     flutterPath: flutterPath,
     xcrunPath: xcrunPath,

@@ -20,6 +20,19 @@ Future<void> main() async {
   // Create a flutter drive helper
   final drive = emu.drive(config);
 
+  // Use the adb / avdmanager / emulator / simctl helpers
+  await emu.emulator(config)(['-list-avds']);
+
+  await emu.avdmanager(config)([
+    'create',
+    'avd',
+    '-n',
+    'Nexus_5X',
+    '-k',
+    'system-images;android-25;google_apis;x86',
+    '-f',
+  ]);
+
   // This will try to sequentially launch the given devices, running the given
   // function on each one.
   await emu.forEach(config)([

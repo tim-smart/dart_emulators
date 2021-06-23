@@ -18,11 +18,13 @@ class _$ConfigTearOff {
 
   _Config call(
       {required String adbPath,
+      required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
       required String xcrunPath}) {
     return _Config(
       adbPath: adbPath,
+      avdmanagerPath: avdmanagerPath,
       emulatorPath: emulatorPath,
       flutterPath: flutterPath,
       xcrunPath: xcrunPath,
@@ -36,6 +38,7 @@ const $Config = _$ConfigTearOff();
 /// @nodoc
 mixin _$Config {
   String get adbPath => throw _privateConstructorUsedError;
+  String get avdmanagerPath => throw _privateConstructorUsedError;
   String get emulatorPath => throw _privateConstructorUsedError;
   String get flutterPath => throw _privateConstructorUsedError;
   String get xcrunPath => throw _privateConstructorUsedError;
@@ -50,6 +53,7 @@ abstract class $ConfigCopyWith<$Res> {
       _$ConfigCopyWithImpl<$Res>;
   $Res call(
       {String adbPath,
+      String avdmanagerPath,
       String emulatorPath,
       String flutterPath,
       String xcrunPath});
@@ -66,6 +70,7 @@ class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
   @override
   $Res call({
     Object? adbPath = freezed,
+    Object? avdmanagerPath = freezed,
     Object? emulatorPath = freezed,
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
@@ -74,6 +79,10 @@ class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
       adbPath: adbPath == freezed
           ? _value.adbPath
           : adbPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      avdmanagerPath: avdmanagerPath == freezed
+          ? _value.avdmanagerPath
+          : avdmanagerPath // ignore: cast_nullable_to_non_nullable
               as String,
       emulatorPath: emulatorPath == freezed
           ? _value.emulatorPath
@@ -98,6 +107,7 @@ abstract class _$ConfigCopyWith<$Res> implements $ConfigCopyWith<$Res> {
   @override
   $Res call(
       {String adbPath,
+      String avdmanagerPath,
       String emulatorPath,
       String flutterPath,
       String xcrunPath});
@@ -115,6 +125,7 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
   @override
   $Res call({
     Object? adbPath = freezed,
+    Object? avdmanagerPath = freezed,
     Object? emulatorPath = freezed,
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
@@ -123,6 +134,10 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
       adbPath: adbPath == freezed
           ? _value.adbPath
           : adbPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      avdmanagerPath: avdmanagerPath == freezed
+          ? _value.avdmanagerPath
+          : avdmanagerPath // ignore: cast_nullable_to_non_nullable
               as String,
       emulatorPath: emulatorPath == freezed
           ? _value.emulatorPath
@@ -145,12 +160,15 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
 class _$_Config implements _Config {
   _$_Config(
       {required this.adbPath,
+      required this.avdmanagerPath,
       required this.emulatorPath,
       required this.flutterPath,
       required this.xcrunPath});
 
   @override
   final String adbPath;
+  @override
+  final String avdmanagerPath;
   @override
   final String emulatorPath;
   @override
@@ -160,7 +178,7 @@ class _$_Config implements _Config {
 
   @override
   String toString() {
-    return 'Config(adbPath: $adbPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
+    return 'Config(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
   }
 
   @override
@@ -170,6 +188,9 @@ class _$_Config implements _Config {
             (identical(other.adbPath, adbPath) ||
                 const DeepCollectionEquality()
                     .equals(other.adbPath, adbPath)) &&
+            (identical(other.avdmanagerPath, avdmanagerPath) ||
+                const DeepCollectionEquality()
+                    .equals(other.avdmanagerPath, avdmanagerPath)) &&
             (identical(other.emulatorPath, emulatorPath) ||
                 const DeepCollectionEquality()
                     .equals(other.emulatorPath, emulatorPath)) &&
@@ -185,6 +206,7 @@ class _$_Config implements _Config {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(adbPath) ^
+      const DeepCollectionEquality().hash(avdmanagerPath) ^
       const DeepCollectionEquality().hash(emulatorPath) ^
       const DeepCollectionEquality().hash(flutterPath) ^
       const DeepCollectionEquality().hash(xcrunPath);
@@ -198,12 +220,15 @@ class _$_Config implements _Config {
 abstract class _Config implements Config {
   factory _Config(
       {required String adbPath,
+      required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
       required String xcrunPath}) = _$_Config;
 
   @override
   String get adbPath => throw _privateConstructorUsedError;
+  @override
+  String get avdmanagerPath => throw _privateConstructorUsedError;
   @override
   String get emulatorPath => throw _privateConstructorUsedError;
   @override
