@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Add `avdmanager` and expose helper functions
+
 ## 0.1.1
 
 - Clean iOS status bar for screenshots
