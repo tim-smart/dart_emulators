@@ -1,3 +1,7 @@
+## 0.1.5
+
+- Refactor `cleanStatusBar` into it's own function
+
 ## 0.1.4
 
 - Add some delay after `shutdown`
