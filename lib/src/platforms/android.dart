@@ -62,6 +62,7 @@ Future<void> exitDemoMode(Config config) => adb(config)(
 
 Future<List<int>> Function(Device) screenshot(Config config) => (device) async {
       await demoMode(config);
+      await Future.delayed(Duration(seconds: 1));
       final image = await process.runBinary(config.adbPath, [
         '-s',
         device.id,

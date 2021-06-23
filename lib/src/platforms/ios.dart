@@ -39,11 +39,12 @@ Future<void> Function(Device) shutdown(Config config) =>
           device.id,
         ]).then((_) => Future.delayed(Duration(seconds: 3)));
 
-final screenshot =
-    (Config config) => (Device device) => process.runBinary(config.xcrunPath, [
-          'simctl',
-          'io',
-          device.id,
-          'screenshot',
-          '-',
-        ]);
+final screenshot = (Config config) => (Device device) =>
+    Future.delayed(Duration(seconds: 1))
+        .then((_) => process.runBinary(config.xcrunPath, [
+              'simctl',
+              'io',
+              device.id,
+              'screenshot',
+              '-',
+            ]));

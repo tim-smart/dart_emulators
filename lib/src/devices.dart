@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:dartz/dartz.dart';
+import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart' hide Kind;
 import 'package:emulators/src/config.dart' as c;
 import 'package:emulators/src/platforms/android.dart' as android;
@@ -31,8 +35,34 @@ final screenshot = (c.Config config) => (Device device) =>
         ? ios.screenshot(config)(device)
         : android.screenshot(config)(device);
 
-final screenshotFromEnv =
-    (c.Config config) => c.currentDevice().traverseFuture(screenshot(config));
+final screenshotFromEnv = (c.Config config) => c.currentDevice().traverseFuture(
+    (device) =>
+        screenshot(config)(device).then((image) => tuple2(device, image)));
+
+final writeScreenshot = (c.Config config) => ({
+      required String iosPath,
+      required String androidPath,
+    }) =>
+        (Device device) => (String name) =>
+            screenshot(config)(device).then<void>((image) async {
+              final file = [device.name, '$name.png'].join('_');
+              final basePath =
+                  device.platform == DevicePlatform.IOS ? iosPath : androidPath;
+              final path = p.join(basePath, file);
+              await File(path).writeAsBytes(image);
+            });
+
+final writeScreenshotFromEnv = (c.Config config) => ({
+      required String iosPath,
+      required String androidPath,
+    }) =>
+        c.currentDevice().fold(
+              () => (String name) => Future.value(),
+              writeScreenshot(config)(
+                androidPath: androidPath,
+                iosPath: iosPath,
+              ),
+            );
 
 final forEach = (c.Config config) => (List<String> nameOrIds) =>
     (Future<void> Function(Device) process) =>
@@ -44,6 +74,6 @@ final forEach = (c.Config config) => (List<String> nameOrIds) =>
             .asyncMap<void>((d) async {
           await boot(config)(d);
           final running = await flutter.waitUntilRunning(config)(d.platform);
-          await process(running);
+          await process(running.copyWith(name: d.name));
           return shutdown(config)(running);
         }).last;

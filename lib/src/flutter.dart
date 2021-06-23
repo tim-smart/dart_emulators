@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
@@ -69,12 +70,12 @@ Future<Device> Function(DevicePlatform) waitUntilRunning(Config config) => (
             .first
             .timeout(timeout);
 
-final drive =
-    (Config config) => (Device device, String target) => flutter(config)([
+final drive = (Config config) =>
+    (Device device, String target) => Process.start(config.flutterPath, [
           'drive',
           '-d',
           device.id,
           '--target=$target',
-        ], env: {
+        ], environment: {
           'EMULATORS_DEVICE': json.encode(device.toJson()),
         });
