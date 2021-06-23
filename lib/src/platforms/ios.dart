@@ -41,16 +41,14 @@ final shutdown = (Config config) => (Device device) => simctl(config)([
       device.id,
     ]).then((_) => Future.delayed(Duration(seconds: 3)));
 
-final screenshot = (Config config) => (Device device) =>
-    cleanStatusBar(config)(device)
-        .then((_) => Future.delayed(Duration(seconds: 2)))
-        .then((_) => process.runBinary(config.xcrunPath, [
-              'simctl',
-              'io',
-              device.id,
-              'screenshot',
-              '-',
-            ]));
+final screenshot =
+    (Config config) => (Device device) => process.runBinary(config.xcrunPath, [
+          'simctl',
+          'io',
+          device.id,
+          'screenshot',
+          '-',
+        ]);
 
 final cleanStatusBar = (Config config) => (Device device) => simctl(config)([
       "status_bar",
@@ -70,4 +68,4 @@ final cleanStatusBar = (Config config) => (Device device) => simctl(config)([
       "discharging",
       "--batteryLevel",
       "100",
-    ]);
+    ]).then((_) => Future.delayed(Duration(seconds: 2)));

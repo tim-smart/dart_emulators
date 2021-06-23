@@ -50,7 +50,8 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
       );
     };
 
-Future<void> demoMode(Config config) => Stream.fromIterable([
+final cleanStatusBar = (Config config) => (Device device) =>
+    Stream.fromIterable([
       // enable
       'shell settings put global sysui_demo_allowed 1',
       // display time 12:00
@@ -61,23 +62,17 @@ Future<void> demoMode(Config config) => Stream.fromIterable([
       'shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false',
       // Show full battery but not in charging state
       'shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100'
-    ]).map((args) => args.split(' ')).asyncMap(adb(config)).last;
+    ])
+        .map((args) => ['-s', device.id, ...args.split(' ')])
+        .asyncMap(adb(config))
+        .last
+        .then((_) => Future.delayed(Duration(seconds: 2)));
 
-Future<void> exitDemoMode(Config config) => adb(config)(
-    'shell am broadcast -a com.android.systemui.demo -e command exit'
-        .split(' '));
-
-Future<List<int>> Function(Device) screenshot(Config config) => (device) async {
-      await demoMode(config);
-      await Future.delayed(Duration(seconds: 2));
-      final image = await process.runBinary(config.adbPath, [
-        '-s',
-        device.id,
-        'exec-out',
-        'screencap',
-        '-p',
-      ]);
-      await exitDemoMode(config);
-
-      return image;
-    };
+final screenshot =
+    (Config config) => (Device device) => process.runBinary(config.adbPath, [
+          '-s',
+          device.id,
+          'exec-out',
+          'screencap',
+          '-p',
+        ]);

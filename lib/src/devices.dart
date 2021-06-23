@@ -30,6 +30,11 @@ Future<void> shutdownAll(c.Config config) =>
         .asyncMap(shutdown(config))
         .last;
 
+final cleanStatusBar = (c.Config config) => (Device device) =>
+    device.platform == DevicePlatform.IOS
+        ? ios.cleanStatusBar(config)(device)
+        : android.cleanStatusBar(config)(device);
+
 final screenshot = (c.Config config) => (Device device) =>
     device.platform == DevicePlatform.IOS
         ? ios.screenshot(config)(device)
