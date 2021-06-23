@@ -59,6 +59,8 @@ final writeScreenshot = (c.Config config) => ({
               final basePath =
                   device.platform == DevicePlatform.IOS ? iosPath : androidPath;
               final path = p.join(basePath, file);
+
+              await Directory(basePath).create(recursive: true);
               await File(path).writeAsBytes(image);
             });
 
