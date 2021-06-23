@@ -56,6 +56,8 @@ final cleanStatusBar = (Config config) => (Device device) =>
       'shell settings put global sysui_demo_allowed 1',
       // display time 12:00
       'shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200',
+      // Display full wifi
+      'shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4',
       // Display full mobile data without type
       'shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype false',
       // Hide notifications
