@@ -1,3 +1,7 @@
+## 0.1.10
+
+- Refactor internal `waitUntilRunning`
+
 ## 0.1.9
 
 - Filter out real devices
