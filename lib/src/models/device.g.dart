@@ -11,6 +11,7 @@ _$_Device _$_$_DeviceFromJson(Map<String, dynamic> json) {
     id: json['id'] as String,
     name: json['name'] as String,
     platform: _$enumDecode(_$DevicePlatformEnumMap, json['platform']),
+    emulator: json['emulator'] as bool,
     booted: json['booted'] as bool? ?? false,
   );
 }
@@ -19,6 +20,7 @@ Map<String, dynamic> _$_$_DeviceToJson(_$_Device instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'platform': _$DevicePlatformEnumMap[instance.platform],
+      'emulator': instance.emulator,
       'booted': instance.booted,
     };
 

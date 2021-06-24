@@ -24,12 +24,14 @@ class _$DeviceTearOff {
       {required String id,
       required String name,
       required DevicePlatform platform,
+      required bool emulator,
       bool booted = false,
       @JsonKey(ignore: true) Option<Process> process = const None()}) {
     return _Device(
       id: id,
       name: name,
       platform: platform,
+      emulator: emulator,
       booted: booted,
       process: process,
     );
@@ -48,6 +50,7 @@ mixin _$Device {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   DevicePlatform get platform => throw _privateConstructorUsedError;
+  bool get emulator => throw _privateConstructorUsedError;
   bool get booted => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   Option<Process> get process => throw _privateConstructorUsedError;
@@ -65,6 +68,7 @@ abstract class $DeviceCopyWith<$Res> {
       {String id,
       String name,
       DevicePlatform platform,
+      bool emulator,
       bool booted,
       @JsonKey(ignore: true) Option<Process> process});
 }
@@ -82,6 +86,7 @@ class _$DeviceCopyWithImpl<$Res> implements $DeviceCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? platform = freezed,
+    Object? emulator = freezed,
     Object? booted = freezed,
     Object? process = freezed,
   }) {
@@ -98,6 +103,10 @@ class _$DeviceCopyWithImpl<$Res> implements $DeviceCopyWith<$Res> {
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as DevicePlatform,
+      emulator: emulator == freezed
+          ? _value.emulator
+          : emulator // ignore: cast_nullable_to_non_nullable
+              as bool,
       booted: booted == freezed
           ? _value.booted
           : booted // ignore: cast_nullable_to_non_nullable
@@ -119,6 +128,7 @@ abstract class _$DeviceCopyWith<$Res> implements $DeviceCopyWith<$Res> {
       {String id,
       String name,
       DevicePlatform platform,
+      bool emulator,
       bool booted,
       @JsonKey(ignore: true) Option<Process> process});
 }
@@ -137,6 +147,7 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? platform = freezed,
+    Object? emulator = freezed,
     Object? booted = freezed,
     Object? process = freezed,
   }) {
@@ -153,6 +164,10 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as DevicePlatform,
+      emulator: emulator == freezed
+          ? _value.emulator
+          : emulator // ignore: cast_nullable_to_non_nullable
+              as bool,
       booted: booted == freezed
           ? _value.booted
           : booted // ignore: cast_nullable_to_non_nullable
@@ -172,6 +187,7 @@ class _$_Device implements _Device {
       {required this.id,
       required this.name,
       required this.platform,
+      required this.emulator,
       this.booted = false,
       @JsonKey(ignore: true) this.process = const None()});
 
@@ -184,6 +200,8 @@ class _$_Device implements _Device {
   final String name;
   @override
   final DevicePlatform platform;
+  @override
+  final bool emulator;
   @JsonKey(defaultValue: false)
   @override
   final bool booted;
@@ -193,7 +211,7 @@ class _$_Device implements _Device {
 
   @override
   String toString() {
-    return 'Device(id: $id, name: $name, platform: $platform, booted: $booted, process: $process)';
+    return 'Device(id: $id, name: $name, platform: $platform, emulator: $emulator, booted: $booted, process: $process)';
   }
 
   @override
@@ -207,6 +225,9 @@ class _$_Device implements _Device {
             (identical(other.platform, platform) ||
                 const DeepCollectionEquality()
                     .equals(other.platform, platform)) &&
+            (identical(other.emulator, emulator) ||
+                const DeepCollectionEquality()
+                    .equals(other.emulator, emulator)) &&
             (identical(other.booted, booted) ||
                 const DeepCollectionEquality().equals(other.booted, booted)) &&
             (identical(other.process, process) ||
@@ -219,6 +240,7 @@ class _$_Device implements _Device {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(platform) ^
+      const DeepCollectionEquality().hash(emulator) ^
       const DeepCollectionEquality().hash(booted) ^
       const DeepCollectionEquality().hash(process);
 
@@ -238,6 +260,7 @@ abstract class _Device implements Device {
       {required String id,
       required String name,
       required DevicePlatform platform,
+      required bool emulator,
       bool booted,
       @JsonKey(ignore: true) Option<Process> process}) = _$_Device;
 
@@ -249,6 +272,8 @@ abstract class _Device implements Device {
   String get name => throw _privateConstructorUsedError;
   @override
   DevicePlatform get platform => throw _privateConstructorUsedError;
+  @override
+  bool get emulator => throw _privateConstructorUsedError;
   @override
   bool get booted => throw _privateConstructorUsedError;
   @override

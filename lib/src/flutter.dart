@@ -15,14 +15,21 @@ final flutter = (Config config) => (
     }) =>
         process.run(config.flutterPath, args, env: env);
 
-Future<List<Device>> running(Config config) => flutter(config)(['devices'])
-    .then((out) => strings.splitLines(out).fold<List<Device>>(
+Future<List<Device>> running(
+  Config config, {
+  bool onlyEmulators = true,
+}) =>
+    flutter(config)(['devices']).then((out) => strings
+        .splitLines(out)
+        .fold<List<Device>>(
           [],
           (devices, line) => _parseDevicesLine(line).fold(
             () => devices,
             (d) => [...devices, d],
           ),
-        ));
+        )
+        .where((d) => onlyEmulators ? d.emulator : true)
+        .toList());
 
 Option<Device> _parseDevicesLine(String input) {
   final parts = input.split('•').map((s) => s.trim()).toList();
@@ -32,11 +39,13 @@ Option<Device> _parseDevicesLine(String input) {
       parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
   final id = parts[1];
   final kind = _parseKind(parts[2]);
+  final emulator = RegExp(r'(emulator|simulator)').hasMatch(parts[3]);
 
   return some(Device(
     id: id,
     name: name,
     platform: kind,
+    emulator: emulator,
     booted: true,
   ));
 }

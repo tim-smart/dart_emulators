@@ -30,7 +30,7 @@ Future<void> shutdownAll(c.Config config) =>
     Stream.fromFuture(flutter.running(config))
         .flatMap((i) => Stream.fromIterable(i))
         .asyncMap(shutdown(config))
-        .last;
+        .forEach((_) {});
 
 final cleanStatusBar = (c.Config config) => (Device device) =>
     device.platform == DevicePlatform.IOS
@@ -88,4 +88,4 @@ final forEach = (c.Config config) => (List<String> nameOrIds) =>
           final running = await flutter.waitUntilRunning(config)(d.platform);
           await process(running.copyWith(name: d.name));
           return shutdown(config)(running);
-        }).last;
+        }).forEach((_) {});

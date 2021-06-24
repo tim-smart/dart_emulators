@@ -22,6 +22,7 @@ Future<List<Device>> list(Config config) => emulator(config)(["-list-avds"])
               id: name,
               name: name,
               platform: DevicePlatform.ANDROID,
+              emulator: true,
             ))
         .toList())
     .catchError((_) => <Device>[]);
@@ -42,7 +43,7 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
             .then((_) => device.copyWith(booted: false)),
         (process) {
           process.kill(ProcessSignal.sigint);
-          return process.stdout.last.then((_) => device.copyWith(
+          return process.stdout.forEach((_) {}).then((_) => device.copyWith(
                 booted: false,
                 process: none(),
               ));
@@ -67,7 +68,7 @@ final cleanStatusBar = (Config config) => (Device device) =>
     ])
         .map((args) => ['-s', device.id, ...args.split(' ')])
         .asyncMap(adb(config))
-        .last
+        .forEach((_) {})
         .then((_) => Future.delayed(Duration(seconds: 2)));
 
 final screenshot =

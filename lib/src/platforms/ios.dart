@@ -25,10 +25,12 @@ Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
         .expand((runtime) => cast<List<dynamic>>(runtime.value)
             .where((device) => device['isAvailable'])
             .map((device) => Device(
-                id: device['udid'],
-                name: device['name'],
-                platform: DevicePlatform.IOS,
-                booted: device["state"] == "Booted")))
+                  id: device['udid'],
+                  name: device['name'],
+                  platform: DevicePlatform.IOS,
+                  emulator: true,
+                  booted: device["state"] == "Booted",
+                )))
         .toList());
 
 final boot = (Config config) => (Device device) => simctl(config)([

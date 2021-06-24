@@ -18,6 +18,7 @@ class Device with _$Device {
     required String id,
     required String name,
     required DevicePlatform platform,
+    required bool emulator,
     @Default(false) bool booted,
     @JsonKey(ignore: true) @Default(None()) Option<Process> process,
   }) = _Device;

@@ -1,3 +1,7 @@
+## 0.1.9
+
+- Filter out real devices
+
 ## 0.1.8
 
 - Set wifi signal in android `cleanStatusBar`
