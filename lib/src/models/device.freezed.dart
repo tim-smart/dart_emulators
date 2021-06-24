@@ -182,14 +182,15 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Device implements _Device {
-  _$_Device(
+class _$_Device extends _Device {
+  const _$_Device(
       {required this.id,
       required this.name,
       required this.platform,
       required this.emulator,
       this.booted = false,
-      @JsonKey(ignore: true) this.process = const None()});
+      @JsonKey(ignore: true) this.process = const None()})
+      : super._();
 
   factory _$_Device.fromJson(Map<String, dynamic> json) =>
       _$_$_DeviceFromJson(json);
@@ -255,14 +256,15 @@ class _$_Device implements _Device {
   }
 }
 
-abstract class _Device implements Device {
-  factory _Device(
+abstract class _Device extends Device {
+  const factory _Device(
       {required String id,
       required String name,
       required DevicePlatform platform,
       required bool emulator,
       bool booted,
       @JsonKey(ignore: true) Option<Process> process}) = _$_Device;
+  const _Device._() : super._();
 
   factory _Device.fromJson(Map<String, dynamic> json) = _$_Device.fromJson;
 

@@ -9,10 +9,10 @@ import 'package:emulators/src/platforms/ios.dart' as ios;
 import 'package:emulators/src/flutter.dart' as flutter;
 import 'package:emulators/src/models/device.dart';
 
-Future<List<Device>> list(c.Config config) => Future.wait([
+final list = (c.Config config) => Rx.merge<Device>([
       android.list(config),
       ios.list(config),
-    ]).then((results) => results.expand((i) => i).toList());
+    ]);
 
 Future<Device> Function(Device) boot(c.Config config) =>
     (device) => device.booted
@@ -27,10 +27,7 @@ Future<void> Function(Device) shutdown(c.Config config) =>
         : android.shutdown(config)(device);
 
 Future<void> shutdownAll(c.Config config) =>
-    Stream.fromFuture(flutter.running(config))
-        .flatMap((i) => Stream.fromIterable(i))
-        .asyncMap(shutdown(config))
-        .forEach((_) {});
+    flutter.running(config).asyncMap(shutdown(config)).forEach((_) {});
 
 final cleanStatusBar = (c.Config config) => (Device device) =>
     device.platform == DevicePlatform.IOS
@@ -79,13 +76,12 @@ final writeScreenshotFromEnv = (c.Config config) => ({
             );
 
 final forEach = (c.Config config) => (List<String> nameOrIds) =>
-    (Future<void> Function(Device) process) => Stream.fromFuture(list(config))
-            .flatMap((i) => Stream.fromIterable(i))
+    (Future<void> Function(Device) process) => list(config)
             .where(
                 (d) => nameOrIds.contains(d.id) || nameOrIds.contains(d.name))
             .asyncMap<void>((d) async {
           await boot(config)(d);
-          final running = await flutter.waitUntilRunning(config)(d.platform);
-          await process(running.copyWith(name: d.name));
+          final running = await flutter.waitUntilRunning(config)(d);
+          await process(running);
           return shutdown(config)(running);
         }).forEach((_) {});

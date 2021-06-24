@@ -5,6 +5,7 @@ import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
+import 'package:rxdart/rxdart.dart';
 
 final emulator = (Config config) =>
     (List<String> args) => process.run(config.emulatorPath, args);
@@ -15,17 +16,15 @@ final adb =
 final avdmanager = (Config config) =>
     (List<String> args) => process.run(config.avdmanagerPath, args);
 
-Future<List<Device>> list(Config config) => emulator(config)(["-list-avds"])
-    .then((out) => strings
-        .splitLines(out)
+final list = (Config config) =>
+    Stream.fromFuture(emulator(config)(["-list-avds"]))
+        .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
         .map((name) => Device(
               id: name,
               name: name,
               platform: DevicePlatform.ANDROID,
               emulator: true,
-            ))
-        .toList())
-    .catchError((_) => <Device>[]);
+            ));
 
 Future<Device> Function(Device) boot(Config config) =>
     (device) => Process.start(config.emulatorPath, ["-avd", device.id])
@@ -79,3 +78,18 @@ final screenshot =
           'screencap',
           '-p',
         ]);
+
+/**
+ * Maps the device id back to the AVD name
+ */
+final updateDeviceName = (Config config) => (Device device) => adb(config)([
+      "-s",
+      device.id,
+      "emu",
+      "avd",
+      "name",
+    ]).then<Device>((out) {
+      final parts = out.split("\n").map((s) => s.trim()).toList();
+      if (parts.length != 2 && parts[1] != "OK") return device;
+      return device.copyWith(name: parts.first);
+    });

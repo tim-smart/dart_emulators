@@ -158,7 +158,7 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Config implements _Config {
-  _$_Config(
+  const _$_Config(
       {required this.adbPath,
       required this.avdmanagerPath,
       required this.emulatorPath,
@@ -218,7 +218,7 @@ class _$_Config implements _Config {
 }
 
 abstract class _Config implements Config {
-  factory _Config(
+  const factory _Config(
       {required String adbPath,
       required String avdmanagerPath,
       required String emulatorPath,

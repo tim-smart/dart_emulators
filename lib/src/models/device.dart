@@ -14,7 +14,9 @@ enum DevicePlatform {
 
 @freezed
 class Device with _$Device {
-  factory Device({
+  const Device._();
+
+  const factory Device({
     required String id,
     required String name,
     required DevicePlatform platform,
@@ -24,4 +26,12 @@ class Device with _$Device {
   }) = _Device;
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
+
+  bool similar(Device other) {
+    final props = [id, name];
+    return [
+      other.id,
+      other.name,
+    ].any((p) => props.contains(p));
+  }
 }

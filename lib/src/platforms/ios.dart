@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
+import 'package:rxdart/rxdart.dart';
 
 final simctl =
     (Config config) => (List<String> args) => process.run(config.xcrunPath, [
@@ -9,15 +10,16 @@ final simctl =
           ...args,
         ]);
 
-Future<List<Device>> list(Config config) => process
-    .runJson(config.xcrunPath, [
-      "simctl",
-      "list",
-      "devices",
-      "--json",
-    ])
-    .then((out) => _parseDevices(out).getOrElse(() => []))
-    .catchError((_) => <Device>[]);
+final list =
+    (Config config) => Stream.fromFuture(process.runJson(config.xcrunPath, [
+          "simctl",
+          "list",
+          "devices",
+          "--json",
+        ])).flatMap<Device>((out) => _parseDevices(out).fold(
+              () => Stream.empty(),
+              (devices) => Stream.fromIterable(devices),
+            ));
 
 Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
     .map((json) => cast<Map<String, dynamic>>(json))

@@ -11,7 +11,7 @@ part 'config.freezed.dart';
 
 @freezed
 class Config with _$Config {
-  factory Config({
+  const factory Config({
     required String adbPath,
     required String avdmanagerPath,
     required String emulatorPath,
