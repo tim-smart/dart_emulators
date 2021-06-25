@@ -74,12 +74,17 @@ final waitUntilRunning = (Config config) => (
             .first
             .timeout(timeout);
 
-final drive = (Config config) =>
-    (Device device, String target) => Process.start(config.flutterPath, [
+final drive = (Config config) => (
+      Device device,
+      String target, {
+      List<String> args = const [],
+    }) =>
+        Process.start(config.flutterPath, [
           'drive',
           '-d',
           device.id,
           '--target=$target',
+          ...args,
         ], environment: {
           'EMULATORS_DEVICE': json.encode(device.toJson()),
         });
