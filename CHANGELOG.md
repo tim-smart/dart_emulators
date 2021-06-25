@@ -1,3 +1,7 @@
+## 0.1.12
+
+- Reliability improvements
+
 ## 0.1.11
 
 - Bug fixes
