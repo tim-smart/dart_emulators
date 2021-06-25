@@ -63,7 +63,7 @@ DevicePlatform _parseKind(String input) {
 
 final waitUntilRunning = (Config config) => (
       Device device, {
-      Duration timeout = const Duration(seconds: 60),
+      Duration timeout = const Duration(seconds: 100),
     }) =>
         Rx.merge([
           Stream.value(null),
