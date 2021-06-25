@@ -16,15 +16,16 @@ final adb =
 final avdmanager = (Config config) =>
     (List<String> args) => process.run(config.avdmanagerPath, args);
 
-final list = (Config config) =>
-    Stream.fromFuture(emulator(config)(["-list-avds"]))
+final list =
+    (Config config) => Stream.fromFuture(emulator(config)(["-list-avds"]))
         .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
         .map((name) => Device(
               id: name,
               name: name,
               platform: DevicePlatform.ANDROID,
               emulator: true,
-            ));
+            ))
+        .handleError((_) => Stream.empty());
 
 Future<Device> Function(Device) boot(Config config) =>
     (device) => Process.start(config.emulatorPath, ["-avd", device.id])

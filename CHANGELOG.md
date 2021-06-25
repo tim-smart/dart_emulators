@@ -1,3 +1,7 @@
+## 0.1.11
+
+- Bug fixes
+
 ## 0.1.10
 
 - Refactor internal `waitUntilRunning`

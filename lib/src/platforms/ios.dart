@@ -16,10 +16,12 @@ final list =
           "list",
           "devices",
           "--json",
-        ])).flatMap<Device>((out) => _parseDevices(out).fold(
-              () => Stream.empty(),
-              (devices) => Stream.fromIterable(devices),
-            ));
+        ]))
+            .flatMap<Device>((out) => _parseDevices(out).fold(
+                  () => Stream.empty(),
+                  (devices) => Stream.fromIterable(devices),
+                ))
+            .handleError((_) => Stream.empty());
 
 Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
     .map((json) => cast<Map<String, dynamic>>(json))

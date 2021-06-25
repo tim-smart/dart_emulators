@@ -29,7 +29,8 @@ final running = (
         .asyncMap<Device>((d) =>
             d.emulator && d.platform == DevicePlatform.ANDROID
                 ? android.updateDeviceName(config)(d)
-                : Future.value(d));
+                : Future.value(d))
+        .handleError((_) => Stream.empty());
 
 Option<Device> _parseDevicesLine(String input) {
   final parts = input.split('•').map((s) => s.trim()).toList();

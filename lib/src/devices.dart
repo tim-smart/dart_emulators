@@ -80,8 +80,8 @@ final forEach = (c.Config config) => (List<String> nameOrIds) =>
             .where(
                 (d) => nameOrIds.contains(d.id) || nameOrIds.contains(d.name))
             .asyncMap<void>((d) async {
-          await boot(config)(d);
+          final booted = await boot(config)(d);
           final running = await flutter.waitUntilRunning(config)(d);
           await process(running);
-          return shutdown(config)(running);
+          return shutdown(config)(booted);
         }).forEach((_) {});
