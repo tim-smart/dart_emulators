@@ -7,7 +7,7 @@ import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/platforms/android.dart' as android;
 import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
-import 'package:rxdart/rxdart.dart' hide Kind;
+import 'package:rxdart/rxdart.dart';
 
 final flutter = (Config config) => (
       List<String> args, {
@@ -69,7 +69,7 @@ final waitUntilRunning = (Config config) => (
           Stream.value(null),
           Stream.periodic(Duration(seconds: 1)),
         ])
-            .flatMap((_) => running(config))
+            .exhaustMap((_) => running(config))
             .where((d) => d.similar(device))
             .first
             .timeout(timeout);
