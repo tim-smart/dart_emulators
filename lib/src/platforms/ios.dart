@@ -61,7 +61,7 @@ final cleanStatusBar = (Config config) => (Device device) => simctl(config)([
       device.id,
       "override",
       "--time",
-      "12:00",
+      "2021-06-30T12:00:00+00:00",
       "--dataNetwork",
       "wifi",
       "--wifiMode",
