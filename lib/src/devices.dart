@@ -77,7 +77,7 @@ final writeScreenshotFromEnv = (c.Config config) => ({
 
 final forEach = (c.Config config) => (
       List<String> nameOrIds, {
-      Duration timeout = const Duration(seconds: 100),
+      Duration timeout = const Duration(minutes: 3),
     }) =>
         (Future<void> Function(Device) process) => list(config)
                 .where((d) =>
@@ -85,13 +85,11 @@ final forEach = (c.Config config) => (
                 .asyncMap<void>((device) async {
               final booted = await boot(config)(device);
 
-              try {
-                final running = await flutter.waitUntilRunning(config)(
-                  device,
-                  timeout: timeout,
-                );
-                await process(running);
-              } catch (_) {}
+              final running = await flutter.waitUntilRunning(config)(
+                device,
+                timeout: timeout,
+              );
+              await process(running);
 
               return shutdown(config)(booted);
             }).forEach((_) {});
