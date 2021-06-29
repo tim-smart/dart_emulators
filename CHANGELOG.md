@@ -1,3 +1,7 @@
+## 0.1.15
+
+- Add date to ios `cleanStatusBar`
+
 ## 0.1.14
 
 - Don't absorb errors in `forEach`
