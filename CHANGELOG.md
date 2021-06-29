@@ -1,3 +1,7 @@
+## 0.1.14
+
+- Don't absorb errors in `forEach`
+
 ## 0.1.13
 
 - Add `args` to `drive`
