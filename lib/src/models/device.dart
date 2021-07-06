@@ -6,12 +6,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'device.freezed.dart';
 part 'device.g.dart';
 
+/// Indicates what platform the device is for.
 enum DevicePlatform {
   IOS,
   ANDROID,
   WEB,
 }
 
+/// Represents an emulator or real device.
 @freezed
 class Device with _$Device {
   const Device._();
@@ -27,6 +29,8 @@ class Device with _$Device {
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
 
+  /// Check whether this device has a matching id or name to another device
+  /// instance.
   bool similar(Device other) {
     final props = [id, name];
     return [

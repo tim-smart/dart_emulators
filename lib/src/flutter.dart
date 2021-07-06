@@ -9,12 +9,14 @@ import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
 import 'package:rxdart/rxdart.dart';
 
+/// Wrapper for the `flutter` CLI tool.
 final flutter = (Config config) => (
       List<String> args, {
       Map<String, String>? env,
     }) =>
         process.run(config.flutterPath, args, env: env);
 
+/// Wrapper for the `flutter devices` command. Returns a stream of [Device]'s.
 final running = (
   Config config, {
   bool onlyEmulators = true,
@@ -61,6 +63,7 @@ DevicePlatform _parseKind(String input) {
   return DevicePlatform.WEB;
 }
 
+/// Waits until the given [Device] is running, or errors with a timeout.
 final waitUntilRunning = (Config config) => (
       Device device, {
       Duration timeout = const Duration(seconds: 100),
@@ -74,6 +77,9 @@ final waitUntilRunning = (Config config) => (
             .first
             .timeout(timeout);
 
+/// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
+/// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
+/// screenshots etc. in your flutter_driver test script.
 final drive = (Config config) => (
       Device device,
       String target, {

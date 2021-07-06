@@ -1,3 +1,7 @@
+## 0.1.16
+
+- Documentation updates
+
 ## 0.1.15
 
 - Add date to ios `cleanStatusBar`

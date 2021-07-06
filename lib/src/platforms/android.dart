@@ -7,15 +7,19 @@ import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
 import 'package:rxdart/rxdart.dart';
 
+/// Wrapper for the `emulator` CLI tools from the Android SDK
 final emulator = (Config config) =>
     (List<String> args) => process.run(config.emulatorPath, args);
 
+/// Wrapper for the `adb` CLI tool.
 final adb =
     (Config config) => (List<String> args) => process.run(config.adbPath, args);
 
+/// Wrapper for the `avdmanager` CLI tool from the Android SDK
 final avdmanager = (Config config) =>
     (List<String> args) => process.run(config.avdmanagerPath, args);
 
+/// Get a list of the available Android emulators
 final list =
     (Config config) => Stream.fromFuture(emulator(config)(["-list-avds"]))
         .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
@@ -27,6 +31,7 @@ final list =
             ))
         .handleError((_) => Stream.empty());
 
+/// Boot an Android emulator
 Future<Device> Function(Device) boot(Config config) =>
     (device) => Process.start(config.emulatorPath, ["-avd", device.id])
         .then((process) => device.copyWith(
@@ -34,6 +39,7 @@ Future<Device> Function(Device) boot(Config config) =>
               process: some(process),
             ));
 
+/// Shutdown an Android emulator
 Future<Device> Function(Device) shutdown(Config config) => (device) {
       if (!device.booted) return Future.value(device);
 
@@ -51,6 +57,7 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
       );
     };
 
+/// Clean the device's statusbar, ready for nice screenshots.
 final cleanStatusBar = (Config config) => (Device device) =>
     Stream.fromIterable([
       // enable
@@ -71,6 +78,7 @@ final cleanStatusBar = (Config config) => (Device device) =>
         .forEach((_) {})
         .then((_) => Future.delayed(Duration(seconds: 2)));
 
+/// Takes a screenshot. Returns the image in binary form, as a `List<int>`.
 final screenshot =
     (Config config) => (Device device) => process.runBinary(config.adbPath, [
           '-s',
@@ -80,9 +88,7 @@ final screenshot =
           '-p',
         ]);
 
-/**
- * Maps the device id back to the AVD name
- */
+/// Maps the device id back to the AVD name
 final updateDeviceName = (Config config) => (Device device) => adb(config)([
       "-s",
       device.id,

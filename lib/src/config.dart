@@ -9,6 +9,7 @@ import 'package:emulators/src/utils/process.dart' as process;
 
 part 'config.freezed.dart';
 
+/// Config represents the resolved paths for the CLI tools we will use.
 @freezed
 class Config with _$Config {
   const factory Config({
@@ -25,6 +26,7 @@ Future<Option<String>> _which(String exec) => process.run('which', [exec]).then(
       onError: (_) => none(),
     );
 
+/// Build a Config instance, automatically resolving the path's that we need.
 Future<Config> buildConfig() async {
   final androidSdk = optionOf(Platform.environment['ANDROID_SDK_ROOT']);
 
@@ -57,6 +59,7 @@ Future<Config> buildConfig() async {
   );
 }
 
+/// Get the current device from the EMULATORS_DEVICE environment variable.
 Option<Device> currentDevice() =>
     optionOf(Platform.environment['EMULATORS_DEVICE'])
         .bind((s) => catching(() => json.decode(s)).toOption())
