@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'device.dart';
 
@@ -37,7 +38,7 @@ class _$DeviceTearOff {
     );
   }
 
-  Device fromJson(Map<String, Object> json) {
+  Device fromJson(Map<String, Object?> json) {
     return Device.fromJson(json);
   }
 }
@@ -193,7 +194,7 @@ class _$_Device extends _Device {
       : super._();
 
   factory _$_Device.fromJson(Map<String, dynamic> json) =>
-      _$_$_DeviceFromJson(json);
+      _$$_DeviceFromJson(json);
 
   @override
   final String id;
@@ -218,32 +219,21 @@ class _$_Device extends _Device {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Device &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.name, name) ||
-                const DeepCollectionEquality().equals(other.name, name)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Device &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
             (identical(other.platform, platform) ||
-                const DeepCollectionEquality()
-                    .equals(other.platform, platform)) &&
+                other.platform == platform) &&
             (identical(other.emulator, emulator) ||
-                const DeepCollectionEquality()
-                    .equals(other.emulator, emulator)) &&
-            (identical(other.booted, booted) ||
-                const DeepCollectionEquality().equals(other.booted, booted)) &&
-            (identical(other.process, process) ||
-                const DeepCollectionEquality().equals(other.process, process)));
+                other.emulator == emulator) &&
+            (identical(other.booted, booted) || other.booted == booted) &&
+            (identical(other.process, process) || other.process == process));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(platform) ^
-      const DeepCollectionEquality().hash(emulator) ^
-      const DeepCollectionEquality().hash(booted) ^
-      const DeepCollectionEquality().hash(process);
+      Object.hash(runtimeType, id, name, platform, emulator, booted, process);
 
   @JsonKey(ignore: true)
   @override
@@ -252,7 +242,7 @@ class _$_Device extends _Device {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_DeviceToJson(this);
+    return _$$_DeviceToJson(this);
   }
 }
 
@@ -269,18 +259,18 @@ abstract class _Device extends Device {
   factory _Device.fromJson(Map<String, dynamic> json) = _$_Device.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  DevicePlatform get platform => throw _privateConstructorUsedError;
+  DevicePlatform get platform;
   @override
-  bool get emulator => throw _privateConstructorUsedError;
+  bool get emulator;
   @override
-  bool get booted => throw _privateConstructorUsedError;
+  bool get booted;
   @override
   @JsonKey(ignore: true)
-  Option<Process> get process => throw _privateConstructorUsedError;
+  Option<Process> get process;
   @override
   @JsonKey(ignore: true)
   _$DeviceCopyWith<_Device> get copyWith => throw _privateConstructorUsedError;

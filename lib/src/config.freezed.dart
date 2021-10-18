@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'config.dart';
 
@@ -184,32 +185,22 @@ class _$_Config implements _Config {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Config &&
-            (identical(other.adbPath, adbPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.adbPath, adbPath)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Config &&
+            (identical(other.adbPath, adbPath) || other.adbPath == adbPath) &&
             (identical(other.avdmanagerPath, avdmanagerPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.avdmanagerPath, avdmanagerPath)) &&
+                other.avdmanagerPath == avdmanagerPath) &&
             (identical(other.emulatorPath, emulatorPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.emulatorPath, emulatorPath)) &&
+                other.emulatorPath == emulatorPath) &&
             (identical(other.flutterPath, flutterPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.flutterPath, flutterPath)) &&
+                other.flutterPath == flutterPath) &&
             (identical(other.xcrunPath, xcrunPath) ||
-                const DeepCollectionEquality()
-                    .equals(other.xcrunPath, xcrunPath)));
+                other.xcrunPath == xcrunPath));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(adbPath) ^
-      const DeepCollectionEquality().hash(avdmanagerPath) ^
-      const DeepCollectionEquality().hash(emulatorPath) ^
-      const DeepCollectionEquality().hash(flutterPath) ^
-      const DeepCollectionEquality().hash(xcrunPath);
+  int get hashCode => Object.hash(runtimeType, adbPath, avdmanagerPath,
+      emulatorPath, flutterPath, xcrunPath);
 
   @JsonKey(ignore: true)
   @override
@@ -226,15 +217,15 @@ abstract class _Config implements Config {
       required String xcrunPath}) = _$_Config;
 
   @override
-  String get adbPath => throw _privateConstructorUsedError;
+  String get adbPath;
   @override
-  String get avdmanagerPath => throw _privateConstructorUsedError;
+  String get avdmanagerPath;
   @override
-  String get emulatorPath => throw _privateConstructorUsedError;
+  String get emulatorPath;
   @override
-  String get flutterPath => throw _privateConstructorUsedError;
+  String get flutterPath;
   @override
-  String get xcrunPath => throw _privateConstructorUsedError;
+  String get xcrunPath;
   @override
   @JsonKey(ignore: true)
   _$ConfigCopyWith<_Config> get copyWith => throw _privateConstructorUsedError;
