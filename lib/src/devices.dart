@@ -16,12 +16,12 @@ final list = (c.Config config) => Rx.merge<Device>([
     ]);
 
 /// Boot the specified [Device], with the given [c.Config].
-Future<Device> Function(Device) boot(c.Config config) =>
-    (device) => device.booted
+final boot =
+    (c.Config config) => (Device device, {String? locale}) => device.booted
         ? Future.value(device)
         : device.platform == DevicePlatform.IOS
-            ? ios.boot(config)(device)
-            : android.boot(config)(device);
+            ? ios.boot(config)(device.copyWith(locale: locale))
+            : android.boot(config)(device.copyWith(locale: locale));
 
 /// Shutdown the specified [Device]
 Future<void> Function(Device) shutdown(c.Config config) =>
@@ -67,7 +67,10 @@ final writeScreenshot = (c.Config config) => ({
     }) =>
         (Device device) => (String name) =>
             screenshot(config)(device).then<void>((image) async {
-              final file = [device.name, '$name.png'].join('_');
+              final file = [device.name, device.locale, name]
+                      .where((s) => s != null)
+                      .join('_') +
+                  '.png';
               final basePath =
                   device.platform == DevicePlatform.IOS ? iosPath : androidPath;
               final path = p.join(basePath, file);
@@ -95,18 +98,27 @@ final writeScreenshotFromEnv = (c.Config config) => ({
 final forEach = (c.Config config) => (
       List<String> nameOrIds, {
       Duration timeout = const Duration(minutes: 3),
+      List<String?> locales = const [null],
     }) =>
         (Future<void> Function(Device) process) => list(config)
                 .where((d) =>
                     nameOrIds.contains(d.id) || nameOrIds.contains(d.name))
-                .asyncMap<void>((device) async {
-              final booted = await boot(config)(device);
+                .flatMap((d) => Stream.fromIterable(
+                    locales.map((locale) => tuple2(d, locale))))
+                .asyncMap<void>((deviceLocale) async {
+              final device = deviceLocale.value1;
+              final locale = deviceLocale.value2;
+
+              final booted = await boot(config)(
+                device,
+                locale: locale,
+              );
 
               final running = await flutter.waitUntilRunning(config)(
                 device,
                 timeout: timeout,
               );
-              await process(running);
+              await process(running.copyWith(locale: locale));
 
               return shutdown(config)(booted);
             }).forEach((_) {});

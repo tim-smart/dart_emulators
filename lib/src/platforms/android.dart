@@ -33,8 +33,10 @@ final list =
 
 /// Boot an Android emulator
 Future<Device> Function(Device) boot(Config config) =>
-    (device) => Process.start(config.emulatorPath, ["-avd", device.id])
-        .then((process) => device.copyWith(
+    (device) => Process.start(config.emulatorPath, [
+          "-avd",
+          device.id,
+        ]).then((process) => device.copyWith(
               booted: true,
               process: some(process),
             ));
@@ -49,7 +51,7 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
             .then((_) => device.copyWith(booted: false)),
         (process) {
           process.kill(ProcessSignal.sigint);
-          return process.stdout.forEach((_) {}).then((_) => device.copyWith(
+          return process.exitCode.then((_) => device.copyWith(
                 booted: false,
                 process: none(),
               ));

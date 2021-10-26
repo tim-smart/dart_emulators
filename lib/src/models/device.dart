@@ -16,18 +16,25 @@ enum DevicePlatform {
 /// Represents an emulator or real device.
 @freezed
 class Device with _$Device {
-  const Device._();
+  Device._();
 
-  const factory Device({
+  factory Device({
     required String id,
     required String name,
     required DevicePlatform platform,
     required bool emulator,
     @Default(false) bool booted,
     @JsonKey(ignore: true) @Default(None()) Option<Process> process,
+    String? locale,
   }) = _Device;
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
+
+  late final Option<String> localeOption = optionOf(locale);
+  late final Option<String> localeCountry =
+      localeOption.bind((l) => optionOf(l.split('-').firstOrNull));
+  late final Option<String> localeLanguage =
+      localeOption.bind((l) => optionOf(l.split('-').lastOrNull));
 
   /// Check whether this device has a matching id or name to another device
   /// instance.

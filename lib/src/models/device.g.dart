@@ -13,6 +13,7 @@ _$_Device _$_$_DeviceFromJson(Map<String, dynamic> json) {
     platform: _$enumDecode(_$DevicePlatformEnumMap, json['platform']),
     emulator: json['emulator'] as bool,
     booted: json['booted'] as bool? ?? false,
+    locale: json['locale'] as String?,
   );
 }
 
@@ -22,6 +23,7 @@ Map<String, dynamic> _$_$_DeviceToJson(_$_Device instance) => <String, dynamic>{
       'platform': _$DevicePlatformEnumMap[instance.platform],
       'emulator': instance.emulator,
       'booted': instance.booted,
+      'locale': instance.locale,
     };
 
 K _$enumDecode<K, V>(

@@ -40,6 +40,7 @@ Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
 final boot = (Config config) => (Device device) => simctl(config)([
       "boot",
       device.id,
+      if (device.locale != null) ...["-AppleLanguages", "(${device.locale})"]
     ]).then((_) => device.copyWith(booted: true));
 
 final shutdown = (Config config) => (Device device) => simctl(config)([
