@@ -10,7 +10,7 @@ dependencies:
   collection: ^1.15.0
   dartz: ^0.10.0
   freezed_annotation: ^0.15.0
-  json_annotation: ^4.0.1
+  json_annotation: ^4.3.0
   path: ^1.8.0
   rxdart: ^0.27.1
 
