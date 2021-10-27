@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Update dart SDK and dependencies - @ened
+
 ## 0.1.16
 
 - Documentation updates
