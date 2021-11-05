@@ -99,7 +99,7 @@ final updateDeviceName = (Config config) => (Device device) => adb(config)([
         .stringOption(out.trim())
         .map(strings.splitLines)
         .filter((parts) => parts.length == 2)
-        .filter((parts) => parts.first == "OK")
+        .filter((parts) => parts.last == "OK")
         .map((parts) => parts.first)
         .match(
           (name) => device.copyWith(name: name),

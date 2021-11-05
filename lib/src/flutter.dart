@@ -34,24 +34,24 @@ final running = (
                 : Future.value(d))
         .handleError((_) => Stream.empty());
 
-Option<Device> _parseDevicesLine(String input) {
-  final parts = input.split('•').map((s) => s.trim()).toList();
-  if (parts.length != 4) return none();
+Option<Device> _parseDevicesLine(String input) =>
+    some(input.split('•').map((s) => s.trim()).toList())
+        .filter((parts) => parts.length == 4)
+        .map((parts) {
+      final name =
+          parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
+      final id = parts[1];
+      final kind = _parseKind(parts[2]);
+      final emulator = RegExp(r'(emulator|simulator)').hasMatch(parts[3]);
 
-  final name =
-      parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
-  final id = parts[1];
-  final kind = _parseKind(parts[2]);
-  final emulator = RegExp(r'(emulator|simulator)').hasMatch(parts[3]);
-
-  return some(Device(
-    id: id,
-    name: name,
-    platform: kind,
-    emulator: emulator,
-    booted: true,
-  ));
-}
+      return Device(
+        id: id,
+        name: name,
+        platform: kind,
+        emulator: emulator,
+        booted: true,
+      );
+    });
 
 DevicePlatform _parseKind(String input) {
   if (input.contains('ios')) {

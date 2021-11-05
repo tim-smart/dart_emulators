@@ -103,7 +103,6 @@ final forEach = (c.Config config) => (
                     nameOrIds.contains(d.id) || nameOrIds.contains(d.name))
                 .asyncMap<void>((device) async {
               final booted = await boot(config)(device);
-
               final running = await flutter.waitUntilRunning(config)(
                 device,
                 timeout: timeout,
