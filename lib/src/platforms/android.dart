@@ -51,7 +51,9 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
                 process: none(),
               ));
         },
+        () => adb(config)(['-s', device.id, 'emu', 'kill'])
             .then((_) => Future.delayed(Duration(seconds: 3)))
+            .then((_) => device.copyWith(booted: false)),
       );
     };
 
@@ -93,8 +95,13 @@ final updateDeviceName = (Config config) => (Device device) => adb(config)([
       "emu",
       "avd",
       "name",
-    ]).then<Device>((out) {
-      final parts = out.split("\n").map((s) => s.trim()).toList();
-      if (parts.length != 2 && parts[1] != "OK") return device;
-      return device.copyWith(name: parts.first);
-    });
+    ]).then<Device>((out) => strings
+        .stringOption(out.trim())
+        .map(strings.splitLines)
+        .filter((parts) => parts.length == 2)
+        .filter((parts) => parts.first == "OK")
+        .map((parts) => parts.first)
+        .match(
+          (name) => device.copyWith(name: name),
+          () => device,
+        ));
