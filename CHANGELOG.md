@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Handle bad output from adb emu avd commands
+
 ## 0.2.0
 
 - Update dart SDK and dependencies - @ened
