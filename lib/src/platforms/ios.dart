@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
@@ -17,16 +17,17 @@ final list =
           "devices",
           "--json",
         ]))
-            .flatMap<Device>((out) => _parseDevices(out).fold(
-                  () => Stream.empty(),
+            .flatMap<Device>((out) => _parseDevices(out).match(
                   (devices) => Stream.fromIterable(devices),
+                  () => Stream.empty(),
                 ))
             .handleError((_) => Stream.empty());
 
 Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
-    .map((json) => cast<Map<String, dynamic>>(json))
+    .map((json) => (json as Map).cast<String, dynamic>())
     .map((devices) => devices.entries
-        .expand((runtime) => cast<List<dynamic>>(runtime.value)
+        .expand((runtime) => (runtime.value as List)
+            .cast()
             .where((device) => device['isAvailable'])
             .map((device) => Device(
                   id: device['udid'],

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
@@ -43,10 +43,7 @@ Future<Device> Function(Device) boot(Config config) =>
 Future<Device> Function(Device) shutdown(Config config) => (device) {
       if (!device.booted) return Future.value(device);
 
-      return device.process.fold(
-        () => adb(config)(['-s', device.id, 'emu', 'kill'])
-            .then((_) => Future.delayed(Duration(seconds: 3)))
-            .then((_) => device.copyWith(booted: false)),
+      return device.process.match(
         (process) {
           process.kill(ProcessSignal.sigint);
           return process.stdout.forEach((_) {}).then((_) => device.copyWith(
@@ -54,6 +51,7 @@ Future<Device> Function(Device) shutdown(Config config) => (device) {
                 process: none(),
               ));
         },
+            .then((_) => Future.delayed(Duration(seconds: 3)))
       );
     };
 

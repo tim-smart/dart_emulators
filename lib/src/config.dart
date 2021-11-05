@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:emulators/emulators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart' as p;
@@ -31,19 +31,19 @@ Future<Config> buildConfig() async {
   final androidSdk = optionOf(Platform.environment['ANDROID_SDK_ROOT']);
 
   final adbPath = (await _which('adb'))
-      .orElse(() => androidSdk.map((sdk) => p.join(sdk, 'platform-tools/adb')))
+      .alt(() => androidSdk.map((sdk) => p.join(sdk, 'platform-tools/adb')))
       .getOrElse(() => 'adb');
 
   final avdmanagerPath = await androidSdk
       .map((sdk) => p.join(sdk, 'cmdline-tools/latest/bin/avdmanager'))
-      .fold(
-        () => _which('avdmanager'),
+      .match(
         (path) => Future.value(some(path)),
+        () => _which('avdmanager'),
       )
       .then((o) => o.getOrElse(() => 'avdmanager'));
 
   final emulatorPath = (await _which('emulator'))
-      .orElse(() => androidSdk.map((sdk) => p.join(sdk, 'emulator/emulator')))
+      .alt(() => androidSdk.map((sdk) => p.join(sdk, 'emulator/emulator')))
       .getOrElse(() => 'emulator');
 
   final flutterPath = (await _which('flutter')).getOrElse(() => 'flutter');
@@ -62,5 +62,5 @@ Future<Config> buildConfig() async {
 /// Get the current device from the EMULATORS_DEVICE environment variable.
 Option<Device> currentDevice() =>
     optionOf(Platform.environment['EMULATORS_DEVICE'])
-        .bind((s) => catching(() => json.decode(s)).toOption())
+        .flatMap((s) => Option.tryCatch(() => json.decode(s)))
         .map((json) => Device.fromJson(json));

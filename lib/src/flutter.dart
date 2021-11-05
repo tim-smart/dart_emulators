@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/platforms/android.dart' as android;
@@ -23,9 +23,9 @@ final running = (
 }) =>
     Stream.fromFuture(flutter(config)(['devices']))
         .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
-        .flatMap<Device>((line) => _parseDevicesLine(line).fold(
-              () => Stream.empty(),
+        .flatMap<Device>((line) => _parseDevicesLine(line).match(
               (d) => Stream.value(d),
+              () => Stream.empty(),
             ))
         .where((d) => onlyEmulators ? d.emulator : true)
         .asyncMap<Device>((d) =>

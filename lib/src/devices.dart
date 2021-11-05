@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart' hide Kind;
 import 'package:emulators/src/config.dart' as c;
@@ -41,9 +41,9 @@ final cleanStatusBar = (c.Config config) => (Device device) =>
 
 /// Wraps [cleanStatusBar], but uses the device from the EMULATORS_DEVICE
 /// environment variable.
-final cleanStatusBarFromEnv = (c.Config config) => c.currentDevice().fold(
-      () => Future.value(),
+final cleanStatusBarFromEnv = (c.Config config) => c.currentDevice().match(
       cleanStatusBar(config),
+      () => Future.value(),
     );
 
 /// Takes a screenshot for the given [Device]. Returns the screenshot in binary
@@ -55,9 +55,11 @@ final screenshot = (c.Config config) => (Device device) =>
 
 /// Wraps [screenshot], but uses the device from the EMULATORS_DEVICE
 /// environment variable.
-final screenshotFromEnv = (c.Config config) => c.currentDevice().traverseFuture(
-    (device) =>
-        screenshot(config)(device).then((image) => tuple2(device, image)));
+final screenshotFromEnv = (c.Config config) => c.currentDevice().match(
+      (device) =>
+          screenshot(config)(device).then((image) => tuple2(device, image)),
+      () => Future.error('Device not set') as Future<Tuple2<Device, List<int>>>,
+    );
 
 /// Wraps [screenshot], but writes the screenshot to a file depending on the
 /// [Device]'s platform.
@@ -82,12 +84,12 @@ final writeScreenshotFromEnv = (c.Config config) => ({
       required String iosPath,
       required String androidPath,
     }) =>
-        c.currentDevice().fold(
-              () => (String name) => Future.value(),
+        c.currentDevice().match(
               writeScreenshot(config)(
                 androidPath: androidPath,
                 iosPath: iosPath,
               ),
+              () => (String name) => Future.value(),
             );
 
 /// Iterators over the list of device name / id's, boots and runs the given
