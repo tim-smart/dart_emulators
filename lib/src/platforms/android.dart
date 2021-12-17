@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:fpdart/fpdart.dart';
+import 'package:fpdt/function.dart';
+import 'package:fpdt/option.dart' as O;
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
@@ -36,25 +37,25 @@ Future<Device> Function(Device) boot(Config config) =>
     (device) => Process.start(config.emulatorPath, ["-avd", device.id])
         .then((process) => device.copyWith(
               booted: true,
-              process: some(process),
+              process: O.some(process),
             ));
 
 /// Shutdown an Android emulator
 Future<Device> Function(Device) shutdown(Config config) => (device) {
       if (!device.booted) return Future.value(device);
 
-      return device.process.match(
+      return device.process.chain(O.fold(
+        () => adb(config)(['-s', device.id, 'emu', 'kill'])
+            .then((_) => Future.delayed(Duration(seconds: 3)))
+            .then((_) => device.copyWith(booted: false)),
         (process) {
           process.kill(ProcessSignal.sigint);
           return process.stdout.forEach((_) {}).then((_) => device.copyWith(
                 booted: false,
-                process: none(),
+                process: O.none(),
               ));
         },
-        () => adb(config)(['-s', device.id, 'emu', 'kill'])
-            .then((_) => Future.delayed(Duration(seconds: 3)))
-            .then((_) => device.copyWith(booted: false)),
-      );
+      ));
     };
 
 /// Clean the device's statusbar, ready for nice screenshots.
@@ -95,13 +96,12 @@ final updateDeviceName = (Config config) => (Device device) => adb(config)([
       "emu",
       "avd",
       "name",
-    ]).then<Device>((out) => strings
-        .stringOption(out.trim())
-        .map(strings.splitLines)
-        .filter((parts) => parts.length == 2)
-        .filter((parts) => parts.last == "OK")
-        .map((parts) => parts.first)
-        .match(
-          (name) => device.copyWith(name: name),
+    ]).then<Device>(strings.stringOption
+        .compose(O.map(strings.splitLines))
+        .compose(O.filter((parts) => parts.length == 2))
+        .compose(O.filter((parts) => parts.last == "OK"))
+        .compose(O.map((parts) => parts.first))
+        .compose(O.fold(
           () => device,
-        ));
+          (name) => device.copyWith(name: name),
+        )));

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fpdart/fpdart.dart';
+import 'package:fpdt/option.dart' show Option, kNone;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device.freezed.dart';
@@ -24,7 +24,7 @@ class Device with _$Device {
     required DevicePlatform platform,
     required bool emulator,
     @Default(false) bool booted,
-    @JsonKey(ignore: true) @Default(None()) Option<Process> process,
+    @JsonKey(ignore: true) @Default(kNone) Option<Process> process,
   }) = _Device;
 
   factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);

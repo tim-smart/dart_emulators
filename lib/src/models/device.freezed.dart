@@ -27,7 +27,7 @@ class _$DeviceTearOff {
       required DevicePlatform platform,
       required bool emulator,
       bool booted = false,
-      @JsonKey(ignore: true) Option<Process> process = const None()}) {
+      @JsonKey(ignore: true) Option<Process> process = kNone}) {
     return _Device(
       id: id,
       name: name,
@@ -190,7 +190,7 @@ class _$_Device extends _Device {
       required this.platform,
       required this.emulator,
       this.booted = false,
-      @JsonKey(ignore: true) this.process = const None()})
+      @JsonKey(ignore: true) this.process = kNone})
       : super._();
 
   factory _$_Device.fromJson(Map<String, dynamic> json) =>
@@ -204,7 +204,7 @@ class _$_Device extends _Device {
   final DevicePlatform platform;
   @override
   final bool emulator;
-  @JsonKey(defaultValue: false)
+  @JsonKey()
   @override
   final bool booted;
   @override
@@ -221,19 +221,23 @@ class _$_Device extends _Device {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Device &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.platform, platform) ||
-                other.platform == platform) &&
-            (identical(other.emulator, emulator) ||
-                other.emulator == emulator) &&
-            (identical(other.booted, booted) || other.booted == booted) &&
-            (identical(other.process, process) || other.process == process));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.platform, platform) &&
+            const DeepCollectionEquality().equals(other.emulator, emulator) &&
+            const DeepCollectionEquality().equals(other.booted, booted) &&
+            const DeepCollectionEquality().equals(other.process, process));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, platform, emulator, booted, process);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(platform),
+      const DeepCollectionEquality().hash(emulator),
+      const DeepCollectionEquality().hash(booted),
+      const DeepCollectionEquality().hash(process));
 
   @JsonKey(ignore: true)
   @override

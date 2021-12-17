@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   collection: ^1.15.0
-  fpdart: ^0.0.12
+  fpdt: ^0.0.28
   freezed_annotation: ^1.0.0
   json_annotation: ^4.3.0
   path: ^1.8.0

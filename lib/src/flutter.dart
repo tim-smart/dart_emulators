@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fpdart/fpdart.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/platforms/android.dart' as android;
 import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
+import 'package:fpdt/function.dart';
+import 'package:fpdt/option.dart' as O;
 import 'package:rxdart/rxdart.dart';
 
 /// Wrapper for the `flutter` CLI tool.
@@ -23,10 +24,10 @@ final running = (
 }) =>
     Stream.fromFuture(flutter(config)(['devices']))
         .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
-        .flatMap<Device>((line) => _parseDevicesLine(line).match(
-              (d) => Stream.value(d),
+        .flatMap<Device>((line) => _parseDevicesLine(line).chain(O.fold(
               () => Stream.empty(),
-            ))
+              (d) => Stream.value(d),
+            )))
         .where((d) => onlyEmulators ? d.emulator : true)
         .asyncMap<Device>((d) =>
             d.emulator && d.platform == DevicePlatform.ANDROID
@@ -34,10 +35,10 @@ final running = (
                 : Future.value(d))
         .handleError((_) => Stream.empty());
 
-Option<Device> _parseDevicesLine(String input) =>
-    some(input.split('•').map((s) => s.trim()).toList())
-        .filter((parts) => parts.length == 4)
-        .map((parts) {
+O.Option<Device> _parseDevicesLine(String input) => O
+        .some(input.split('•').map((s) => s.trim()).toList())
+        .chain(O.filter((parts) => parts.length == 4))
+        .chain(O.map((parts) {
       final name =
           parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
       final id = parts[1];
@@ -51,7 +52,7 @@ Option<Device> _parseDevicesLine(String input) =>
         emulator: emulator,
         booted: true,
       );
-    });
+    }));
 
 DevicePlatform _parseKind(String input) {
   if (input.contains('ios')) {

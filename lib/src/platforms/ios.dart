@@ -1,4 +1,6 @@
-import 'package:fpdart/fpdart.dart';
+import 'package:fpdt/function.dart';
+import 'package:fpdt/option.dart' as O;
+import 'package:fpdt/map.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
@@ -17,16 +19,15 @@ final list =
           "devices",
           "--json",
         ]))
-            .flatMap<Device>((out) => _parseDevices(out).match(
-                  (devices) => Stream.fromIterable(devices),
+            .flatMap<Device>((out) => _parseDevices(out).chain(O.fold(
                   () => Stream.empty(),
-                ))
+                  (devices) => Stream.fromIterable(devices),
+                )))
             .handleError((_) => Stream.empty());
 
-Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
-    .map((json) => (json as Map).cast<String, dynamic>())
-    .map((devices) => devices.entries
-        .expand((runtime) => (runtime.value as List)
+O.Option<List<Device>> _parseDevices(Map<String, dynamic> json) =>
+    O.some(json).extractMap('devices').chain(O.map((devices) => devices.values
+        .expand((runtime) => (runtime as List)
             .cast()
             .where((device) => device['isAvailable'])
             .map((device) => Device(
@@ -36,7 +37,7 @@ Option<List<Device>> _parseDevices(dynamic json) => optionOf(json['devices'])
                   emulator: true,
                   booted: device["state"] == "Booted",
                 )))
-        .toList());
+        .toList()));
 
 final boot = (Config config) => (Device device) => simctl(config)([
       "boot",

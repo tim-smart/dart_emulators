@@ -187,20 +187,24 @@ class _$_Config implements _Config {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Config &&
-            (identical(other.adbPath, adbPath) || other.adbPath == adbPath) &&
-            (identical(other.avdmanagerPath, avdmanagerPath) ||
-                other.avdmanagerPath == avdmanagerPath) &&
-            (identical(other.emulatorPath, emulatorPath) ||
-                other.emulatorPath == emulatorPath) &&
-            (identical(other.flutterPath, flutterPath) ||
-                other.flutterPath == flutterPath) &&
-            (identical(other.xcrunPath, xcrunPath) ||
-                other.xcrunPath == xcrunPath));
+            const DeepCollectionEquality().equals(other.adbPath, adbPath) &&
+            const DeepCollectionEquality()
+                .equals(other.avdmanagerPath, avdmanagerPath) &&
+            const DeepCollectionEquality()
+                .equals(other.emulatorPath, emulatorPath) &&
+            const DeepCollectionEquality()
+                .equals(other.flutterPath, flutterPath) &&
+            const DeepCollectionEquality().equals(other.xcrunPath, xcrunPath));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, adbPath, avdmanagerPath,
-      emulatorPath, flutterPath, xcrunPath);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(adbPath),
+      const DeepCollectionEquality().hash(avdmanagerPath),
+      const DeepCollectionEquality().hash(emulatorPath),
+      const DeepCollectionEquality().hash(flutterPath),
+      const DeepCollectionEquality().hash(xcrunPath));
 
   @JsonKey(ignore: true)
   @override
