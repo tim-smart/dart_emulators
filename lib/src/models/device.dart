@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fpdt/option.dart' show Option, kNone;
+import 'package:fpdt/fpdt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device.freezed.dart';
@@ -24,6 +24,7 @@ class Device with _$Device {
     required DevicePlatform platform,
     required bool emulator,
     @Default(false) bool booted,
+    // ignore: invalid_annotation_target
     @JsonKey(ignore: true) @Default(kNone) Option<Process> process,
   }) = _Device;
 

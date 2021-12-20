@@ -1,6 +1,5 @@
-import 'package:fpdt/function.dart';
+import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/map.dart';
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/process.dart' as process;
@@ -25,7 +24,7 @@ final list =
                 )))
             .handleError((_) => Stream.empty());
 
-O.Option<List<Device>> _parseDevices(Map<String, dynamic> json) =>
+Option<List<Device>> _parseDevices(Map<String, dynamic> json) =>
     O.some(json).extractMap('devices').chain(O.map((devices) => devices.values
         .expand((runtime) => (runtime as List)
             .cast()

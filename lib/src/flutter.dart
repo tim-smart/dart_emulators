@@ -6,7 +6,7 @@ import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/platforms/android.dart' as android;
 import 'package:emulators/src/utils/process.dart' as process;
 import 'package:emulators/src/utils/strings.dart' as strings;
-import 'package:fpdt/function.dart';
+import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:rxdart/rxdart.dart';
 
@@ -35,7 +35,7 @@ final running = (
                 : Future.value(d))
         .handleError((_) => Stream.empty());
 
-O.Option<Device> _parseDevicesLine(String input) => O
+Option<Device> _parseDevicesLine(String input) => O
         .some(input.split('•').map((s) => s.trim()).toList())
         .chain(O.filter((parts) => parts.length == 4))
         .chain(O.map((parts) {

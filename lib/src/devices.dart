@@ -1,9 +1,8 @@
 import 'dart:io';
 
-import 'package:fpdt/function.dart';
+import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:fpdt/task_either.dart' as TE;
-import 'package:fpdt/tuple.dart';
 import 'package:path/path.dart' as p;
 import 'package:rxdart/rxdart.dart' hide Kind;
 import 'package:emulators/src/config.dart' as c;

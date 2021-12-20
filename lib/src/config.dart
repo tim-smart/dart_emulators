@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fpdt/function.dart';
+import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:fpdt/task.dart' as T;
 import 'package:fpdt/task_option.dart' as TO;
@@ -71,7 +71,7 @@ Future<Config> buildConfig() {
 }
 
 /// Get the current device from the EMULATORS_DEVICE environment variable.
-O.Option<Device> currentDevice() => O
+Option<Device> currentDevice() => O
     .fromNullable(Platform.environment['EMULATORS_DEVICE'])
     .chain(O.chainTryCatchK(json.decode))
     .chain(O.map((json) => Device.fromJson(json)));

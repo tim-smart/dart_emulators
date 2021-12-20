@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fpdt/function.dart';
+import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
