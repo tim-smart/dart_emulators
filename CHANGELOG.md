@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Add support for passing custom config
+
 ## 0.2.1
 
 - Handle bad output from adb emu avd commands
