@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:emulators/src/utils/strings.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:fpdt/task.dart' as T;
@@ -70,8 +71,28 @@ Future<Config> buildConfig() {
   ))();
 }
 
+const _kDeviceJson = String.fromEnvironment('EMULATORS_DEVICE');
+
 /// Get the current device from the EMULATORS_DEVICE environment variable.
 Option<Device> currentDevice() => O
     .fromNullable(Platform.environment['EMULATORS_DEVICE'])
+    .chain(O.alt(() => stringOption(_kDeviceJson)))
     .chain(O.chainTryCatchK(json.decode))
     .chain(O.map((json) => Device.fromJson(json)));
+
+const _kConfigJson = String.fromEnvironment('EMULATORS_CONFIG');
+
+/// Get the current config from the EMULATORS_CONFIG environment variable.
+Option<Map<String, dynamic>> configFromEnv() => O
+    .fromNullable(Platform.environment['EMULATORS_CONFIG'])
+    .chain(O.alt(() => stringOption(_kConfigJson)))
+    .chain(O.chainTryCatchK((s) => json.decode(s) as Map<String, dynamic>));
+
+Option<T> Function(String key) getOption<T>() =>
+    (String key) => configFromEnv().extract<T>(key);
+
+T? Function(String key) get<T>() => getOption<T>().compose(O.toNullable);
+
+final getString = get<String>();
+final getInt = get<int>();
+final getDouble = get<double>();

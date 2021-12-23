@@ -78,20 +78,64 @@ final waitUntilRunning = (Config config) => (
             .first
             .timeout(timeout);
 
+/// Wrapper for the `flutter` CLI tools. Runs a command and sets the
+/// `EMULATORS_DEVICE` environment variable so you can easily take screenshots
+/// etc.
+final flutterWithDevice = (Config c) => (
+      String command,
+      Device device, {
+      List<String> args = const [],
+      Map<String, dynamic> config = const {},
+    }) {
+      final configJson = json.encode(config);
+      final deviceJson = json.encode(device.toJson());
+
+      return Process.start(c.flutterPath, [
+        command,
+        '-d',
+        device.id,
+        '--dart-define',
+        'EMULATORS_CONFIG=$configJson',
+        '--dart-define',
+        'EMULATORS_DEVICE=$deviceJson',
+        ...args,
+      ], environment: {
+        'EMULATORS_CONFIG': configJson,
+        'EMULATORS_DEVICE': deviceJson,
+      });
+    };
+
 /// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
 /// screenshots etc. in your flutter_driver test script.
-final drive = (Config config) => (
+final drive = (Config c) => (
       Device device,
       String target, {
       List<String> args = const [],
+      Map<String, dynamic> config = const {},
     }) =>
-        Process.start(config.flutterPath, [
+        flutterWithDevice(c)(
           'drive',
-          '-d',
-          device.id,
-          '--target=$target',
-          ...args,
-        ], environment: {
-          'EMULATORS_DEVICE': json.encode(device.toJson()),
-        });
+          device,
+          args: [
+            '--target=$target',
+            ...args,
+          ],
+          config: config,
+        );
+
+/// Wrapper for the `flutter test` CLI command. Runs it on the given [Device],
+/// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
+/// screenshots etc. in your integration test script.
+final test = (Config c) => (
+      Device device,
+      String target, {
+      List<String> args = const [],
+      Map<String, dynamic> config = const {},
+    }) =>
+        flutterWithDevice(c)(
+          'test',
+          device,
+          args: [target, ...args],
+          config: config,
+        );

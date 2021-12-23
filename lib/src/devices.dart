@@ -69,10 +69,11 @@ final screenshotFromEnv = (c.Config config) => c.currentDevice().chain(O.fold(
 final writeScreenshot = (c.Config config) => ({
       required String iosPath,
       required String androidPath,
+      List<String> suffixes = const [],
     }) =>
         (Device device) => (String name) =>
             screenshot(config)(device).then<void>((image) async {
-              final file = [device.name, '$name.png'].join('_');
+              final file = [device.name, ...suffixes, '$name.png'].join('_');
               final basePath =
                   device.platform == DevicePlatform.IOS ? iosPath : androidPath;
               final path = p.join(basePath, file);
@@ -86,12 +87,14 @@ final writeScreenshot = (c.Config config) => ({
 final writeScreenshotFromEnv = (c.Config config) => ({
       required String iosPath,
       required String androidPath,
+      List<String> suffixes = const [],
     }) =>
         c.currentDevice().chain(O.fold(
               () => (String name) => Future.value(),
               writeScreenshot(config)(
                 androidPath: androidPath,
                 iosPath: iosPath,
+                suffixes: suffixes,
               ),
             ));
 
