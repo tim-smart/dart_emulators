@@ -108,7 +108,7 @@ class Emulators {
     assert(devices.isNotEmpty, 'You must provide at least one device!');
     final List<Device> availableDevices = await listDevices();
     for (String nameOrId in devices) {
-      final Device? device = _getDevice(nameOrId, availableDevices);
+      Device? device = _getDevice(nameOrId, availableDevices);
       if (device == null) {
         print(
           'Device \'$nameOrId\' was not available, skipping. Check that it is '
@@ -126,7 +126,7 @@ class Emulators {
         // Apply the timeout limit to each device/locale combination.
         await (() async {
           final Process process = await flutter.drive(
-            device,
+            runningDevice,
             appTarget,
             // Inject the locale into the flutter drive environment.
             commandConfig: {'locale': locale},
@@ -136,7 +136,7 @@ class Emulators {
         })()
             .timeout(timeout);
       }
-      await layer.shutdown(device);
+      await layer.shutdown(runningDevice);
     }
   }
 
