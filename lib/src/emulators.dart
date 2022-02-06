@@ -102,6 +102,7 @@ class Emulators {
     required List<String> locales,
     required List<String> devices,
     Future<void> Function(Emulators, Device, String)? executeWhileRunning,
+    Duration timeout = const Duration(minutes: 3),
   }) async {
     assert(locales.isNotEmpty, 'You must provide at least one locale!');
     assert(devices.isNotEmpty, 'You must provide at least one device!');
@@ -119,16 +120,21 @@ class Emulators {
       await layer.boot(device);
       // We need to use the running device as the proper device id is not set on
       // Android until the device is running.
-      final Device runningDevice = await flutter.waitUntilRunning(device);
+      final Device runningDevice =
+          await flutter.waitUntilRunning(device).timeout(timeout);
       for (String locale in locales) {
-        final Process process = await flutter.drive(
-          device,
-          appTarget,
-          // Inject the locale into the flutter drive environment.
-          commandConfig: {'locale': locale},
-        );
-        await stdout.addStream(process.stdout);
-        await executeWhileRunning?.call(this, runningDevice, locale);
+        // Apply the timeout limit to each device/locale combination.
+        await (() async {
+          final Process process = await flutter.drive(
+            device,
+            appTarget,
+            // Inject the locale into the flutter drive environment.
+            commandConfig: {'locale': locale},
+          );
+          await stdout.addStream(process.stdout);
+          await executeWhileRunning?.call(this, runningDevice, locale);
+        })()
+            .timeout(timeout);
       }
       await layer.shutdown(device);
     }
@@ -164,12 +170,11 @@ Future<void> runEmulatedApp({
   bool verbose = false,
 }) async {
   final Emulators emulators = await Emulators.build(verbose: verbose);
-  return emulators
-      .runEmulatedApp(
-        appTarget: appTarget,
-        locales: locales,
-        devices: devices,
-        executeWhileRunning: executeWhileRunning,
-      )
-      .timeout(timeout);
+  return emulators.runEmulatedApp(
+    appTarget: appTarget,
+    locales: locales,
+    devices: devices,
+    executeWhileRunning: executeWhileRunning,
+    timeout: timeout,
+  );
 }
