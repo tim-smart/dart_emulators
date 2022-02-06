@@ -121,7 +121,7 @@ class Emulators {
       // We need to use the running device as the proper device id is not set on
       // Android until the device is running.
       final Device runningDevice =
-          await flutter.waitUntilRunning(device).timeout(timeout);
+          await flutter.waitUntilRunning(device);
       for (String locale in locales) {
         // Apply the timeout limit to each device/locale combination.
         await (() async {
