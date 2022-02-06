@@ -43,6 +43,7 @@ class IOS extends EmulationLayer {
     // The device already isn't running.
     if (!device.booted) return device;
 
+    print('asdfasdfasdfasdf');
     await simctl.execute([
       'shutdown',
       device.id,

@@ -63,7 +63,7 @@ class Flutter extends Command {
       while (true) {
         for (final Device runningDevice in await listRunningDevices()) {
           if (runningDevice.similar(device)) {
-            return runningDevice;
+            return runningDevice.copyWith(booted: true);
           }
         }
       }
