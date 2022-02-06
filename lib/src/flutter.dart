@@ -52,15 +52,18 @@ class Flutter extends Command {
   }
 
   /// Waits until the given [Device] is running, or errors with a timeout.
-  Future<void> waitUntilRunning(
+  ///
+  /// Returns the (possibly updated) device now that it is running.
+  Future<Device> waitUntilRunning(
     Device device, {
     Duration timeout = const Duration(seconds: 100),
   }) async {
-    Future<void> _checkEverySecond() async {
+    Future<Device> _checkEverySecond() async {
       while (true) {
-        final List<Device> runningDevices = await listRunningDevices();
-        if (runningDevices.where((d) => d.similar(device)).isNotEmpty) {
-          return;
+        for (final Device runningDevice in await listRunningDevices()) {
+          if (runningDevice.similar(device)) {
+            return runningDevice;
+          }
         }
       }
     }

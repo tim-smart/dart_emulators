@@ -95,6 +95,7 @@ class Android implements EmulationLayer {
   }
 
   Future<List<int>> screenshot(Device device) {
+    print('argablargblargblarg');
     return adb.executeBinary([
       '-s',
       device.id,
@@ -107,11 +108,11 @@ class Android implements EmulationLayer {
   /// Maps the device id back to the AVD name.
   Future<Device> updateDeviceName(Device device) {
     return adb.execute([
-      '-s',
+      "-s",
       device.id,
-      'exec-out',
-      'screencap',
-      '-p',
+      "emu",
+      "avd",
+      "name",
     ]).then<Device>(
       strings.stringOption
           .compose(O.map((s) => s.splitLines().toList()))

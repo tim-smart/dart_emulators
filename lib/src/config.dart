@@ -100,7 +100,7 @@ Future<String> _getAvdManagerPath(String? androidSdk) async {
 
 Future<String> _getEmulatorPath(String? androidSdk) async {
   if (androidSdk != null) {
-    return join(androidSdk, 'cmdline-tools', 'emulator');
+    return join(androidSdk, 'cmdline-tools', 'emulator', 'emulator');
   }
   final String? path = await _which('emulator');
   _checkPath('emulator', path);

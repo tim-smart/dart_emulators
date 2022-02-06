@@ -6,8 +6,8 @@ Future<Process> start(
   List<String> args, {
   Map<String, String>? env,
 }) async {
-  // print(_commandAsString(exec, args));
-  // print('------');
+  print(_commandAsString(exec, args));
+  print('------');
   return Process.start(
     exec,
     args,
@@ -29,8 +29,8 @@ Future<ProcessResult> _run(
   Encoding? encoding, {
   Map<String, String>? env,
 }) async {
-  //print(_commandAsString(exec, args));
-  //print('------');
+  print(_commandAsString(exec, args));
+  print('------');
   final ProcessResult result = await Process.run(
     exec,
     args,
