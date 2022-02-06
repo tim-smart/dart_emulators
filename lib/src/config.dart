@@ -20,11 +20,12 @@ class Config with _$Config {
     required String emulatorPath,
     required String flutterPath,
     required String xcrunPath,
+    required bool verbose,
   }) = _Config;
 }
 
-Future<String?> _which(String exec) {
-  return run('which', [exec]).then(
+Future<String?> _which(String exec, bool verbose) {
+  return run('which', [exec], verbose).then(
     (str) => str.isNotEmpty ? str.replaceAll('\n', '') : null,
     // If `which` fails, return null.
     onError: (_) => null,
@@ -32,18 +33,18 @@ Future<String?> _which(String exec) {
 }
 
 /// Build a Config instance, automatically resolving the path's that we need.
-Future<Config> buildConfig() async {
+Future<Config> buildConfig(bool verbose) async {
   final String? androidSdk = Platform.environment['ANDROID_SDK_ROOT'];
 
-  final String adbPath = await _getAdbPath(androidSdk);
+  final String adbPath = await _getAdbPath(androidSdk, verbose);
 
-  final String avdManagerPath = await _getAvdManagerPath(androidSdk);
+  final String avdManagerPath = await _getAvdManagerPath(androidSdk, verbose);
 
-  final String emulatorPath = await _getEmulatorPath(androidSdk);
+  final String emulatorPath = await _getEmulatorPath(androidSdk, verbose);
 
-  final String? flutterPath = await _which('flutter');
+  final String? flutterPath = await _which('flutter', verbose);
   _checkPath('flutter', flutterPath);
-  final String? xcrunPath = await _which('xcrun');
+  final String? xcrunPath = await _which('xcrun', verbose);
   _checkPath('xcrun', xcrunPath);
 
   return Config(
@@ -52,6 +53,7 @@ Future<Config> buildConfig() async {
     emulatorPath: emulatorPath,
     flutterPath: flutterPath!,
     xcrunPath: xcrunPath!,
+    verbose: verbose,
   );
 }
 
@@ -78,8 +80,8 @@ final getString = get<String>();
 final getInt = get<int>();
 final getDouble = get<double>();
 
-Future<String> _getAdbPath(String? androidSdk) async {
-  String? path = await _which('adb');
+Future<String> _getAdbPath(String? androidSdk, bool verbose) async {
+  String? path = await _which('adb', verbose);
   if (path != null) {
     return path;
   }
@@ -89,20 +91,20 @@ Future<String> _getAdbPath(String? androidSdk) async {
   throw AssertionError(_execErrorMessage('adb'));
 }
 
-Future<String> _getAvdManagerPath(String? androidSdk) async {
+Future<String> _getAvdManagerPath(String? androidSdk, bool verbose) async {
   if (androidSdk != null) {
     return join(androidSdk, 'cmdline-tools', 'latest', 'bin', 'avdmanager');
   }
-  final String? path = await _which('avdmanager');
+  final String? path = await _which('avdmanager', verbose);
   _checkPath('avdManager', path);
   return path!;
 }
 
-Future<String> _getEmulatorPath(String? androidSdk) async {
+Future<String> _getEmulatorPath(String? androidSdk, bool verbose) async {
   if (androidSdk != null) {
     return join(androidSdk, 'cmdline-tools', 'emulator', 'emulator');
   }
-  final String? path = await _which('emulator');
+  final String? path = await _which('emulator', verbose);
   _checkPath('emulator', path);
   return path!;
 }

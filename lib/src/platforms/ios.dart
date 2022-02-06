@@ -11,6 +11,7 @@ class IOS extends EmulationLayer {
       : simctl = Command(
           path: config.xcrunPath,
           prefixArgs: ['simctl'],
+          verbose: config.verbose,
         );
 
   final Config config;

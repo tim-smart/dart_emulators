@@ -3,11 +3,14 @@ import 'dart:io';
 
 Future<Process> start(
   String exec,
-  List<String> args, {
+  List<String> args,
+  bool verbose, {
   Map<String, String>? env,
 }) async {
-  print(_commandAsString(exec, args));
-  print('------');
+  if (verbose) {
+    print('------');
+    print(_commandAsString(exec, args));
+  }
   return Process.start(
     exec,
     args,
@@ -17,20 +20,24 @@ Future<Process> start(
 
 Future<String> run(
   String exec,
-  List<String> args, {
+  List<String> args,
+  bool verbose, {
   Map<String, String>? env,
 }) async {
-  return _run(exec, args, Utf8Codec(), env: env).then((r) => r.stdout);
+  return _run(exec, args, Utf8Codec(), verbose, env: env).then((r) => r.stdout);
 }
 
 Future<ProcessResult> _run(
   String exec,
   List<String> args,
-  Encoding? encoding, {
+  Encoding? encoding,
+  bool verbose, {
   Map<String, String>? env,
 }) async {
-  print(_commandAsString(exec, args));
-  print('------');
+  if (verbose) {
+    print('------');
+    print(_commandAsString(exec, args));
+  }
   final ProcessResult result = await Process.run(
     exec,
     args,
@@ -60,19 +67,22 @@ String _commandAsString(
 
 Future<dynamic> runJson(
   String exec,
-  List<String> args, {
+  List<String> args,
+  bool verbose, {
   Map<String, String>? env,
 }) =>
-    run(exec, args, env: env).then(json.decode);
+    run(exec, args, verbose, env: env).then(json.decode);
 
 Future<List<int>> runBinary(
   String exec,
-  List<String> args, {
+  List<String> args,
+  bool verbose, {
   Map<String, String>? env,
 }) =>
     _run(
       exec,
       args,
       null,
+      verbose,
       env: env,
     ).then((r) => r.stdout as List<int>);

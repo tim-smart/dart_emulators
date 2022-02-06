@@ -52,7 +52,8 @@ mixin _$Device {
   String get name => throw _privateConstructorUsedError;
   DevicePlatform get platform => throw _privateConstructorUsedError;
   bool get emulator => throw _privateConstructorUsedError;
-  bool get booted => throw _privateConstructorUsedError;
+  bool get booted =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   Option<Process> get process => throw _privateConstructorUsedError;
 
@@ -207,7 +208,7 @@ class _$_Device extends _Device {
   @JsonKey()
   @override
   final bool booted;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   final Option<Process> process;
 
@@ -272,7 +273,7 @@ abstract class _Device extends Device {
   bool get emulator;
   @override
   bool get booted;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   Option<Process> get process;
   @override

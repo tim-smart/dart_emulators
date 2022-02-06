@@ -9,7 +9,8 @@ import 'package:emulators/src/utils/command.dart';
 import 'package:emulators/src/utils/strings.dart' as strings;
 
 class Flutter extends Command {
-  Flutter(this.config) : super(path: config.flutterPath);
+  Flutter(this.config)
+      : super(path: config.flutterPath, verbose: config.verbose);
 
   final Config config;
 
@@ -89,10 +90,10 @@ class Flutter extends Command {
   }
 
   Future<Process> test(
-  Device device,
-      String target, {
-  List<String> args = const [],
-  Map<String, dynamic> commandConfig = const {},
+    Device device,
+    String target, {
+    List<String> args = const [],
+    Map<String, dynamic> commandConfig = const {},
   }) {
     return _runWithDevice(
       device,

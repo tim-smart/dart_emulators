@@ -10,9 +10,10 @@ import 'package:emulators/src/utils/strings.dart' as strings;
 
 class Android implements EmulationLayer {
   Android(this.config)
-      : emulator = Command(path: config.emulatorPath),
-        adb = Command(path: config.adbPath),
-        avdManager = Command(path: config.avdmanagerPath);
+      : emulator = Command(path: config.emulatorPath, verbose: config.verbose),
+        adb = Command(path: config.adbPath, verbose: config.verbose),
+        avdManager =
+            Command(path: config.avdmanagerPath, verbose: config.verbose);
 
   /// Emulators configuration that manages the various command paths.
   final Config config;

@@ -22,13 +22,15 @@ class _$ConfigTearOff {
       required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
-      required String xcrunPath}) {
+      required String xcrunPath,
+      required bool verbose}) {
     return _Config(
       adbPath: adbPath,
       avdmanagerPath: avdmanagerPath,
       emulatorPath: emulatorPath,
       flutterPath: flutterPath,
       xcrunPath: xcrunPath,
+      verbose: verbose,
     );
   }
 }
@@ -43,6 +45,7 @@ mixin _$Config {
   String get emulatorPath => throw _privateConstructorUsedError;
   String get flutterPath => throw _privateConstructorUsedError;
   String get xcrunPath => throw _privateConstructorUsedError;
+  bool get verbose => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ConfigCopyWith<Config> get copyWith => throw _privateConstructorUsedError;
@@ -57,7 +60,8 @@ abstract class $ConfigCopyWith<$Res> {
       String avdmanagerPath,
       String emulatorPath,
       String flutterPath,
-      String xcrunPath});
+      String xcrunPath,
+      bool verbose});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
     Object? emulatorPath = freezed,
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
+    Object? verbose = freezed,
   }) {
     return _then(_value.copyWith(
       adbPath: adbPath == freezed
@@ -97,6 +102,10 @@ class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
           ? _value.xcrunPath
           : xcrunPath // ignore: cast_nullable_to_non_nullable
               as String,
+      verbose: verbose == freezed
+          ? _value.verbose
+          : verbose // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -111,7 +120,8 @@ abstract class _$ConfigCopyWith<$Res> implements $ConfigCopyWith<$Res> {
       String avdmanagerPath,
       String emulatorPath,
       String flutterPath,
-      String xcrunPath});
+      String xcrunPath,
+      bool verbose});
 }
 
 /// @nodoc
@@ -130,6 +140,7 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
     Object? emulatorPath = freezed,
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
+    Object? verbose = freezed,
   }) {
     return _then(_Config(
       adbPath: adbPath == freezed
@@ -152,6 +163,10 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
           ? _value.xcrunPath
           : xcrunPath // ignore: cast_nullable_to_non_nullable
               as String,
+      verbose: verbose == freezed
+          ? _value.verbose
+          : verbose // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -164,7 +179,8 @@ class _$_Config implements _Config {
       required this.avdmanagerPath,
       required this.emulatorPath,
       required this.flutterPath,
-      required this.xcrunPath});
+      required this.xcrunPath,
+      required this.verbose});
 
   @override
   final String adbPath;
@@ -176,10 +192,12 @@ class _$_Config implements _Config {
   final String flutterPath;
   @override
   final String xcrunPath;
+  @override
+  final bool verbose;
 
   @override
   String toString() {
-    return 'Config(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
+    return 'Config(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath, verbose: $verbose)';
   }
 
   @override
@@ -194,7 +212,8 @@ class _$_Config implements _Config {
                 .equals(other.emulatorPath, emulatorPath) &&
             const DeepCollectionEquality()
                 .equals(other.flutterPath, flutterPath) &&
-            const DeepCollectionEquality().equals(other.xcrunPath, xcrunPath));
+            const DeepCollectionEquality().equals(other.xcrunPath, xcrunPath) &&
+            const DeepCollectionEquality().equals(other.verbose, verbose));
   }
 
   @override
@@ -204,7 +223,8 @@ class _$_Config implements _Config {
       const DeepCollectionEquality().hash(avdmanagerPath),
       const DeepCollectionEquality().hash(emulatorPath),
       const DeepCollectionEquality().hash(flutterPath),
-      const DeepCollectionEquality().hash(xcrunPath));
+      const DeepCollectionEquality().hash(xcrunPath),
+      const DeepCollectionEquality().hash(verbose));
 
   @JsonKey(ignore: true)
   @override
@@ -218,7 +238,8 @@ abstract class _Config implements Config {
       required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
-      required String xcrunPath}) = _$_Config;
+      required String xcrunPath,
+      required bool verbose}) = _$_Config;
 
   @override
   String get adbPath;
@@ -230,6 +251,8 @@ abstract class _Config implements Config {
   String get flutterPath;
   @override
   String get xcrunPath;
+  @override
+  bool get verbose;
   @override
   @JsonKey(ignore: true)
   _$ConfigCopyWith<_Config> get copyWith => throw _privateConstructorUsedError;
