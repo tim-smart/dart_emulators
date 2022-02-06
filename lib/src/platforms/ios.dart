@@ -1,78 +1,109 @@
-import 'package:fpdt/fpdt.dart';
+import 'dart:io';
+
+import 'package:emulators/src/platforms/emulation_layer.dart';
+import 'package:emulators/src/utils/command.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
-import 'package:emulators/src/utils/process.dart' as process;
-import 'package:rxdart/rxdart.dart';
 
-final simctl =
-    (Config config) => (List<String> args) => process.run(config.xcrunPath, [
-          "simctl",
-          ...args,
-        ]);
+class IOS extends EmulationLayer {
+  IOS(this.config)
+      : simctl = Command(
+          path: config.xcrunPath,
+          prefixArgs: ['simctl'],
+        );
 
-final list =
-    (Config config) => Stream.fromFuture(process.runJson(config.xcrunPath, [
-          "simctl",
-          "list",
-          "devices",
-          "--json",
-        ]))
-            .flatMap<Device>((out) => _parseDevices(out).chain(O.fold(
-                  () => Stream.empty(),
-                  (devices) => Stream.fromIterable(devices),
-                )))
-            .handleError((_) => Stream.empty());
+  final Config config;
 
-Option<List<Device>> _parseDevices(Map<String, dynamic> json) =>
-    O.some(json).extractMap('devices').chain(O.map((devices) => devices.values
-        .expand((runtime) => (runtime as List)
-            .cast()
-            .where((device) => device['isAvailable'])
-            .map((device) => Device(
-                  id: device['udid'],
-                  name: device['name'],
-                  platform: DevicePlatform.IOS,
-                  emulator: true,
-                  booted: device["state"] == "Booted",
-                )))
-        .toList()));
+  final Command simctl;
 
-final boot = (Config config) => (Device device) => simctl(config)([
-      "boot",
+  @override
+  Future<List<Device>> listDevices() async {
+    final dynamic cmdOutput = await simctl.executeJson([
+      'list',
+      'devices',
+      '--json',
+    ]);
+    return _parseDevices(cmdOutput);
+  }
+
+  @override
+  Future<Device> boot(Device device) async {
+    if (device.booted) return device;
+    final Process process = await simctl.startProcess([
+      'boot',
       device.id,
-    ]).then((_) => device.copyWith(booted: true));
+    ]);
+    return device.copyWith(booted: true, process: O.some(process));
+  }
 
-final shutdown = (Config config) => (Device device) => simctl(config)([
-      "shutdown",
+  @override
+  Future<Device> shutdown(Device device) async {
+    // The device already isn't running.
+    if (!device.booted) return device;
+
+    await simctl.execute([
+      'shutdown',
       device.id,
-    ]).then((_) => Future.delayed(Duration(seconds: 3)));
+    ]);
+    await Future.delayed(Duration(seconds: 3));
+    return device;
+  }
 
-final screenshot =
-    (Config config) => (Device device) => process.runBinary(config.xcrunPath, [
-          'simctl',
-          'io',
-          device.id,
-          'screenshot',
-          '-',
-        ]);
-
-final cleanStatusBar = (Config config) => (Device device) => simctl(config)([
-      "status_bar",
+  @override
+  Future<List<int>> screenshot(Device device) {
+    return simctl.executeBinary([
+      'io',
       device.id,
-      "override",
-      "--time",
-      "2021-06-30T12:00:00+00:00",
-      "--dataNetwork",
-      "wifi",
-      "--wifiMode",
-      "active",
-      "--wifiBars",
-      "3",
-      "--cellularMode",
-      "active",
-      "--batteryState",
-      "discharging",
-      "--batteryLevel",
-      "100",
-    ]).then((_) => Future.delayed(Duration(seconds: 2)));
+      'screenshot',
+      '-',
+    ]);
+  }
+
+  @override
+  Future<void> cleanStatusBar(Device device) async {
+    await simctl.execute([
+      'status_bar',
+      device.id,
+      'override',
+      '--time',
+      '2021-06-30T12:00:00+00:00',
+      '--dataNetwork',
+      'wifi',
+      '--wifiMode',
+      'active',
+      '--wifiBars',
+      '3',
+      '--cellularMode',
+      'active',
+      '--batteryState',
+      'discharging',
+      '--batteryLevel',
+      '100',
+    ]);
+    // Wait for ui to update.
+    await Future.delayed(Duration(seconds: 2));
+  }
+
+  @override
+  Future<Device> updateDeviceName(Device device) async {
+    // This does nothing on IOS as it's only required for android.
+    return device;
+  }
+}
+
+List<Device> _parseDevices(Map<String, dynamic> json) {
+  return json['devices'].values.expand<Device>((devices) {
+    return (devices as List<dynamic>)
+        .where((device) => device['isAvailable'] as bool)
+        .map<Device>(
+          (device) => Device(
+            id: device['udid'],
+            name: device['name'],
+            platform: DevicePlatform.IOS,
+            emulator: true,
+            booted: device['state'] == 'Booted',
+          ),
+        );
+  }).toList();
+}

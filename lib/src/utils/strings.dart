@@ -1,8 +1,10 @@
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart';
 
-Iterable<String> splitLines(String input) =>
-    input.trim().split("\n").map((s) => s.trim());
+extension StringUtils on String {
+  Iterable<String> splitLines() =>
+      trim().split("\n").map((s) => s.trim());
+}
 
 Option<String> stringOption(String? input) => fromNullable(input)
     .chain(map((s) => s.trim()))

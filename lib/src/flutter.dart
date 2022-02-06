@@ -1,58 +1,128 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:emulators/src/config.dart';
 import 'package:emulators/src/models/device.dart';
-import 'package:emulators/src/platforms/android.dart' as android;
-import 'package:emulators/src/utils/process.dart' as process;
+import 'package:emulators/src/platforms/android.dart';
+import 'package:emulators/src/utils/command.dart';
 import 'package:emulators/src/utils/strings.dart' as strings;
-import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/option.dart' as O;
-import 'package:rxdart/rxdart.dart';
 
-/// Wrapper for the `flutter` CLI tool.
-final flutter = (Config config) => (
-      List<String> args, {
-      Map<String, String>? env,
-    }) =>
-        process.run(config.flutterPath, args, env: env);
+class Flutter extends Command {
+  Flutter(this.config) : super(path: config.flutterPath);
 
-/// Wrapper for the `flutter devices` command. Returns a stream of [Device]'s.
-final running = (
-  Config config, {
-  bool onlyEmulators = true,
-}) =>
-    Stream.fromFuture(flutter(config)(['devices']))
-        .flatMap((out) => Stream.fromIterable(strings.splitLines(out)))
-        .flatMap<Device>((line) => _parseDevicesLine(line).chain(O.fold(
-              () => Stream.empty(),
-              (d) => Stream.value(d),
-            )))
-        .where((d) => onlyEmulators ? d.emulator : true)
-        .asyncMap<Device>((d) =>
-            d.emulator && d.platform == DevicePlatform.ANDROID
-                ? android.updateDeviceName(config)(d)
-                : Future.value(d))
-        .handleError((_) => Stream.empty());
+  final Config config;
 
-Option<Device> _parseDevicesLine(String input) => O
-        .some(input.split('•').map((s) => s.trim()).toList())
-        .chain(O.filter((parts) => parts.length == 4))
-        .chain(O.map((parts) {
-      final name =
-          parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
-      final id = parts[1];
-      final kind = _parseKind(parts[2]);
-      final emulator = RegExp(r'(emulator|simulator)').hasMatch(parts[3]);
+  Future<List<Device>> listRunningDevices({onlyEmulators = true}) async {
+    final String devicesString = await execute(['devices']);
+    Iterable<Device> devices = devicesString
+        .splitLines()
+        .map((line) => _parseDevicesLine(line))
+        .where((d) => d != null)
+        // We need to cast it back to non-null.
+        .map((d) => d!)
+        .where((d) => !onlyEmulators || d.emulator);
+    return Future.wait(devices.map(
+      (device) {
+        if (device.platform == DevicePlatform.ANDROID) {
+          return Android(config).updateDeviceName(device);
+        }
+        return Future.value(device);
+      },
+    ));
+  }
 
-      return Device(
-        id: id,
-        name: name,
-        platform: kind,
-        emulator: emulator,
-        booted: true,
-      );
-    }));
+  Device? _parseDevicesLine(String line) {
+    final List<String> parts = line.split('•').map((s) => s.trim()).toList();
+    if (parts.length != 4) {
+      return null;
+    }
+    final name =
+        parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
+    final id = parts[1];
+    final kind = _parseKind(parts[2]);
+    final emulator = RegExp(r'(emulator|simulator)').hasMatch(parts[3]);
+    return Device(
+      id: id,
+      name: name,
+      platform: kind,
+      emulator: emulator,
+      booted: true,
+    );
+  }
+
+  /// Waits until the given [Device] is running, or errors with a timeout.
+  Future<void> waitUntilRunning(
+    Device device, {
+    Duration timeout = const Duration(seconds: 100),
+  }) async {
+    Future<void> _checkEverySecond() async {
+      while (true) {
+        final List<Device> runningDevices = await listRunningDevices();
+        if (runningDevices.where((d) => d.similar(device)).isNotEmpty) {
+          return;
+        }
+      }
+    }
+
+    return _checkEverySecond().timeout(timeout);
+  }
+
+  Future<Process> drive(
+    Device device,
+    String target, {
+    List<String> args = const [],
+    Map<String, dynamic> commandConfig = const {},
+  }) {
+    return _runWithDevice(
+      device,
+      'drive',
+      args: [
+        '--target=$target',
+        ...args,
+      ],
+      commandConfig: commandConfig,
+    );
+  }
+
+  Future<Process> test(
+  Device device,
+      String target, {
+  List<String> args = const [],
+  Map<String, dynamic> commandConfig = const {},
+  }) {
+    return _runWithDevice(
+      device,
+      'test',
+      args: [target, ...args],
+      commandConfig: commandConfig,
+    );
+  }
+
+  Future<Process> _runWithDevice(
+    Device device,
+    String flutterCommand, {
+    required List<String> args,
+    Map<String, dynamic>? commandConfig,
+  }) {
+    final configJson = json.encode(commandConfig);
+    final deviceJson = json.encode(device.toJson());
+
+    return startProcess([
+      flutterCommand,
+      '-d',
+      device.id,
+      '--dart-define',
+      'EMULATORS_CONFIG=$configJson',
+      '--dart-define',
+      'EMULATORS_DEVICE=$deviceJson',
+      ...args,
+    ], env: {
+      'EMULATORS_CONFIG': configJson,
+      'EMULATORS_DEVICE': deviceJson,
+    });
+  }
+}
 
 DevicePlatform _parseKind(String input) {
   if (input.contains('ios')) {
@@ -63,79 +133,3 @@ DevicePlatform _parseKind(String input) {
 
   return DevicePlatform.WEB;
 }
-
-/// Waits until the given [Device] is running, or errors with a timeout.
-final waitUntilRunning = (Config config) => (
-      Device device, {
-      Duration timeout = const Duration(seconds: 100),
-    }) =>
-        Rx.merge([
-          Stream.value(null),
-          Stream.periodic(Duration(seconds: 1)),
-        ])
-            .exhaustMap((_) => running(config))
-            .where((d) => d.similar(device))
-            .first
-            .timeout(timeout);
-
-/// Wrapper for the `flutter` CLI tools. Runs a command and sets the
-/// `EMULATORS_DEVICE` environment variable so you can easily take screenshots
-/// etc.
-final flutterWithDevice = (Config c) => (
-      String command,
-      Device device, {
-      List<String> args = const [],
-      Map<String, dynamic> config = const {},
-    }) {
-      final configJson = json.encode(config);
-      final deviceJson = json.encode(device.toJson());
-
-      return Process.start(c.flutterPath, [
-        command,
-        '-d',
-        device.id,
-        '--dart-define',
-        'EMULATORS_CONFIG=$configJson',
-        '--dart-define',
-        'EMULATORS_DEVICE=$deviceJson',
-        ...args,
-      ], environment: {
-        'EMULATORS_CONFIG': configJson,
-        'EMULATORS_DEVICE': deviceJson,
-      });
-    };
-
-/// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
-/// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
-/// screenshots etc. in your flutter_driver test script.
-final drive = (Config c) => (
-      Device device,
-      String target, {
-      List<String> args = const [],
-      Map<String, dynamic> config = const {},
-    }) =>
-        flutterWithDevice(c)(
-          'drive',
-          device,
-          args: [
-            '--target=$target',
-            ...args,
-          ],
-          config: config,
-        );
-
-/// Wrapper for the `flutter test` CLI command. Runs it on the given [Device],
-/// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
-/// screenshots etc. in your integration test script.
-final test = (Config c) => (
-      Device device,
-      String target, {
-      List<String> args = const [],
-      Map<String, dynamic> config = const {},
-    }) =>
-        flutterWithDevice(c)(
-          'test',
-          device,
-          args: [target, ...args],
-          config: config,
-        );

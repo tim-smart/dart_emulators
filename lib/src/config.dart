@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:emulators/src/models/device.dart';
 import 'package:emulators/src/utils/strings.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/task.dart' as T;
-import 'package:fpdt/task_option.dart' as TO;
-import 'package:emulators/emulators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:path/path.dart' as P;
-import 'package:emulators/src/utils/process.dart' as process;
+import 'package:path/path.dart';
+import 'package:emulators/src/utils/process.dart';
 
 part 'config.freezed.dart';
 
@@ -25,60 +23,43 @@ class Config with _$Config {
   }) = _Config;
 }
 
-TO.TaskOption<String> _which(String exec) => TO
-    .tryCatch(() => process.run('which', [exec]))
-    .chain(TO.filter((path) => path.isNotEmpty));
-
-/// Build a Config instance, automatically resolving the path's that we need.
-Future<Config> buildConfig() {
-  final androidSdk = O.fromNullable(Platform.environment['ANDROID_SDK_ROOT']);
-
-  final adbPath = _which('adb')
-      .chain(TO.alt(() => androidSdk
-          .chain(O.map((sdk) => P.join(sdk, 'platform-tools/adb')))
-          .chain(TO.fromOption)))
-      .chain(TO.getOrElse(() => 'adb'));
-
-  final avdmanagerPath = androidSdk
-      .chain(O.map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager')))
-      .chain(TO.fromOption)
-      .chain(TO.alt(() => _which('avdmanager')))
-      .chain(TO.getOrElse(() => 'avdmanager'));
-
-  final emulatorPath = _which('emulator')
-      .chain(TO.alt(() => androidSdk
-          .chain(O.map((sdk) => P.join(sdk, 'emulator/emulator')))
-          .chain(TO.fromOption)))
-      .chain(TO.getOrElse(() => 'emulator'));
-
-  final flutterPath = _which('flutter').chain(TO.getOrElse(() => 'flutter'));
-  final xcrunPath = _which('xcrun').chain(TO.getOrElse(() => 'xcrun'));
-
-  return T.sequence([
-    adbPath,
-    avdmanagerPath,
-    emulatorPath,
-    flutterPath,
-    xcrunPath,
-  ]).chain(T.map(
-    (paths) => Config(
-      adbPath: paths[0],
-      avdmanagerPath: paths[1],
-      emulatorPath: paths[2],
-      flutterPath: paths[3],
-      xcrunPath: paths[4],
-    ),
-  ))();
+Future<String?> _which(String exec) {
+  return run('which', [exec]).then(
+    (str) => str.isNotEmpty ? str.replaceAll('\n', '') : null,
+    // If `which` fails, return null.
+    onError: (_) => null,
+  );
 }
 
-const _kDeviceJson = String.fromEnvironment('EMULATORS_DEVICE');
+/// Build a Config instance, automatically resolving the path's that we need.
+Future<Config> buildConfig() async {
+  final String? androidSdk = Platform.environment['ANDROID_SDK_ROOT'];
+
+  final String adbPath = await _getAdbPath(androidSdk);
+
+  final String avdManagerPath = await _getAvdManagerPath(androidSdk);
+
+  final String emulatorPath = await _getEmulatorPath(androidSdk);
+
+  final String? flutterPath = await _which('flutter');
+  _checkPath('flutter', flutterPath);
+  final String? xcrunPath = await _which('xcrun');
+  _checkPath('xcrun', xcrunPath);
+
+  return Config(
+    adbPath: adbPath,
+    avdmanagerPath: avdManagerPath,
+    emulatorPath: emulatorPath,
+    flutterPath: flutterPath!,
+    xcrunPath: xcrunPath!,
+  );
+}
 
 /// Get the current device from the EMULATORS_DEVICE environment variable.
-Option<Device> currentDevice() => O
-    .fromNullable(Platform.environment['EMULATORS_DEVICE'])
-    .chain(O.alt(() => stringOption(_kDeviceJson)))
-    .chain(O.chainTryCatchK(json.decode))
-    .chain(O.map((json) => Device.fromJson(json)));
+Device currentDevice() {
+  final String deviceJson = Platform.environment['EMULATORS_DEVICE']!;
+  return Device.fromJson(jsonDecode(deviceJson));
+}
 
 const _kConfigJson = String.fromEnvironment('EMULATORS_CONFIG');
 
@@ -96,3 +77,40 @@ T? Function(String key) get<T>() => getOption<T>().compose(O.toNullable);
 final getString = get<String>();
 final getInt = get<int>();
 final getDouble = get<double>();
+
+Future<String> _getAdbPath(String? androidSdk) async {
+  String? path = await _which('adb');
+  if (path != null) {
+    return path;
+  }
+  if (androidSdk != null) {
+    return join(androidSdk, 'platform-tools', 'adb');
+  }
+  throw AssertionError(_execErrorMessage('adb'));
+}
+
+Future<String> _getAvdManagerPath(String? androidSdk) async {
+  if (androidSdk != null) {
+    return join(androidSdk, 'cmdline-tools', 'latest', 'bin', 'avdmanager');
+  }
+  final String? path = await _which('avdmanager');
+  _checkPath('avdManager', path);
+  return path!;
+}
+
+Future<String> _getEmulatorPath(String? androidSdk) async {
+  if (androidSdk != null) {
+    return join(androidSdk, 'cmdline-tools', 'emulator');
+  }
+  final String? path = await _which('emulator');
+  _checkPath('emulator', path);
+  return path!;
+}
+
+void _checkPath(String exec, String? path) {
+  assert(path != null, _execErrorMessage(exec));
+}
+
+String _execErrorMessage(String exec) =>
+    'Could not find the `$exec` executable. Make sure it is added to your '
+    'system\'s path.';
