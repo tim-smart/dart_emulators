@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'device.dart';
+part of 'device_state.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Device _$$_DeviceFromJson(Map<String, dynamic> json) => _$_Device(
+_$_DeviceState _$$_DeviceStateFromJson(Map<String, dynamic> json) =>
+    _$_DeviceState(
       id: json['id'] as String,
       name: json['name'] as String,
       platform: $enumDecode(_$DevicePlatformEnumMap, json['platform']),
@@ -14,7 +15,8 @@ _$_Device _$$_DeviceFromJson(Map<String, dynamic> json) => _$_Device(
       booted: json['booted'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$_DeviceToJson(_$_Device instance) => <String, dynamic>{
+Map<String, dynamic> _$$_DeviceStateToJson(_$_DeviceState instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'platform': _$DevicePlatformEnumMap[instance.platform],
@@ -23,7 +25,7 @@ Map<String, dynamic> _$$_DeviceToJson(_$_Device instance) => <String, dynamic>{
     };
 
 const _$DevicePlatformEnumMap = {
-  DevicePlatform.IOS: 'IOS',
-  DevicePlatform.ANDROID: 'ANDROID',
-  DevicePlatform.WEB: 'WEB',
+  DevicePlatform.ios: 'ios',
+  DevicePlatform.android: 'android',
+  DevicePlatform.unimplemented: 'unimplemented',
 };

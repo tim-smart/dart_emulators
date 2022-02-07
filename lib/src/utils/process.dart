@@ -1,23 +1,43 @@
 import 'dart:convert';
 import 'dart:io';
 
-Future<String> run(
+class ProcessRunner {
+  const ProcessRunner._({
+    required this.exec,
+    required this.args,
+    this.env,
+  });
+
+  final String exec;
+  final List<String> args;
+  final Map<String, String>? env;
+
+  Future<String> string() => Process.run(
+        exec,
+        args,
+        stdoutEncoding: Utf8Codec(),
+        environment: env,
+      ).then((r) => r.stdout.trim());
+
+  Future<dynamic> json() => string().then(jsonDecode);
+
+  Future<List<int>> binary() => Process.run(
+        exec,
+        args,
+        environment: env,
+        stdoutEncoding: null,
+      ).then((r) => r.stdout as List<int>);
+
+  Future<Process> process() => Process.start(
+        exec,
+        args,
+        environment: env,
+      );
+}
+
+ProcessRunner run(
   String exec,
   List<String> args, {
   Map<String, String>? env,
 }) =>
-    Process.run(
-      exec,
-      args,
-      stdoutEncoding: Utf8Codec(),
-      environment: env,
-    ).then((r) => r.stdout.trim());
-
-Future<dynamic> runJson(String exec, List<String> args) =>
-    run(exec, args).then(json.decode);
-
-Future<List<int>> runBinary(String exec, List<String> args) => Process.run(
-      exec,
-      args,
-      stdoutEncoding: null,
-    ).then((r) => r.stdout as List<int>);
+    ProcessRunner._(exec: exec, args: args, env: env);

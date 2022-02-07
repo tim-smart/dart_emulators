@@ -1,32 +1,17 @@
 import 'dart:io';
 
-import 'package:emulators/emulators.dart' as emu;
+import 'package:emulators/emulators.dart';
 
 Future<void> main() async {
-  // This creates a config object, which contains the paths to cli tools.
-  // You can set custom paths using `copyWith`.
-  final config = (await emu.buildConfig()).copyWith(
-    adbPath: 'custom/path/to/bin/adb',
-  );
-
-  // Create a screenshot helper function.
-  // `writeScreenshot` will take a screenshot using adb or xcrun simctl, and
-  // write it to the directory for it's platform.
-  final screenshot = emu.writeScreenshot(config)(
-    androidPath: 'directory/for/android/screenshots',
-    iosPath: 'directory/for/ios/screenshots',
-  );
-
-  // Create a flutter drive helper
-  final drive = emu.drive(config);
+  final emu = await Emulators.build();
 
   // Shutdown all running devices
-  await emu.shutdownAll(config);
+  await emu.shutdownAll();
 
   // Use the adb / avdmanager / emulator / simctl helpers
-  await emu.emulator(config)(['-list-avds']);
+  await emu.toolchain.emulator(['-list-avds']).string();
 
-  await emu.avdmanager(config)([
+  await emu.toolchain.avdmanager([
     'create',
     'avd',
     '-n',
@@ -34,20 +19,27 @@ Future<void> main() async {
     '-k',
     'system-images;android-25;google_apis;x86',
     '-f',
-  ]);
+  ]).string();
 
   // This will try to sequentially launch the given devices, running the given
   // function on each one.
-  await emu.forEach(config)([
+  await emu.forEach([
     'iPhone 8 Plus',
     'iPhone 12 Pro',
     'Nexus_5X',
   ])((device) async {
+    // Create a screenshot helper.
+    final screenshot = emu.screenshotHelper(
+      device: device,
+      androidPath: 'directory/for/android/screenshots',
+      iosPath: 'directory/for/ios/screenshots',
+    );
+
     // Take a screenshot and write it to a file
-    await screenshot(device)('home_screen');
+    await screenshot.capture('home_screen');
 
     // Or you can run flutter drive, and send the output to stdout
-    final process = await drive(device, 'test_driver/main.dart');
+    final process = await emu.flutter.drive(device, 'test_driver/main.dart');
     await stdout.addStream(process.stdout);
   });
 }

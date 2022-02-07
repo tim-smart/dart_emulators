@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'config.dart';
+part of 'toolchain.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,16 +14,16 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$ConfigTearOff {
-  const _$ConfigTearOff();
+class _$ToolchainTearOff {
+  const _$ToolchainTearOff();
 
-  _Config call(
+  _Toolchain _withPaths(
       {required String adbPath,
       required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
       required String xcrunPath}) {
-    return _Config(
+    return _Toolchain(
       adbPath: adbPath,
       avdmanagerPath: avdmanagerPath,
       emulatorPath: emulatorPath,
@@ -34,10 +34,10 @@ class _$ConfigTearOff {
 }
 
 /// @nodoc
-const $Config = _$ConfigTearOff();
+const $Toolchain = _$ToolchainTearOff();
 
 /// @nodoc
-mixin _$Config {
+mixin _$Toolchain {
   String get adbPath => throw _privateConstructorUsedError;
   String get avdmanagerPath => throw _privateConstructorUsedError;
   String get emulatorPath => throw _privateConstructorUsedError;
@@ -45,13 +45,14 @@ mixin _$Config {
   String get xcrunPath => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ConfigCopyWith<Config> get copyWith => throw _privateConstructorUsedError;
+  $ToolchainCopyWith<Toolchain> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ConfigCopyWith<$Res> {
-  factory $ConfigCopyWith(Config value, $Res Function(Config) then) =
-      _$ConfigCopyWithImpl<$Res>;
+abstract class $ToolchainCopyWith<$Res> {
+  factory $ToolchainCopyWith(Toolchain value, $Res Function(Toolchain) then) =
+      _$ToolchainCopyWithImpl<$Res>;
   $Res call(
       {String adbPath,
       String avdmanagerPath,
@@ -61,12 +62,12 @@ abstract class $ConfigCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
-  _$ConfigCopyWithImpl(this._value, this._then);
+class _$ToolchainCopyWithImpl<$Res> implements $ToolchainCopyWith<$Res> {
+  _$ToolchainCopyWithImpl(this._value, this._then);
 
-  final Config _value;
+  final Toolchain _value;
   // ignore: unused_field
-  final $Res Function(Config) _then;
+  final $Res Function(Toolchain) _then;
 
   @override
   $Res call({
@@ -102,9 +103,10 @@ class _$ConfigCopyWithImpl<$Res> implements $ConfigCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ConfigCopyWith<$Res> implements $ConfigCopyWith<$Res> {
-  factory _$ConfigCopyWith(_Config value, $Res Function(_Config) then) =
-      __$ConfigCopyWithImpl<$Res>;
+abstract class _$ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
+  factory _$ToolchainCopyWith(
+          _Toolchain value, $Res Function(_Toolchain) then) =
+      __$ToolchainCopyWithImpl<$Res>;
   @override
   $Res call(
       {String adbPath,
@@ -115,13 +117,13 @@ abstract class _$ConfigCopyWith<$Res> implements $ConfigCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
-    implements _$ConfigCopyWith<$Res> {
-  __$ConfigCopyWithImpl(_Config _value, $Res Function(_Config) _then)
-      : super(_value, (v) => _then(v as _Config));
+class __$ToolchainCopyWithImpl<$Res> extends _$ToolchainCopyWithImpl<$Res>
+    implements _$ToolchainCopyWith<$Res> {
+  __$ToolchainCopyWithImpl(_Toolchain _value, $Res Function(_Toolchain) _then)
+      : super(_value, (v) => _then(v as _Toolchain));
 
   @override
-  _Config get _value => super._value as _Config;
+  _Toolchain get _value => super._value as _Toolchain;
 
   @override
   $Res call({
@@ -131,7 +133,7 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
   }) {
-    return _then(_Config(
+    return _then(_Toolchain(
       adbPath: adbPath == freezed
           ? _value.adbPath
           : adbPath // ignore: cast_nullable_to_non_nullable
@@ -158,13 +160,14 @@ class __$ConfigCopyWithImpl<$Res> extends _$ConfigCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Config implements _Config {
-  const _$_Config(
+class _$_Toolchain extends _Toolchain {
+  const _$_Toolchain(
       {required this.adbPath,
       required this.avdmanagerPath,
       required this.emulatorPath,
       required this.flutterPath,
-      required this.xcrunPath});
+      required this.xcrunPath})
+      : super._();
 
   @override
   final String adbPath;
@@ -179,14 +182,14 @@ class _$_Config implements _Config {
 
   @override
   String toString() {
-    return 'Config(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
+    return 'Toolchain._withPaths(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Config &&
+            other is _Toolchain &&
             const DeepCollectionEquality().equals(other.adbPath, adbPath) &&
             const DeepCollectionEquality()
                 .equals(other.avdmanagerPath, avdmanagerPath) &&
@@ -208,17 +211,18 @@ class _$_Config implements _Config {
 
   @JsonKey(ignore: true)
   @override
-  _$ConfigCopyWith<_Config> get copyWith =>
-      __$ConfigCopyWithImpl<_Config>(this, _$identity);
+  _$ToolchainCopyWith<_Toolchain> get copyWith =>
+      __$ToolchainCopyWithImpl<_Toolchain>(this, _$identity);
 }
 
-abstract class _Config implements Config {
-  const factory _Config(
+abstract class _Toolchain extends Toolchain {
+  const factory _Toolchain(
       {required String adbPath,
       required String avdmanagerPath,
       required String emulatorPath,
       required String flutterPath,
-      required String xcrunPath}) = _$_Config;
+      required String xcrunPath}) = _$_Toolchain;
+  const _Toolchain._() : super._();
 
   @override
   String get adbPath;
@@ -232,5 +236,6 @@ abstract class _Config implements Config {
   String get xcrunPath;
   @override
   @JsonKey(ignore: true)
-  _$ConfigCopyWith<_Config> get copyWith => throw _privateConstructorUsedError;
+  _$ToolchainCopyWith<_Toolchain> get copyWith =>
+      throw _privateConstructorUsedError;
 }

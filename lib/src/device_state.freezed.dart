@@ -2,7 +2,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'device.dart';
+part of 'device_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Device _$DeviceFromJson(Map<String, dynamic> json) {
-  return _Device.fromJson(json);
+DeviceState _$DeviceStateFromJson(Map<String, dynamic> json) {
+  return _DeviceState.fromJson(json);
 }
 
 /// @nodoc
-class _$DeviceTearOff {
-  const _$DeviceTearOff();
+class _$DeviceStateTearOff {
+  const _$DeviceStateTearOff();
 
-  _Device call(
+  _DeviceState call(
       {required String id,
       required String name,
       required DevicePlatform platform,
       required bool emulator,
       bool booted = false,
       @JsonKey(ignore: true) Option<Process> process = kNone}) {
-    return _Device(
+    return _DeviceState(
       id: id,
       name: name,
       platform: platform,
@@ -38,33 +38,36 @@ class _$DeviceTearOff {
     );
   }
 
-  Device fromJson(Map<String, Object?> json) {
-    return Device.fromJson(json);
+  DeviceState fromJson(Map<String, Object?> json) {
+    return DeviceState.fromJson(json);
   }
 }
 
 /// @nodoc
-const $Device = _$DeviceTearOff();
+const $DeviceState = _$DeviceStateTearOff();
 
 /// @nodoc
-mixin _$Device {
+mixin _$DeviceState {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   DevicePlatform get platform => throw _privateConstructorUsedError;
   bool get emulator => throw _privateConstructorUsedError;
-  bool get booted => throw _privateConstructorUsedError;
+  bool get booted =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   Option<Process> get process => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DeviceCopyWith<Device> get copyWith => throw _privateConstructorUsedError;
+  $DeviceStateCopyWith<DeviceState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DeviceCopyWith<$Res> {
-  factory $DeviceCopyWith(Device value, $Res Function(Device) then) =
-      _$DeviceCopyWithImpl<$Res>;
+abstract class $DeviceStateCopyWith<$Res> {
+  factory $DeviceStateCopyWith(
+          DeviceState value, $Res Function(DeviceState) then) =
+      _$DeviceStateCopyWithImpl<$Res>;
   $Res call(
       {String id,
       String name,
@@ -75,12 +78,12 @@ abstract class $DeviceCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DeviceCopyWithImpl<$Res> implements $DeviceCopyWith<$Res> {
-  _$DeviceCopyWithImpl(this._value, this._then);
+class _$DeviceStateCopyWithImpl<$Res> implements $DeviceStateCopyWith<$Res> {
+  _$DeviceStateCopyWithImpl(this._value, this._then);
 
-  final Device _value;
+  final DeviceState _value;
   // ignore: unused_field
-  final $Res Function(Device) _then;
+  final $Res Function(DeviceState) _then;
 
   @override
   $Res call({
@@ -121,9 +124,11 @@ class _$DeviceCopyWithImpl<$Res> implements $DeviceCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$DeviceCopyWith<$Res> implements $DeviceCopyWith<$Res> {
-  factory _$DeviceCopyWith(_Device value, $Res Function(_Device) then) =
-      __$DeviceCopyWithImpl<$Res>;
+abstract class _$DeviceStateCopyWith<$Res>
+    implements $DeviceStateCopyWith<$Res> {
+  factory _$DeviceStateCopyWith(
+          _DeviceState value, $Res Function(_DeviceState) then) =
+      __$DeviceStateCopyWithImpl<$Res>;
   @override
   $Res call(
       {String id,
@@ -135,13 +140,14 @@ abstract class _$DeviceCopyWith<$Res> implements $DeviceCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
-    implements _$DeviceCopyWith<$Res> {
-  __$DeviceCopyWithImpl(_Device _value, $Res Function(_Device) _then)
-      : super(_value, (v) => _then(v as _Device));
+class __$DeviceStateCopyWithImpl<$Res> extends _$DeviceStateCopyWithImpl<$Res>
+    implements _$DeviceStateCopyWith<$Res> {
+  __$DeviceStateCopyWithImpl(
+      _DeviceState _value, $Res Function(_DeviceState) _then)
+      : super(_value, (v) => _then(v as _DeviceState));
 
   @override
-  _Device get _value => super._value as _Device;
+  _DeviceState get _value => super._value as _DeviceState;
 
   @override
   $Res call({
@@ -152,7 +158,7 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
     Object? booted = freezed,
     Object? process = freezed,
   }) {
-    return _then(_Device(
+    return _then(_DeviceState(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -183,8 +189,8 @@ class __$DeviceCopyWithImpl<$Res> extends _$DeviceCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Device extends _Device {
-  const _$_Device(
+class _$_DeviceState extends _DeviceState {
+  const _$_DeviceState(
       {required this.id,
       required this.name,
       required this.platform,
@@ -193,8 +199,8 @@ class _$_Device extends _Device {
       @JsonKey(ignore: true) this.process = kNone})
       : super._();
 
-  factory _$_Device.fromJson(Map<String, dynamic> json) =>
-      _$$_DeviceFromJson(json);
+  factory _$_DeviceState.fromJson(Map<String, dynamic> json) =>
+      _$$_DeviceStateFromJson(json);
 
   @override
   final String id;
@@ -207,20 +213,20 @@ class _$_Device extends _Device {
   @JsonKey()
   @override
   final bool booted;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   final Option<Process> process;
 
   @override
   String toString() {
-    return 'Device(id: $id, name: $name, platform: $platform, emulator: $emulator, booted: $booted, process: $process)';
+    return 'DeviceState(id: $id, name: $name, platform: $platform, emulator: $emulator, booted: $booted, process: $process)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Device &&
+            other is _DeviceState &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.platform, platform) &&
@@ -241,26 +247,27 @@ class _$_Device extends _Device {
 
   @JsonKey(ignore: true)
   @override
-  _$DeviceCopyWith<_Device> get copyWith =>
-      __$DeviceCopyWithImpl<_Device>(this, _$identity);
+  _$DeviceStateCopyWith<_DeviceState> get copyWith =>
+      __$DeviceStateCopyWithImpl<_DeviceState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeviceToJson(this);
+    return _$$_DeviceStateToJson(this);
   }
 }
 
-abstract class _Device extends Device {
-  const factory _Device(
+abstract class _DeviceState extends DeviceState {
+  const factory _DeviceState(
       {required String id,
       required String name,
       required DevicePlatform platform,
       required bool emulator,
       bool booted,
-      @JsonKey(ignore: true) Option<Process> process}) = _$_Device;
-  const _Device._() : super._();
+      @JsonKey(ignore: true) Option<Process> process}) = _$_DeviceState;
+  const _DeviceState._() : super._();
 
-  factory _Device.fromJson(Map<String, dynamic> json) = _$_Device.fromJson;
+  factory _DeviceState.fromJson(Map<String, dynamic> json) =
+      _$_DeviceState.fromJson;
 
   @override
   String get id;
@@ -272,10 +279,11 @@ abstract class _Device extends Device {
   bool get emulator;
   @override
   bool get booted;
-  @override
+  @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
   Option<Process> get process;
   @override
   @JsonKey(ignore: true)
-  _$DeviceCopyWith<_Device> get copyWith => throw _privateConstructorUsedError;
+  _$DeviceStateCopyWith<_DeviceState> get copyWith =>
+      throw _privateConstructorUsedError;
 }

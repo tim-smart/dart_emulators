@@ -3,22 +3,22 @@ import 'dart:io';
 import 'package:fpdt/fpdt.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'device.freezed.dart';
-part 'device.g.dart';
+part 'device_state.freezed.dart';
+part 'device_state.g.dart';
 
 /// Indicates what platform the device is for.
 enum DevicePlatform {
-  IOS,
-  ANDROID,
-  WEB,
+  ios,
+  android,
+  unimplemented,
 }
 
 /// Represents an emulator or real device.
 @freezed
-class Device with _$Device {
-  const Device._();
+class DeviceState with _$DeviceState {
+  const DeviceState._();
 
-  const factory Device({
+  const factory DeviceState({
     required String id,
     required String name,
     required DevicePlatform platform,
@@ -26,13 +26,14 @@ class Device with _$Device {
     @Default(false) bool booted,
     // ignore: invalid_annotation_target
     @JsonKey(ignore: true) @Default(kNone) Option<Process> process,
-  }) = _Device;
+  }) = _DeviceState;
 
-  factory Device.fromJson(Map<String, dynamic> json) => _$DeviceFromJson(json);
+  factory DeviceState.fromJson(Map<String, dynamic> json) =>
+      _$DeviceStateFromJson(json);
 
   /// Check whether this device has a matching id or name to another device
   /// instance.
-  bool similar(Device other) {
+  bool similar(DeviceState other) {
     final props = [id, name];
     return [
       other.id,
