@@ -113,7 +113,7 @@ final bootOp = op(
 
 final shutdownOp = op(
   android: android.shutdown,
-  ios: ios.screenshot,
+  ios: ios.shutdown,
 );
 
 final shutdownAllOp = flutter
