@@ -62,32 +62,33 @@ final listOp = RTE.sequence([
 ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
 
 typedef ProcessDevice = Future<void> Function(Device);
-final _forEachDevice = (ProcessDevice process) => (Device d) => TE
-        .tryCatch(
-          () => d.boot().then((_) => d.clone()),
-          (err, stackTrace) => DeviceError.foreachFailure(
-            phase: 'boot',
-            message: err.toString(),
-          ),
-        )
-        .p(TE.flatMapFirst(TE.tryCatchK(
-          (booted) async {
-            try {
-              await d.waitUntilRunning();
-              await process(d);
-            } finally {
-              await booted.shutdown();
-            }
-          },
-          (err, stackTrace) => DeviceError.foreachFailure(
-            phase: 'process',
-            message: err.toString(),
-          ),
-        )))
-        .p(TE.alt((err) {
-      print("Error processing device ${d.state.id}: $err");
-      return TE.right(d);
-    }));
+final _forEachDevice =
+    (ProcessDevice process, Duration timeout) => (Device d) => TE
+            .tryCatch(
+              () => d.boot().then((_) => d.clone()),
+              (err, stackTrace) => DeviceError.foreachFailure(
+                phase: 'boot',
+                message: err.toString(),
+              ),
+            )
+            .p(TE.flatMapFirst(TE.tryCatchK(
+              (booted) async {
+                try {
+                  await d.waitUntilRunning(timeout: timeout);
+                  await process(d);
+                } finally {
+                  await booted.shutdown();
+                }
+              },
+              (err, stackTrace) => DeviceError.foreachFailure(
+                phase: 'process',
+                message: err.toString(),
+              ),
+            )))
+            .p(TE.alt((err) {
+          print("Error processing device ${d.state.name}: $err");
+          return TE.right(d);
+        }));
 
 final forEachOp = ({
   required ProcessDevice process,
@@ -100,7 +101,7 @@ final forEachOp = ({
               .where((d) =>
                   nameOrIds.contains(d.state.id) ||
                   nameOrIds.contains(d.state.name))
-              .map(_forEachDevice(process))
+              .map(_forEachDevice(process, timeout))
               .p(TE.sequenceSeq),
         ))
         .p(RTE.map((_) => unit));
