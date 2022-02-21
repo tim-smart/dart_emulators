@@ -7,6 +7,7 @@ import 'package:emulators/src/flutter.dart' as flutter;
 import 'package:emulators/src/toolchain.dart';
 import 'package:fpdt/either.dart' as E;
 import 'package:fpdt/fpdt.dart';
+import 'package:fpdt/option.dart' as O;
 import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart' as SRTE;
 import 'package:fpdt/task_either.dart' as TE;
@@ -142,9 +143,9 @@ final maybeResolveNameOp = op(
   ios: ios.maybeResolveName,
 );
 
-final isRunning = (DeviceState s) => flutter
+final findRunning = (DeviceState s) => flutter
     .running()
-    .p(RTE.map((devices) => devices.any((d) => d.similar(s))))
+    .p(RTE.map((devices) => devices.firstWhereOption((d) => d.similar(s))))
     .p(RTE.mapLeft((l) => DeviceError.flutterFailure(
           op: 'isRunning',
           command: 'running',
@@ -152,12 +153,9 @@ final isRunning = (DeviceState s) => flutter
         )));
 
 final DeviceOp<void> waitUntilRunningOp =
-    opAsk().p(SRTE.flatMapR((a) => isRunning)).p(SRTE.flatMap((running) {
-  if (running) {
-    return SRTE.right(null);
-  }
-
-  return opAsk()
-      .p(SRTE.delay(Duration(seconds: 2)))
-      .p(SRTE.flatMap((a) => waitUntilRunningOp));
-}));
+    opAsk().p(SRTE.flatMapR((a) => findRunning)).p(SRTE.flatMap(O.fold(
+          () => opAsk()
+              .p(SRTE.delay(Duration(seconds: 2)))
+              .p(SRTE.flatMap((a) => waitUntilRunningOp)),
+          (running) => SRTE.put(running.state),
+        )));
