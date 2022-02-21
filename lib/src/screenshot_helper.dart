@@ -21,7 +21,8 @@ class ScreenshotHelper {
   Future<void> capture(String name) async {
     final image = await device.screenshot();
     final file = [device.state.name, ...suffixes, '$name.png'].join('_');
-    final basePath = device is IosDevice ? iosPath : androidPath;
+    final basePath =
+        device.state.platform == DevicePlatform.ios ? iosPath : androidPath;
     final filePath = path.join(basePath, file);
 
     await Directory(basePath).create(recursive: true);

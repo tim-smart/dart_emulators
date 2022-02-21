@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:emulators/src/device_state.dart';
+import 'package:emulators/src/device.dart';
 import 'package:emulators/src/utils/strings.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;

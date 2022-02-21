@@ -1,4 +1,4 @@
-import 'package:emulators/src/device_state.dart';
+import 'package:emulators/src/device/device_state.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 
