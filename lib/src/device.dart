@@ -75,9 +75,8 @@ final _forEachDevice = (ProcessDevice process) => (Device d) => TE
             try {
               await d.waitUntilRunning();
               await process(d);
-            } catch (err) {
+            } finally {
               await booted.shutdown();
-              rethrow;
             }
           },
           (err, stackTrace) => DeviceError.foreachFailure(
