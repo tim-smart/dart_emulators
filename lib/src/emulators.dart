@@ -80,6 +80,7 @@ class Emulators {
             )),
         androidPath: androidPath,
         iosPath: iosPath,
+        suffixes: suffixes,
       );
 
   Future<void> Function(ProcessDevice process) forEach(
