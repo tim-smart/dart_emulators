@@ -9,7 +9,7 @@ typedef DeviceOp<R>
 
 DeviceOp<Toolchain> opAsk() => ask();
 
-DeviceOp<R> op<R>({
+DeviceOp<R> platformOp<R>({
   required DeviceOp<R> android,
   required DeviceOp<R> ios,
 }) =>

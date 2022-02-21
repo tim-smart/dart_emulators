@@ -15,7 +15,7 @@ import 'package:fpdt/task_either.dart' as TE;
 export 'package:emulators/src/device/device_error.dart';
 export 'package:emulators/src/device/device_state.dart';
 
-/// Wraps [DeviceState] and [Toolchain]
+/// Wraps [DeviceState] and [Toolchain], providing an interface to control devices.
 class Device {
   Device({
     required DeviceState state,
@@ -56,11 +56,14 @@ class Device {
 }
 
 // ==== Operations
+
+// == list
 final listOp = RTE.sequence([
   android.list,
   ios.list,
 ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
 
+// == forEach
 typedef ProcessDevice = Future<void> Function(Device);
 final _forEachDevice =
     (ProcessDevice process, Duration timeout) => (Device d) => TE
@@ -106,16 +109,19 @@ final forEachOp = ({
         ))
         .p(RTE.map((_) => unit));
 
-final bootOp = op(
+// == boot
+final bootOp = platformOp(
   android: android.boot,
   ios: ios.boot,
 );
 
-final shutdownOp = op(
+// == shutdown
+final shutdownOp = platformOp(
   android: android.shutdown,
   ios: ios.shutdown,
 );
 
+// == shutdownAll
 final shutdownAllOp = flutter
     .running()
     .p(RTE.mapLeft((l) => DeviceError.flutterFailure(
@@ -128,21 +134,25 @@ final shutdownAllOp = flutter
     ))
     .p(RTE.map((_) => unit));
 
-final cleanStatusBarOp = op(
+// == cleanStatusBar
+final cleanStatusBarOp = platformOp(
   android: android.cleanStatusBar,
   ios: ios.cleanStatusBar,
 );
 
-final screenshotOp = op(
+// == screenshot
+final screenshotOp = platformOp(
   android: android.screenshot,
   ios: ios.screenshot,
 );
 
-final maybeResolveNameOp = op(
+// == maybeResolveName
+final maybeResolveNameOp = platformOp(
   android: android.maybeResolveName,
   ios: ios.maybeResolveName,
 );
 
+// == waitUntilRunning
 final findRunning = (DeviceState s) => flutter
     .running()
     .p(RTE.map((devices) => devices.firstWhereOption((d) => d.similar(s))))
