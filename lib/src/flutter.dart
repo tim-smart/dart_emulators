@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:emulators/src/utils/adb.dart';
-import 'package:emulators/src/utils/process.dart';
 import 'package:emulators/src/utils/strings.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
 import 'package:fpdt/reader_task_either.dart' as RTE;
+import 'package:fpdt/task_either.dart' as TE;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'flutter.freezed.dart';
@@ -17,11 +17,16 @@ class FlutterError with _$FlutterError {
   const factory FlutterError.toolchainFailure({
     required String op,
     required String message,
-    required StackTrace stackTrace,
   }) = FlutterErrorToolchainFailure;
+
+  const factory FlutterError.deviceFailure({
+    required DeviceState state,
+    required String message,
+  }) = FlutterErrorDeviceFailure;
 }
 
 typedef FlutterOp<R> = ReaderTaskEither<Toolchain, FlutterError, R>;
+FlutterOp<Toolchain> _ask() => RTE.ask();
 
 final _devicesFromOutput = (String out) => (Toolchain tc) => splitLines(out)
     .expand<Device>((line) => parseDevicesLine(line).p(O.fold(
@@ -30,23 +35,29 @@ final _devicesFromOutput = (String out) => (Toolchain tc) => splitLines(out)
         )))
     .toIList();
 
-FlutterOp<IList<Device>> running({bool onlyEmulators = true}) => RTE
-    .ask<Toolchain, FlutterError>()
+final _resolveDeviceNames = (IList<Device> devices) => devices
+    .map((d) => TE.tryCatch(
+          () => d.maybeResolveName(),
+          (err, stackTrace) => FlutterError.deviceFailure(
+            state: d.state,
+            message: err.toString(),
+          ),
+        ))
+    .p(TE.sequence);
+
+FlutterOp<IList<Device>> running({bool onlyEmulators = true}) => _ask()
     .p(RTE.chainTryCatchK(
       (tc) => tc.flutter(['devices']).string(),
       (err, stackTrace) => FlutterError.toolchainFailure(
         op: 'running',
         message: '$err',
-        stackTrace: stackTrace,
       ),
     ))
     .p(RTE.flatMapReader(_devicesFromOutput))
     .p(RTE.map((devices) => onlyEmulators
         ? devices.where((d) => d.state.emulator).toIList()
         : devices))
-    .p(RTE.tap(
-      (devices) => Future.wait(devices.map((d) => d.maybeResolveName())),
-    ));
+    .p(RTE.flatMapFirst(_resolveDeviceNames.c(RTE.fromTaskEither)));
 
 /// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
@@ -57,24 +68,23 @@ FlutterOp<Process> drive(
   List<String> args = const [],
   Map<String, dynamic> config = const {},
 }) =>
-    RTE.ask<Toolchain, FlutterError>().p(RTE.chainTryCatchK(
-          (tc) => tc
-              .flutterWithDevice(
-                'drive',
-                device.state,
-                args: [
-                  '--target=$target',
-                  ...args,
-                ],
-                config: config,
-              )
-              .process(),
-          (err, stackTrace) => FlutterError.toolchainFailure(
-            op: 'drive',
-            message: '$err',
-            stackTrace: stackTrace,
-          ),
-        ));
+    _ask().p(RTE.chainTryCatchK(
+      (tc) => tc
+          .flutterWithDevice(
+            'drive',
+            device.state,
+            args: [
+              '--target=$target',
+              ...args,
+            ],
+            config: config,
+          )
+          .process(),
+      (err, stackTrace) => FlutterError.toolchainFailure(
+        op: 'drive',
+        message: '$err',
+      ),
+    ));
 
 /// Wrapper for the `flutter test` CLI command. Runs it on the given [DeviceState],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
@@ -85,18 +95,17 @@ FlutterOp<Process> test(
   List<String> args = const [],
   Map<String, dynamic> config = const {},
 }) =>
-    RTE.ask<Toolchain, FlutterError>().p(RTE.chainTryCatchK(
-          (tc) => tc
-              .flutterWithDevice(
-                'test',
-                device.state,
-                args: [target, ...args],
-                config: config,
-              )
-              .process(),
-          (err, stackTrace) => FlutterError.toolchainFailure(
-            op: 'test',
-            message: '$err',
-            stackTrace: stackTrace,
-          ),
-        ));
+    _ask().p(RTE.chainTryCatchK(
+      (tc) => tc
+          .flutterWithDevice(
+            'test',
+            device.state,
+            args: [target, ...args],
+            config: config,
+          )
+          .process(),
+      (err, stackTrace) => FlutterError.toolchainFailure(
+        op: 'test',
+        message: '$err',
+      ),
+    ));

@@ -1,7 +1,7 @@
-import 'package:emulators/src/device/android.dart' as android;
+import 'package:emulators/src/device/platforms/android.dart' as android;
 import 'package:emulators/src/device/device_error.dart';
 import 'package:emulators/src/device/device_state.dart';
-import 'package:emulators/src/device/ios.dart' as ios;
+import 'package:emulators/src/device/platforms/ios.dart' as ios;
 import 'package:emulators/src/device/utils.dart';
 import 'package:emulators/src/flutter.dart' as flutter;
 import 'package:emulators/src/toolchain.dart';
@@ -9,6 +9,7 @@ import 'package:fpdt/either.dart' as E;
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart' as SRTE;
+import 'package:fpdt/task_either.dart' as TE;
 
 export 'package:emulators/src/device/device_error.dart';
 export 'package:emulators/src/device/device_state.dart';
@@ -22,6 +23,7 @@ class Device {
 
   final StateRTEMachine<DeviceState, Toolchain, DeviceError> _s;
   DeviceState get state => _s.state;
+  Toolchain get toolchain => _s.context;
 
   Future<T> _run<T>(DeviceOp<T> op) => _s.evaluate(op).then(E.unwrap);
 
@@ -49,7 +51,7 @@ class Device {
   }) =>
       _run(waitUntilRunningOp).timeout(timeout);
 
-  Device clone(Toolchain tc) => Device(state: state, toolchain: tc);
+  Device clone() => Device(state: state, toolchain: toolchain);
 }
 
 // ==== Operations
@@ -58,13 +60,50 @@ final listOp = RTE.sequence([
   ios.list,
 ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
 
+typedef ProcessDevice = Future<void> Function(Device);
+final _forEachDevice = (ProcessDevice process) => (Device d) => TE
+        .tryCatch(
+          () => d.boot().then((_) => d.clone()),
+          (err, stackTrace) => DeviceError.foreachFailure(
+            phase: 'boot',
+            message: err.toString(),
+          ),
+        )
+        .p(TE.flatMapFirst(TE.tryCatchK(
+          (booted) async {
+            try {
+              await d.waitUntilRunning();
+              await process(d);
+            } catch (err) {
+              await booted.shutdown();
+              rethrow;
+            }
+          },
+          (err, stackTrace) => DeviceError.foreachFailure(
+            phase: 'process',
+            message: err.toString(),
+          ),
+        )))
+        .p(TE.alt((err) {
+      print("Error processing device ${d.state.id}: $err");
+      return TE.right(d);
+    }));
+
 final forEachOp = ({
-  required Future<void> Function(Device) process,
+  required ProcessDevice process,
+  required List<String> nameOrIds,
+  Duration timeout = const Duration(minutes: 3),
 }) =>
-    RTE.sequence([
-      android.list,
-      ios.list,
-    ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
+    listOp
+        .p(RTE.flatMapTaskEither(
+          (devices) => devices
+              .where((d) =>
+                  nameOrIds.contains(d.state.id) ||
+                  nameOrIds.contains(d.state.name))
+              .map(_forEachDevice(process))
+              .p(TE.sequenceSeq),
+        ))
+        .p(RTE.map((_) => unit));
 
 final bootOp = op(
   android: android.boot,

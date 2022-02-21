@@ -39,7 +39,7 @@ Future<void> main() async {
     await screenshot.capture('home_screen');
 
     // Or you can run flutter drive, and send the output to stdout
-    final process = await emu.flutter.drive(device, 'test_driver/main.dart');
+    final process = await emu.drive(device, 'test_driver/main.dart');
     await stdout.addStream(process.stdout);
   });
 }

@@ -8,7 +8,6 @@ import 'package:emulators/src/toolchain.dart';
 import 'package:fpdt/either.dart' as E;
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
-import 'package:rxdart/rxdart.dart';
 
 class Emulators {
   Emulators({required this.toolchain});
@@ -83,21 +82,14 @@ class Emulators {
         iosPath: iosPath,
       );
 
-  Future<void> Function(Future<void> Function(Device device)) forEach(
+  Future<void> Function(ProcessDevice process) forEach(
     List<String> nameOrIds, {
     Duration timeout = const Duration(minutes: 3),
   }) =>
-      (process) => list()
-              .where((d) =>
-                  nameOrIds.contains(d.state.id) ||
-                  nameOrIds.contains(d.state.name))
-              .asyncMap((device) async {
-            await device.boot();
-            final bootedDevice = device.clone();
-
-            await device.waitUntilRunning();
-            await process(device);
-
-            await bootedDevice.shutdown();
-          }).forEach((_) {});
+      (process) => forEachOp(
+            nameOrIds: nameOrIds,
+            timeout: timeout,
+            process: process,
+          )(toolchain)()
+              .then(E.unwrap);
 }

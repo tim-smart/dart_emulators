@@ -1,5 +1,7 @@
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/toolchain.dart';
+import 'package:fpdt/fpdt.dart';
+import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart';
 
 typedef DeviceOp<R>
@@ -11,4 +13,13 @@ DeviceOp<R> op<R>({
   required DeviceOp<R> android,
   required DeviceOp<R> ios,
 }) =>
-    (s) => s.platform == DevicePlatform.ios ? ios(s) : android(s);
+    opAsk()
+        .p(flatMapR(
+          (_) => RTE.fromPredicateK(
+            (s) => s.platform != DevicePlatform.unimplemented,
+            (r) => DeviceError.unimplemented(),
+          ),
+        ))
+        .p(flatMap(
+          (_) => (s) => s.platform == DevicePlatform.ios ? ios(s) : android(s),
+        ));

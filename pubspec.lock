@@ -175,7 +175,7 @@ packages:
       name: fpdt
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.46"
+    version: "0.0.49"
   freezed:
     dependency: "direct dev"
     description:
@@ -323,13 +323,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  rxdart:
-    dependency: "direct main"
-    description:
-      name: rxdart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.27.3"
   shelf:
     dependency: transitive
     description:

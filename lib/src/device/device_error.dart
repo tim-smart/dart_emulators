@@ -20,4 +20,11 @@ class DeviceError with _$DeviceError {
     required String command,
     required String message,
   }) = DeviceErrorFlutterFailure;
+
+  const factory DeviceError.unimplemented() = DeviceErrorUnimplementedFailure;
+
+  const factory DeviceError.foreachFailure({
+    required String phase,
+    required String message,
+  }) = DeviceErrorForeachFailure;
 }

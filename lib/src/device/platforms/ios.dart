@@ -51,6 +51,7 @@ final DeviceOp<void> boot = opAsk()
             message: '$err',
           ),
         )))
+    .p(SRTE.delay(Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: true)));
 
 final DeviceOp<void> shutdown = opAsk()
