@@ -1,3 +1,7 @@
+## 0.4.0
+
+- BREAKING: Rewrite API surface to make package easier to use
+
 ## 0.2.3
 
 - Add support for passing custom config
