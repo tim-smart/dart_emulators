@@ -95,7 +95,7 @@ final _forEachDevice =
 
 final forEachOp = ({
   required ProcessDevice process,
-  required List<String> nameOrIds,
+  required Iterable<String> nameOrIds,
   Duration timeout = const Duration(minutes: 3),
 }) =>
     listOp

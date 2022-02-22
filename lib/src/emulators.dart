@@ -84,7 +84,7 @@ class Emulators {
       );
 
   Future<void> Function(ProcessDevice process) forEach(
-    List<String> nameOrIds, {
+    Iterable<String> nameOrIds, {
     Duration timeout = const Duration(minutes: 3),
   }) =>
       (process) => forEachOp(

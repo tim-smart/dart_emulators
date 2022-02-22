@@ -118,10 +118,10 @@ final screenshot = opAsk().p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
     )));
 
 final _maybeParseName = stringOption
-    .compose(O.map(splitLines))
-    .compose(O.filter((parts) => parts.length == 2))
-    .compose(O.filter((parts) => parts.last == "OK"))
-    .compose(O.map((parts) => parts.first));
+    .c(O.map(splitLines))
+    .c(O.filter((parts) => parts.length == 2))
+    .c(O.filter((parts) => parts.last == "OK"))
+    .c(O.map((parts) => parts.first));
 
 final DeviceOp<void> maybeResolveName = opAsk()
     .p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
