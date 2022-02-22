@@ -1,3 +1,7 @@
+## 0.4.1
+
+- Loosen `nameOrIds` in `forEach` to an `Iterable` type
+
 ## 0.4.0
 
 - BREAKING: Rewrite API surface to make package easier to use
