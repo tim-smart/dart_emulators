@@ -1,3 +1,7 @@
+## 0.4.2
+
+- Export device types
+
 ## 0.4.1
 
 - Loosen `nameOrIds` in `forEach` to an `Iterable` type
