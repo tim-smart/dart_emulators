@@ -1,3 +1,7 @@
+## 0.4.4
+
+- Internal refactor
+
 ## 0.4.3
 
 - Internal refactor
