@@ -1,7 +1,6 @@
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart';
 
 typedef DeviceOp<R>

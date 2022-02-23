@@ -6,7 +6,6 @@ import 'package:emulators/src/toolchain.dart';
 import 'package:emulators/src/utils/strings.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart' as SRTE;
 import 'package:fpdt/task_either.dart' as TE;
 
