@@ -92,7 +92,7 @@ final _forEachDevice = (ProcessDevice process, Duration timeout) =>
         )))
         .p(TE.tapLeft((err) =>
             stderr.writeln("Error processing device ${d.state.name}: $err")))
-        .p(TE.pure(d));
+        .p(TE.orElse(TE.right(d)));
 
 final forEachOp = ({
   required ProcessDevice process,
