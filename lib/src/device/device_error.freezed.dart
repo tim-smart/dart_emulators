@@ -36,11 +36,10 @@ class _$DeviceErrorTearOff {
   }
 
   DeviceErrorFlutterFailure flutterFailure(
-      {required String op, required String command, required String message}) {
+      {required String op, required FlutterError error}) {
     return DeviceErrorFlutterFailure(
       op: op,
-      command: command,
-      message: message,
+      error: error,
     );
   }
 
@@ -67,8 +66,7 @@ mixin _$DeviceError {
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) =>
@@ -78,7 +76,7 @@ mixin _$DeviceError {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) =>
@@ -88,7 +86,7 @@ mixin _$DeviceError {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),
@@ -234,8 +232,7 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) {
@@ -248,7 +245,7 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) {
@@ -261,7 +258,7 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),
@@ -413,8 +410,7 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) {
@@ -427,7 +423,7 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) {
@@ -440,7 +436,7 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),
@@ -512,7 +508,9 @@ abstract class $DeviceErrorFlutterFailureCopyWith<$Res> {
   factory $DeviceErrorFlutterFailureCopyWith(DeviceErrorFlutterFailure value,
           $Res Function(DeviceErrorFlutterFailure) then) =
       _$DeviceErrorFlutterFailureCopyWithImpl<$Res>;
-  $Res call({String op, String command, String message});
+  $Res call({String op, FlutterError error});
+
+  $FlutterErrorCopyWith<$Res> get error;
 }
 
 /// @nodoc
@@ -530,42 +528,41 @@ class _$DeviceErrorFlutterFailureCopyWithImpl<$Res>
   @override
   $Res call({
     Object? op = freezed,
-    Object? command = freezed,
-    Object? message = freezed,
+    Object? error = freezed,
   }) {
     return _then(DeviceErrorFlutterFailure(
       op: op == freezed
           ? _value.op
           : op // ignore: cast_nullable_to_non_nullable
               as String,
-      command: command == freezed
-          ? _value.command
-          : command // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: message == freezed
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      error: error == freezed
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as FlutterError,
     ));
+  }
+
+  @override
+  $FlutterErrorCopyWith<$Res> get error {
+    return $FlutterErrorCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
-  const _$DeviceErrorFlutterFailure(
-      {required this.op, required this.command, required this.message});
+  const _$DeviceErrorFlutterFailure({required this.op, required this.error});
 
   @override
   final String op;
   @override
-  final String command;
-  @override
-  final String message;
+  final FlutterError error;
 
   @override
   String toString() {
-    return 'DeviceError.flutterFailure(op: $op, command: $command, message: $message)';
+    return 'DeviceError.flutterFailure(op: $op, error: $error)';
   }
 
   @override
@@ -574,16 +571,14 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
         (other.runtimeType == runtimeType &&
             other is DeviceErrorFlutterFailure &&
             const DeepCollectionEquality().equals(other.op, op) &&
-            const DeepCollectionEquality().equals(other.command, command) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(op),
-      const DeepCollectionEquality().hash(command),
-      const DeepCollectionEquality().hash(message));
+      const DeepCollectionEquality().hash(error));
 
   @JsonKey(ignore: true)
   @override
@@ -597,12 +592,11 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) {
-    return flutterFailure(op, command, message);
+    return flutterFailure(op, error);
   }
 
   @override
@@ -611,11 +605,11 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) {
-    return flutterFailure?.call(op, command, message);
+    return flutterFailure?.call(op, error);
   }
 
   @override
@@ -624,13 +618,13 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),
   }) {
     if (flutterFailure != null) {
-      return flutterFailure(op, command, message);
+      return flutterFailure(op, error);
     }
     return orElse();
   }
@@ -682,12 +676,10 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
 abstract class DeviceErrorFlutterFailure implements DeviceError {
   const factory DeviceErrorFlutterFailure(
       {required String op,
-      required String command,
-      required String message}) = _$DeviceErrorFlutterFailure;
+      required FlutterError error}) = _$DeviceErrorFlutterFailure;
 
   String get op;
-  String get command;
-  String get message;
+  FlutterError get error;
   @JsonKey(ignore: true)
   $DeviceErrorFlutterFailureCopyWith<DeviceErrorFlutterFailure> get copyWith =>
       throw _privateConstructorUsedError;
@@ -742,8 +734,7 @@ class _$DeviceErrorUnimplementedFailure
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) {
@@ -756,7 +747,7 @@ class _$DeviceErrorUnimplementedFailure
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) {
@@ -769,7 +760,7 @@ class _$DeviceErrorUnimplementedFailure
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),
@@ -910,8 +901,7 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
     required TResult Function(String op, String command, String message)
         toolchainFailure,
     required TResult Function(String op, String message) processKillFailure,
-    required TResult Function(String op, String command, String message)
-        flutterFailure,
+    required TResult Function(String op, FlutterError error) flutterFailure,
     required TResult Function() unimplemented,
     required TResult Function(String phase, String message) foreachFailure,
   }) {
@@ -924,7 +914,7 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
   }) {
@@ -937,7 +927,7 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
     TResult Function(String op, String command, String message)?
         toolchainFailure,
     TResult Function(String op, String message)? processKillFailure,
-    TResult Function(String op, String command, String message)? flutterFailure,
+    TResult Function(String op, FlutterError error)? flutterFailure,
     TResult Function()? unimplemented,
     TResult Function(String phase, String message)? foreachFailure,
     required TResult orElse(),

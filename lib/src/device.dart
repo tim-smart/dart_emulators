@@ -126,8 +126,7 @@ final shutdownAllOp = flutter
     .running()
     .p(RTE.mapLeft((l) => DeviceError.flutterFailure(
           op: 'shutdownAll',
-          command: 'running',
-          message: l.message,
+          error: l,
         )))
     .p(RTE.flatMap(
       (devices) => devices.map((d) => shutdownOp(d.state)).p(RTE.sequence),
@@ -158,8 +157,7 @@ final findRunning = (DeviceState s) => flutter
     .p(RTE.map((devices) => devices.firstWhereOption((d) => d.similar(s))))
     .p(RTE.mapLeft((l) => DeviceError.flutterFailure(
           op: 'isRunning',
-          command: 'running',
-          message: l.message,
+          error: l,
         )));
 
 final DeviceOp<void> waitUntilRunningOp =

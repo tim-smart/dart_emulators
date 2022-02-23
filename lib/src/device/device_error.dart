@@ -1,3 +1,4 @@
+import 'package:emulators/src/flutter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device_error.freezed.dart';
@@ -17,8 +18,7 @@ class DeviceError with _$DeviceError {
 
   const factory DeviceError.flutterFailure({
     required String op,
-    required String command,
-    required String message,
+    required FlutterError error,
   }) = DeviceErrorFlutterFailure;
 
   const factory DeviceError.unimplemented() = DeviceErrorUnimplementedFailure;
