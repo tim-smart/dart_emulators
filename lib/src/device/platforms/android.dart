@@ -40,37 +40,41 @@ final boot = opGet()
           process: O.some(process),
         ))));
 
-final DeviceOp<void> shutdown = opGet().p(SRTE.flatMapS((_) => (s) => (tc) {
-      if (s.booted == false) {
-        return TE.right(s);
-      }
-
-      return s.process.p(O.fold(
-        () => TE
-            .tryCatch(
-              () => tc.adb(['-s', s.id, 'emu', 'kill']).string(),
-              (err, stackTrace) => DeviceError.toolchainFailure(
-                op: 'shutdown',
-                command: 'adb emu kill',
-                message: '$err',
-              ),
-            )
-            .p(TE.delay(Duration(seconds: 3)))
-            .p(TE.map((_) => s.copyWith(booted: false))),
-        (process) => TE.tryCatch(
-          () async {
-            process.kill(ProcessSignal.sigint);
-            await process.stdout.forEach((_) {});
-            return s.copyWith(booted: false, process: kNone);
-          },
-          (err, stackTrace) => DeviceError.processKillFailure(
+// == shutdown
+final _adbKill = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
+          (tc) => tc.adb(['-s', s.id, 'emu', 'kill']).string(),
+          (err, stackTrace) => DeviceError.toolchainFailure(
             op: 'shutdown',
+            command: 'adb emu kill',
             message: '$err',
           ),
-        ),
-      ));
-    }));
+        )))
+    .p(SRTE.delay(const Duration(seconds: 3)));
 
+final _processKill = (Process process) => TE.tryCatch(
+      () async {
+        process.kill(ProcessSignal.sigint);
+        await process.stdout.forEach((_) {});
+      },
+      (err, stackTrace) => DeviceError.processKillFailure(
+        op: 'shutdown',
+        message: '$err',
+      ),
+    );
+
+final _shutdown = opGet()
+    .p(SRTE.map((s) => s.process))
+    .p(SRTE.flatMap(O.fold(
+      () => _adbKill,
+      _processKill.c(SRTE.fromTaskEither),
+    )))
+    .p(SRTE.chainModify((s) => s.copyWith(booted: false, process: kNone)));
+
+final shutdown =
+    opGet().p(SRTE.flatMap((s) => s.booted ? _shutdown : SRTE.right(null)));
+
+// == clean status bar
 final DeviceOp<void> cleanStatusBar = opGet().p(SRTE.flatMapReaderTaskEither(
   (s) => (tc) => [
         // enable
