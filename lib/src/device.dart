@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:emulators/src/device/platforms/android.dart' as android;
 import 'package:emulators/src/device/device_error.dart';
 import 'package:emulators/src/device/device_state.dart';
@@ -65,33 +67,32 @@ final listOp = RTE.sequence([
 
 // == forEach
 typedef ProcessDevice = Future<void> Function(Device);
-final _forEachDevice =
-    (ProcessDevice process, Duration timeout) => (Device d) => TE
-            .tryCatch(
-              () => d.boot().then((_) => d.clone()),
-              (err, stackTrace) => DeviceError.foreachFailure(
-                phase: 'boot',
-                message: err.toString(),
-              ),
-            )
-            .p(TE.flatMapFirst(TE.tryCatchK(
-              (booted) async {
-                try {
-                  await d.waitUntilRunning(timeout: timeout);
-                  await process(d);
-                } finally {
-                  await booted.shutdown();
-                }
-              },
-              (err, stackTrace) => DeviceError.foreachFailure(
-                phase: 'process',
-                message: err.toString(),
-              ),
-            )))
-            .p(TE.alt((err) {
-          print("Error processing device ${d.state.name}: $err");
-          return TE.right(d);
-        }));
+final _forEachDevice = (ProcessDevice process, Duration timeout) =>
+    (Device d) => TE
+        .tryCatch(
+          () => d.boot().then((_) => d.clone()),
+          (err, stackTrace) => DeviceError.foreachFailure(
+            phase: 'boot',
+            message: err.toString(),
+          ),
+        )
+        .p(TE.flatMapFirst(TE.tryCatchK(
+          (booted) async {
+            try {
+              await d.waitUntilRunning(timeout: timeout);
+              await process(d);
+            } finally {
+              await booted.shutdown();
+            }
+          },
+          (err, stackTrace) => DeviceError.foreachFailure(
+            phase: 'process',
+            message: err.toString(),
+          ),
+        )))
+        .p(TE.tapLeft((err) =>
+            stderr.writeln("Error processing device ${d.state.name}: $err")))
+        .p(TE.pure(d));
 
 final forEachOp = ({
   required ProcessDevice process,
