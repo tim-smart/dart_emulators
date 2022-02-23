@@ -14,7 +14,30 @@ part 'toolchain.freezed.dart';
 
 TO.TaskOption<String> _which(String exec) => TO
     .tryCatch(() => run('which', [exec]).string())
-    .chain(TO.filter((path) => path.isNotEmpty));
+    .p(TO.filter((path) => path.isNotEmpty));
+
+final _androidSdk = O.fromNullable(Platform.environment['ANDROID_SDK_ROOT']);
+
+final _adbPath = _which('adb')
+    .p(TO.alt(() => _androidSdk
+        .p(O.map((sdk) => P.join(sdk, 'platform-tools/adb')))
+        .p(TO.fromOption)))
+    .p(TO.getOrElse(() => 'adb'));
+
+final _avdmanagerPath = _androidSdk
+    .p(O.map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager')))
+    .p(TO.fromOption)
+    .p(TO.alt(() => _which('avdmanager')))
+    .p(TO.getOrElse(() => 'avdmanager'));
+
+final _emulatorPath = _which('emulator')
+    .p(TO.alt(() => _androidSdk
+        .p(O.map((sdk) => P.join(sdk, 'emulator/emulator')))
+        .p(TO.fromOption)))
+    .p(TO.getOrElse(() => 'emulator'));
+
+final _flutterPath = _which('flutter').p(TO.getOrElse(() => 'flutter'));
+final _xcrunPath = _which('xcrun').p(TO.getOrElse(() => 'xcrun'));
 
 /// [Toolchain] represents the CLI tools we will use.
 @freezed
@@ -29,47 +52,21 @@ class Toolchain with _$Toolchain {
     required String xcrunPath,
   }) = _Toolchain;
 
-  static Future<Toolchain> build() {
-    final androidSdk = O.fromNullable(Platform.environment['ANDROID_SDK_ROOT']);
-
-    final adbPath = _which('adb')
-        .chain(TO.alt(() => androidSdk
-            .chain(O.map((sdk) => P.join(sdk, 'platform-tools/adb')))
-            .chain(TO.fromOption)))
-        .chain(TO.getOrElse(() => 'adb'));
-
-    final avdmanagerPath = androidSdk
-        .chain(
-            O.map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager')))
-        .chain(TO.fromOption)
-        .chain(TO.alt(() => _which('avdmanager')))
-        .chain(TO.getOrElse(() => 'avdmanager'));
-
-    final emulatorPath = _which('emulator')
-        .chain(TO.alt(() => androidSdk
-            .chain(O.map((sdk) => P.join(sdk, 'emulator/emulator')))
-            .chain(TO.fromOption)))
-        .chain(TO.getOrElse(() => 'emulator'));
-
-    final flutterPath = _which('flutter').chain(TO.getOrElse(() => 'flutter'));
-    final xcrunPath = _which('xcrun').chain(TO.getOrElse(() => 'xcrun'));
-
-    return T.sequence([
-      adbPath,
-      avdmanagerPath,
-      emulatorPath,
-      flutterPath,
-      xcrunPath,
-    ]).chain(T.map(
-      (paths) => Toolchain._withPaths(
-        adbPath: paths[0],
-        avdmanagerPath: paths[1],
-        emulatorPath: paths[2],
-        flutterPath: paths[3],
-        xcrunPath: paths[4],
-      ),
-    ))();
-  }
+  static Future<Toolchain> build() => T.sequence([
+        _adbPath,
+        _avdmanagerPath,
+        _emulatorPath,
+        _flutterPath,
+        _xcrunPath,
+      ]).p(T.map(
+        (paths) => Toolchain._withPaths(
+          adbPath: paths[0],
+          avdmanagerPath: paths[1],
+          emulatorPath: paths[2],
+          flutterPath: paths[3],
+          xcrunPath: paths[4],
+        ),
+      ))();
 
   /// Wrapper for the `flutter` CLI tool.
   ProcessRunner flutter(
