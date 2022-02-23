@@ -24,26 +24,21 @@ IList<DeviceState> _parseDevices(dynamic json) => O
         .toIList()))
     .p(O.getOrElse(() => IList()));
 
-final list = RTE
-    .ask<Toolchain, DeviceError>()
-    .p(RTE.chainTryCatchK(
-      (tc) => tc.simctl(['list', 'devices', '--json']).json(),
+final list = (Toolchain tc) => TE
+    .tryCatch(
+      () => tc.simctl(['list', 'devices', '--json']).json(),
       (err, stackTrace) => DeviceError.toolchainFailure(
         op: 'list',
         command: 'simctl list devices',
         message: '$err',
       ),
-    ))
-    .p(RTE.map(_parseDevices))
-    .p(RTE.flatMap(
-      (devices) => (tc) => devices
-          .map((d) => Device(state: d, toolchain: tc))
-          .toIList()
-          .p(TE.right),
-    ));
+    )
+    .p(TE.map(_parseDevices))
+    .p(TE.map((devices) =>
+        devices.map((d) => Device(state: d, toolchain: tc)).toIList()));
 
-final DeviceOp<void> boot = opAsk()
-    .p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final DeviceOp<void> boot = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl(['boot', s.id]).string(),
           (err, stackTrace) => DeviceError.toolchainFailure(
             op: 'boot',
@@ -54,8 +49,8 @@ final DeviceOp<void> boot = opAsk()
     .p(SRTE.delay(Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: true)));
 
-final DeviceOp<void> shutdown = opAsk()
-    .p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final DeviceOp<void> shutdown = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl(['shutdown', s.id]).string(),
           (err, stackTrace) => DeviceError.toolchainFailure(
             op: 'shutdown',
@@ -66,7 +61,7 @@ final DeviceOp<void> shutdown = opAsk()
     .p(SRTE.delay(Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: false)));
 
-final screenshot = opAsk().p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final screenshot = opGet().p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
       (tc) => tc.simctl([
         'io',
         s.id,
@@ -80,8 +75,8 @@ final screenshot = opAsk().p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
       ),
     )));
 
-final DeviceOp<void> cleanStatusBar = opAsk()
-    .p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final DeviceOp<void> cleanStatusBar = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl([
             "status_bar",
             s.id,

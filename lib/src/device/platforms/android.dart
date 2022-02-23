@@ -10,29 +10,25 @@ import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart' as SRTE;
 import 'package:fpdt/task_either.dart' as TE;
 
-final list = RTE
-    .ask<Toolchain, DeviceError>()
-    .p(RTE.chainTryCatchK(
-      (tc) => tc.emulator(["-list-avds"]).string(),
+final list = (Toolchain tc) => TE
+    .tryCatch(
+      () => tc.emulator(["-list-avds"]).string(),
       (err, stackTrace) => DeviceError.toolchainFailure(
         op: 'list',
         command: 'emulator -list-avds',
         message: '$err',
       ),
-    ))
-    .p(RTE.map((out) => splitLines(out).map((name) => DeviceState(
+    )
+    .p(TE.map((out) => splitLines(out).map((name) => DeviceState(
           id: name,
           name: name,
           platform: DevicePlatform.android,
           emulator: true,
         ))))
-    .p(RTE.flatMap(
-      (a) => (tc) =>
-          a.map((s) => Device(state: s, toolchain: tc)).toIList().p(TE.right),
-    ));
+    .p(TE.map((a) => a.map((s) => Device(state: s, toolchain: tc)).toIList()));
 
-final boot = opAsk()
-    .p(SRTE.flatMapR((a) => (s) => TE.tryCatchK(
+final boot = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.emulator(["-avd", s.id]).process(),
           (err, stackTrace) => DeviceError.toolchainFailure(
             op: 'boot',
@@ -45,7 +41,7 @@ final boot = opAsk()
           process: O.some(process),
         ))));
 
-final DeviceOp<void> shutdown = opAsk().p(SRTE.flatMapS((_) => (s) => (tc) {
+final DeviceOp<void> shutdown = opGet().p(SRTE.flatMapS((_) => (s) => (tc) {
       if (s.booted == false) {
         return TE.right(s);
       }
@@ -76,8 +72,8 @@ final DeviceOp<void> shutdown = opAsk().p(SRTE.flatMapS((_) => (s) => (tc) {
       ));
     }));
 
-final DeviceOp<void> cleanStatusBar = opAsk().p(SRTE.flatMapR(
-  (_) => (s) => (tc) => [
+final DeviceOp<void> cleanStatusBar = opGet().p(SRTE.flatMapReaderTaskEither(
+  (s) => (tc) => [
         // enable
         'shell settings put global sysui_demo_allowed 1',
         // display time 12:00
@@ -102,7 +98,7 @@ final DeviceOp<void> cleanStatusBar = opAsk().p(SRTE.flatMapR(
           .p(TE.sequenceSeq),
 ));
 
-final screenshot = opAsk().p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final screenshot = opGet().p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
       (tc) => tc.adb([
         '-s',
         s.id,
@@ -123,8 +119,8 @@ final _maybeParseName = stringOption
     .c(O.filter((parts) => parts.last == "OK"))
     .c(O.map((parts) => parts.first));
 
-final DeviceOp<void> maybeResolveName = opAsk()
-    .p(SRTE.flatMapR((_) => (s) => TE.tryCatchK(
+final DeviceOp<void> maybeResolveName = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.adb([
             "-s",
             s.id,
@@ -138,9 +134,8 @@ final DeviceOp<void> maybeResolveName = opAsk()
             message: '$err',
           ),
         )))
-    .p(SRTE.flatMapS(
-      (out) => (s) => _maybeParseName(out).p(O.fold(
-            () => RTE.right(s),
-            (name) => RTE.right(s.copyWith(name: name)),
-          )),
-    ));
+    .p(SRTE.map(_maybeParseName))
+    .p(SRTE.flatMap(O.fold(
+      () => SRTE.right(null),
+      (name) => SRTE.modify((s) => s.copyWith(name: name)),
+    )));

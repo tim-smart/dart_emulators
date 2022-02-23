@@ -7,19 +7,17 @@ import 'package:fpdt/state_reader_task_either.dart';
 typedef DeviceOp<R>
     = StateReaderTaskEither<DeviceState, Toolchain, DeviceError, R>;
 
-DeviceOp<Toolchain> opAsk() => ask();
+DeviceOp<DeviceState> opGet() => get();
 
 DeviceOp<R> platformOp<R>({
   required DeviceOp<R> android,
   required DeviceOp<R> ios,
 }) =>
-    opAsk()
-        .p(flatMapR(
-          (_) => RTE.fromPredicateK(
-            (s) => s.platform != DevicePlatform.unimplemented,
-            (r) => DeviceError.unimplemented(),
-          ),
+    opGet()
+        .p(filter(
+          (s) => s.platform != DevicePlatform.unimplemented,
+          (s) => DeviceError.unimplemented(),
         ))
         .p(flatMap(
-          (_) => (s) => s.platform == DevicePlatform.ios ? ios(s) : android(s),
+          (s) => s.platform == DevicePlatform.ios ? ios : android,
         ));
