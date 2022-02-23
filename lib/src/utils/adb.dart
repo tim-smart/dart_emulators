@@ -4,8 +4,8 @@ import 'package:fpdt/option.dart' as O;
 
 Option<DeviceState> parseDevicesLine(String input) => O
         .some(input.split('•').map((s) => s.trim()).toList())
-        .chain(O.filter((parts) => parts.length == 4))
-        .chain(O.map((parts) {
+        .p(O.filter((parts) => parts.length == 4))
+        .p(O.map((parts) {
       final name =
           parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
       final id = parts[1];

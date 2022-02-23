@@ -19,7 +19,7 @@ class Emulators {
 
   /// Attempt to load the current device from the `EMULATORS_DEVICE` env variable.
   Option<Device> currentDevice() =>
-      Environment.device.chain(O.map((state) => Device(
+      Environment.device.p(O.map((state) => Device(
             state: state,
             toolchain: toolchain,
           )));
@@ -74,7 +74,7 @@ class Emulators {
   }) =>
       ScreenshotHelper(
         device: device ??
-            currentDevice().chain(O.fold(
+            currentDevice().p(O.fold(
               () => throw 'screenshotHelper: cannot find current device',
               (d) => d,
             )),

@@ -9,7 +9,7 @@ import 'package:fpdt/task_either.dart' as TE;
 IList<DeviceState> _parseDevices(dynamic json) => O
     .some(json as Map<String, dynamic>)
     .extractMap('devices')
-    .chain(O.map((devices) => devices.values
+    .p(O.map((devices) => devices.values
         .expand((runtime) => (runtime as List)
             .cast()
             .where((device) => device['isAvailable'])
