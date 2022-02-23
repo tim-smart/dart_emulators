@@ -4,3 +4,9 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+  errors:
+    duplicate_ignore: ignore
+      
+linters:
+  rules:
+    duplicate_ignore: false
