@@ -15,7 +15,7 @@ DeviceOp<R> platformOp<R>({
     opGet()
         .p(filter(
           (s) => s.platform != DevicePlatform.unimplemented,
-          (s) => DeviceError.unimplemented(),
+          (s) => const DeviceError.unimplemented(),
         ))
         .p(flatMap(
           (s) => s.platform == DevicePlatform.ios ? ios : android,

@@ -45,7 +45,7 @@ final DeviceOp<void> boot = opGet()
             message: '$err',
           ),
         )))
-    .p(SRTE.delay(Duration(seconds: 3)))
+    .p(SRTE.delay(const Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: true)));
 
 final DeviceOp<void> shutdown = opGet()
@@ -57,7 +57,7 @@ final DeviceOp<void> shutdown = opGet()
             message: '$err',
           ),
         )))
-    .p(SRTE.delay(Duration(seconds: 3)))
+    .p(SRTE.delay(const Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: false)));
 
 final screenshot = opGet().p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(

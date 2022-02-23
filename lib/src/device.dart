@@ -164,7 +164,7 @@ final findRunning = (DeviceState s) => flutter
 final DeviceOp<void> waitUntilRunningOp =
     opGet().p(SRTE.flatMapReaderTaskEither(findRunning)).p(SRTE.flatMap(O.fold(
           () => opGet()
-              .p(SRTE.delay(Duration(seconds: 2)))
+              .p(SRTE.delay(const Duration(seconds: 2)))
               .p(SRTE.replace(waitUntilRunningOp)),
           (running) => SRTE.put(running.state),
         )));

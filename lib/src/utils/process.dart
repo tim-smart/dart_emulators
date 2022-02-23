@@ -15,7 +15,7 @@ class ProcessRunner {
   Future<String> string() => Process.run(
         exec,
         args,
-        stdoutEncoding: Utf8Codec(),
+        stdoutEncoding: const Utf8Codec(),
         environment: env,
       ).then((r) => r.stdout.trim());
 
