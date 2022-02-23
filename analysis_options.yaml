@@ -7,6 +7,7 @@ analyzer:
   errors:
     duplicate_ignore: ignore
       
-linters:
+linter:
   rules:
-    duplicate_ignore: false
+    library_prefixes: false
+    prefer_function_declarations_over_variables: false
