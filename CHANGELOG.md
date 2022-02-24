@@ -1,3 +1,7 @@
+## 0.4.8
+
+- Absorb errors in list operation, so it works if a platform is missing
+
 ## 0.4.7
 
 - Clean up exports some more
