@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:emulators/emulators.dart';
 import 'package:emulators/src/device/platforms/android.dart' as android;
 import 'package:emulators/src/device/platforms/ios.dart' as ios;
@@ -121,7 +119,7 @@ final findRunning = (DeviceState s) => flutter
           error: l,
         )));
 
-final DeviceOp<void> waitUntilRunning =
+final DeviceOp<Unit> waitUntilRunning =
     opGet().p(SRTE.flatMapReaderTaskEither(findRunning)).p(SRTE.flatMap(O.fold(
           () => opGet()
               .p(SRTE.delay(const Duration(seconds: 2)))

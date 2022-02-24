@@ -36,7 +36,7 @@ final list = (Toolchain tc) => TE
     .p(TE.map((devices) =>
         devices.map((d) => Device(state: d, toolchain: tc)).toIList()));
 
-final DeviceOp<void> boot = opGet()
+final DeviceOp<Unit> boot = opGet()
     .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl(['boot', s.id]).string(),
           (err, stackTrace) => DeviceError.toolchainFailure(
@@ -48,7 +48,7 @@ final DeviceOp<void> boot = opGet()
     .p(SRTE.delay(const Duration(seconds: 3)))
     .p(SRTE.chainModify((s) => s.copyWith(booted: true)));
 
-final DeviceOp<void> shutdown = opGet()
+final DeviceOp<Unit> shutdown = opGet()
     .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl(['shutdown', s.id]).string(),
           (err, stackTrace) => DeviceError.toolchainFailure(
@@ -74,7 +74,7 @@ final screenshot = opGet().p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
       ),
     )));
 
-final DeviceOp<void> cleanStatusBar = opGet()
+final DeviceOp<Unit> cleanStatusBar = opGet()
     .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.simctl([
             "status_bar",
@@ -101,6 +101,7 @@ final DeviceOp<void> cleanStatusBar = opGet()
             message: '$err',
           ),
         )))
-    .p(SRTE.delay(const Duration(seconds: 2)));
+    .p(SRTE.delay(const Duration(seconds: 2)))
+    .p(SRTE.call(SRTE.right(unit)));
 
-final DeviceOp<void> maybeResolveName = SRTE.right(null);
+final DeviceOp<Unit> maybeResolveName = SRTE.right(unit);

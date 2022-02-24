@@ -7,7 +7,7 @@ environment:
   sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
-  fpdt: ^0.0.57
+  fpdt: ^0.0.59
   freezed_annotation: ^1.0.0
   json_annotation: ^4.3.0
   path: ^1.8.0

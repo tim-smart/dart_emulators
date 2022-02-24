@@ -72,7 +72,7 @@ final _shutdown = opGet()
     .p(SRTE.chainModify((s) => s.copyWith(booted: false, process: kNone)));
 
 final shutdown =
-    opGet().p(SRTE.flatMap((s) => s.booted ? _shutdown : SRTE.right(null)));
+    opGet().p(SRTE.flatMap((s) => s.booted ? _shutdown : SRTE.right(unit)));
 
 // == clean status bar
 final cleanStatusBar = opGet()
@@ -139,6 +139,6 @@ final maybeResolveName = opGet()
         )))
     .p(SRTE.map(_maybeParseName))
     .p(SRTE.flatMap(O.fold(
-      () => SRTE.right(null),
+      () => SRTE.right(unit),
       (name) => SRTE.modify((s) => s.copyWith(name: name)),
     )));
