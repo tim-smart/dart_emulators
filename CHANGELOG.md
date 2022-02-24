@@ -1,3 +1,7 @@
+## 0.4.7
+
+- Clean up exports some more
+
 ## 0.4.6
 
 - Export `Toolchain`, `ScreenshotHelper` and `ProcessRunner`.
