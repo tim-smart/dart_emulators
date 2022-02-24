@@ -1,3 +1,4 @@
+import 'package:emulators/src/device.dart';
 import 'package:emulators/src/flutter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -26,5 +27,6 @@ class DeviceError with _$DeviceError {
   const factory DeviceError.foreachFailure({
     required String phase,
     required String message,
+    DeviceState? device,
   }) = DeviceErrorForeachFailure;
 }

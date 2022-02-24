@@ -67,16 +67,25 @@ final listOp = RTE.sequence([
 
 // == forEach
 typedef ProcessDevice = Future<void> Function(Device);
-final _forEachDevice = (ProcessDevice process, Duration timeout) =>
-    (Device d) => TE
+
+final _findDevice = (IList<Device> devices) => (String nameOrId) => devices
+    .firstWhereOption((d) => d.state.id == nameOrId || d.state.name == nameOrId)
+    .p(E.fromOption(() => DeviceError.foreachFailure(
+          phase: '_findDevice',
+          message: 'Could not find device: $nameOrId',
+        )));
+
+final _processDevice =
+    (ProcessDevice process, Duration timeout) => (Device d) => TE
         .tryCatch(
           () => d.boot().then((_) => d.clone()),
           (err, stackTrace) => DeviceError.foreachFailure(
             phase: 'boot',
             message: err.toString(),
+            device: d.state,
           ),
         )
-        .p(TE.flatMapFirst(TE.tryCatchK(
+        .p(TE.flatMap(TE.tryCatchK(
           (booted) async {
             try {
               await d.waitUntilRunning(timeout: timeout);
@@ -88,11 +97,9 @@ final _forEachDevice = (ProcessDevice process, Duration timeout) =>
           (err, stackTrace) => DeviceError.foreachFailure(
             phase: 'process',
             message: err.toString(),
+            device: d.state,
           ),
-        )))
-        .p(TE.tapLeft((err) =>
-            stderr.writeln("Error processing device ${d.state.name}: $err")))
-        .p(TE.orElse(TE.right(d)));
+        )));
 
 final forEachOp = ({
   required ProcessDevice process,
@@ -101,11 +108,12 @@ final forEachOp = ({
 }) =>
     listOp
         .p(RTE.flatMapTaskEither(
-          (devices) => devices
-              .where((d) =>
-                  nameOrIds.contains(d.state.id) ||
-                  nameOrIds.contains(d.state.name))
-              .map(_forEachDevice(process, timeout))
+          (devices) => nameOrIds
+              .map(_findDevice(devices)
+                  .c(TE.fromEither)
+                  .c(TE.flatMap(_processDevice(process, timeout)))
+                  .c(TE.tapLeft(stderr.writeln))
+                  .c(TE.orElse(TE.right(null))))
               .p(TE.sequenceSeq),
         ))
         .p(RTE.map((_) => unit));
