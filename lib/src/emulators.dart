@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:emulators/src/device.dart';
+import 'package:emulators/src/device/ops.dart' as Ops;
 import 'package:emulators/src/environment.dart';
-import 'package:emulators/src/flutter.dart' as flutter;
+import 'package:emulators/src/flutter.dart' as Flutter;
 import 'package:emulators/src/screenshot_helper.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:fpdt/either.dart' as E;
@@ -25,11 +26,11 @@ class Emulators {
           )));
 
   /// List the available emulators
-  Future<IList<Device>> list() => listOp(toolchain)().then(E.unwrap);
+  Future<IList<Device>> list() => Ops.list(toolchain)().then(E.unwrap);
 
   /// List the running emulators
   Future<IList<Device>> running({bool onlyEmulators = true}) =>
-      flutter.running(onlyEmulators: onlyEmulators)(toolchain)().then(E.unwrap);
+      Flutter.running(onlyEmulators: onlyEmulators)(toolchain)().then(E.unwrap);
 
   /// Flutter drive helper
   Future<Process> drive(
@@ -38,13 +39,12 @@ class Emulators {
     List<String> args = const [],
     Map<String, dynamic> config = const {},
   }) =>
-      flutter
-          .drive(
-            device,
-            target,
-            args: args,
-            config: config,
-          )(toolchain)()
+      Flutter.drive(
+        device,
+        target,
+        args: args,
+        config: config,
+      )(toolchain)()
           .then(E.unwrap);
 
   /// Flutter test helper
@@ -54,17 +54,16 @@ class Emulators {
     List<String> args = const [],
     Map<String, dynamic> config = const {},
   }) =>
-      flutter
-          .test(
-            device,
-            target,
-            args: args,
-            config: config,
-          )(toolchain)()
+      Flutter.test(
+        device,
+        target,
+        args: args,
+        config: config,
+      )(toolchain)()
           .then(E.unwrap);
 
   /// Attempt to shutdown all running emulators on the host.
-  Future<void> shutdownAll() => shutdownAllOp(toolchain)().then(E.unwrap);
+  Future<void> shutdownAll() => Ops.shutdownAll(toolchain)().then(E.unwrap);
 
   ScreenshotHelper screenshotHelper({
     Device? device,
@@ -83,11 +82,11 @@ class Emulators {
         suffixes: suffixes,
       );
 
-  Future<void> Function(ProcessDevice process) forEach(
+  Future<void> Function(Ops.ProcessDevice process) forEach(
     Iterable<String> nameOrIds, {
     Duration timeout = const Duration(minutes: 3),
   }) =>
-      (process) => forEachOp(
+      (process) => Ops.forEach(
             nameOrIds: nameOrIds,
             timeout: timeout,
             process: process,
