@@ -14,8 +14,8 @@ import 'package:fpdt/task_either.dart' as TE;
 
 // == list
 final list = RTE.sequence([
-  android.list,
-  ios.list,
+  android.list.c(logOrElse(IList())),
+  ios.list.c(logOrElse(IList())),
 ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
 
 // == forEach
@@ -65,8 +65,7 @@ final forEach = ({
               .map(_findDevice(devices)
                   .c(TE.fromEither)
                   .c(TE.flatMap(_processDevice(process, timeout)))
-                  .c(TE.tapLeft(stderr.writeln))
-                  .c(TE.orElse(TE.right(null))))
+                  .c(logOrElse(null)))
               .p(TE.sequenceSeq),
         ))
         .p(RTE.map((_) => unit));

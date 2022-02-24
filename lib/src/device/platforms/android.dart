@@ -75,31 +75,31 @@ final shutdown =
     opGet().p(SRTE.flatMap((s) => s.booted ? _shutdown : SRTE.right(null)));
 
 // == clean status bar
-final DeviceOp<void> cleanStatusBar = opGet().p(SRTE.flatMapReaderTaskEither(
-  (s) => (tc) => [
-        // enable
-        'shell settings put global sysui_demo_allowed 1',
-        // display time 12:00
-        'shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200',
-        // Display full wifi
-        'shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4',
-        // Display full mobile data without type
-        'shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype false',
-        // Hide notifications
-        'shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false',
-        // Show full battery but not in charging state
-        'shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100'
-      ]
-          .map((args) => TE.tryCatch(
-                () => tc.adb(['-s', s.id, ...args.split(' ')]).string(),
-                (err, stackTrace) => DeviceError.toolchainFailure(
-                  op: 'cleanStatusBar',
-                  command: 'adb $args',
-                  message: '$err',
-                ),
-              ))
-          .p(TE.sequenceSeq),
-));
+final cleanStatusBar = opGet()
+    .p(SRTE.flatMapReaderTaskEither((s) => (tc) => [
+          // enable
+          'shell settings put global sysui_demo_allowed 1',
+          // display time 12:00
+          'shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200',
+          // Display full wifi
+          'shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4',
+          // Display full mobile data without type
+          'shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype false',
+          // Hide notifications
+          'shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false',
+          // Show full battery but not in charging state
+          'shell am broadcast -a com.android.systemui.demo -e command battery -e plugged false -e level 100'
+        ]
+            .map((args) => TE.tryCatch(
+                  () => tc.adb(['-s', s.id, ...args.split(' ')]).string(),
+                  (err, stackTrace) => DeviceError.toolchainFailure(
+                    op: 'cleanStatusBar',
+                    command: 'adb $args',
+                    message: '$err',
+                  ),
+                ))
+            .p(TE.sequenceSeq)))
+    .p(SRTE.call(SRTE.right(unit)));
 
 final screenshot = opGet().p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
       (tc) => tc.adb([
@@ -122,7 +122,7 @@ final _maybeParseName = stringOption
     .c(O.filter((parts) => parts.last == "OK"))
     .c(O.map((parts) => parts.first));
 
-final DeviceOp<void> maybeResolveName = opGet()
+final maybeResolveName = opGet()
     .p(SRTE.flatMapReaderTaskEither((s) => TE.tryCatchK(
           (tc) => tc.adb([
             "-s",
