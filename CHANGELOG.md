@@ -1,3 +1,7 @@
+## 0.4.5
+
+- Log error if device in `forEach` is not found.
+
 ## 0.4.4
 
 - Internal refactor
