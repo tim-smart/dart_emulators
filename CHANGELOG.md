@@ -1,3 +1,7 @@
+## 0.4.6
+
+- Export `Toolchain`, `ScreenshotHelper` and `ProcessRunner`.
+
 ## 0.4.5
 
 - Log error if device in `forEach` is not found.
