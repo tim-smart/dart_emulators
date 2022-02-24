@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ToolchainTearOff {
   const _$ToolchainTearOff();
 
-  _Toolchain _withPaths(
+  _Toolchain call(
       {required String adbPath,
       required String avdmanagerPath,
       required String emulatorPath,
@@ -183,7 +183,7 @@ class _$_Toolchain extends _Toolchain {
 
   @override
   String toString() {
-    return 'Toolchain._withPaths(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
+    return 'Toolchain(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
   }
 
   @override

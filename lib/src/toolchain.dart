@@ -44,7 +44,7 @@ final _xcrunPath = _which('xcrun').p(TO.getOrElse(() => 'xcrun'));
 class Toolchain with _$Toolchain {
   const Toolchain._();
 
-  const factory Toolchain._withPaths({
+  const factory Toolchain({
     required String adbPath,
     required String avdmanagerPath,
     required String emulatorPath,
@@ -59,7 +59,7 @@ class Toolchain with _$Toolchain {
         _flutterPath,
         _xcrunPath,
       ]).p(T.map(
-        (paths) => Toolchain._withPaths(
+        (paths) => Toolchain(
           adbPath: paths[0],
           avdmanagerPath: paths[1],
           emulatorPath: paths[2],

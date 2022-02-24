@@ -1,4 +1,4 @@
-import 'package:emulators/src/device.dart';
+import 'package:emulators/emulators.dart';
 import 'package:emulators/src/flutter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
