@@ -1,3 +1,7 @@
+## 0.4.9
+
+- Support `ANDROID_HOME` environment variable
+
 ## 0.4.8
 
 - Absorb errors in list operation, so it works if a platform is missing
