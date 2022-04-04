@@ -16,7 +16,9 @@ TO.TaskOption<String> _which(String exec) => TO
     .tryCatch(() => run('which', [exec]).string())
     .p(TO.filter((path) => path.isNotEmpty));
 
-final _androidSdk = O.fromNullable(Platform.environment['ANDROID_SDK_ROOT']);
+final _androidSdk = O
+    .fromNullable(Platform.environment['ANDROID_SDK_ROOT'])
+    .p(O.alt(() => O.fromNullable(Platform.environment["ANDROID_HOME"])));
 
 final _adbPath = _which('adb')
     .p(TO.alt(() => _androidSdk
