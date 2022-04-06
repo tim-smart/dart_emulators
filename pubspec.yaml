@@ -9,7 +9,7 @@ environment:
 dependencies:
   fpdt: ^0.0.59
   freezed_annotation: ^1.0.0
-  json_annotation: ^4.3.0
+  json_annotation: ^4.4.0
   path: ^1.8.0
 
 dev_dependencies:
