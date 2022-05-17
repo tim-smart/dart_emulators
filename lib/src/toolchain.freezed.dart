@@ -12,30 +12,7 @@ part of 'toolchain.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$ToolchainTearOff {
-  const _$ToolchainTearOff();
-
-  _Toolchain call(
-      {required String adbPath,
-      required String avdmanagerPath,
-      required String emulatorPath,
-      required String flutterPath,
-      required String xcrunPath}) {
-    return _Toolchain(
-      adbPath: adbPath,
-      avdmanagerPath: avdmanagerPath,
-      emulatorPath: emulatorPath,
-      flutterPath: flutterPath,
-      xcrunPath: xcrunPath,
-    );
-  }
-}
-
-/// @nodoc
-const $Toolchain = _$ToolchainTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Toolchain {
@@ -104,10 +81,10 @@ class _$ToolchainCopyWithImpl<$Res> implements $ToolchainCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
-  factory _$ToolchainCopyWith(
-          _Toolchain value, $Res Function(_Toolchain) then) =
-      __$ToolchainCopyWithImpl<$Res>;
+abstract class _$$_ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
+  factory _$$_ToolchainCopyWith(
+          _$_Toolchain value, $Res Function(_$_Toolchain) then) =
+      __$$_ToolchainCopyWithImpl<$Res>;
   @override
   $Res call(
       {String adbPath,
@@ -118,13 +95,14 @@ abstract class _$ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ToolchainCopyWithImpl<$Res> extends _$ToolchainCopyWithImpl<$Res>
-    implements _$ToolchainCopyWith<$Res> {
-  __$ToolchainCopyWithImpl(_Toolchain _value, $Res Function(_Toolchain) _then)
-      : super(_value, (v) => _then(v as _Toolchain));
+class __$$_ToolchainCopyWithImpl<$Res> extends _$ToolchainCopyWithImpl<$Res>
+    implements _$$_ToolchainCopyWith<$Res> {
+  __$$_ToolchainCopyWithImpl(
+      _$_Toolchain _value, $Res Function(_$_Toolchain) _then)
+      : super(_value, (v) => _then(v as _$_Toolchain));
 
   @override
-  _Toolchain get _value => super._value as _Toolchain;
+  _$_Toolchain get _value => super._value as _$_Toolchain;
 
   @override
   $Res call({
@@ -134,7 +112,7 @@ class __$ToolchainCopyWithImpl<$Res> extends _$ToolchainCopyWithImpl<$Res>
     Object? flutterPath = freezed,
     Object? xcrunPath = freezed,
   }) {
-    return _then(_Toolchain(
+    return _then(_$_Toolchain(
       adbPath: adbPath == freezed
           ? _value.adbPath
           : adbPath // ignore: cast_nullable_to_non_nullable
@@ -190,7 +168,7 @@ class _$_Toolchain extends _Toolchain {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Toolchain &&
+            other is _$_Toolchain &&
             const DeepCollectionEquality().equals(other.adbPath, adbPath) &&
             const DeepCollectionEquality()
                 .equals(other.avdmanagerPath, avdmanagerPath) &&
@@ -212,31 +190,31 @@ class _$_Toolchain extends _Toolchain {
 
   @JsonKey(ignore: true)
   @override
-  _$ToolchainCopyWith<_Toolchain> get copyWith =>
-      __$ToolchainCopyWithImpl<_Toolchain>(this, _$identity);
+  _$$_ToolchainCopyWith<_$_Toolchain> get copyWith =>
+      __$$_ToolchainCopyWithImpl<_$_Toolchain>(this, _$identity);
 }
 
 abstract class _Toolchain extends Toolchain {
   const factory _Toolchain(
-      {required String adbPath,
-      required String avdmanagerPath,
-      required String emulatorPath,
-      required String flutterPath,
-      required String xcrunPath}) = _$_Toolchain;
+      {required final String adbPath,
+      required final String avdmanagerPath,
+      required final String emulatorPath,
+      required final String flutterPath,
+      required final String xcrunPath}) = _$_Toolchain;
   const _Toolchain._() : super._();
 
   @override
-  String get adbPath;
+  String get adbPath => throw _privateConstructorUsedError;
   @override
-  String get avdmanagerPath;
+  String get avdmanagerPath => throw _privateConstructorUsedError;
   @override
-  String get emulatorPath;
+  String get emulatorPath => throw _privateConstructorUsedError;
   @override
-  String get flutterPath;
+  String get flutterPath => throw _privateConstructorUsedError;
   @override
-  String get xcrunPath;
+  String get xcrunPath => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ToolchainCopyWith<_Toolchain> get copyWith =>
+  _$$_ToolchainCopyWith<_$_Toolchain> get copyWith =>
       throw _privateConstructorUsedError;
 }

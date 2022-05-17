@@ -12,53 +12,7 @@ part of 'device_error.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$DeviceErrorTearOff {
-  const _$DeviceErrorTearOff();
-
-  DeviceErrorToolchainFailure toolchainFailure(
-      {required String op, required String command, required String message}) {
-    return DeviceErrorToolchainFailure(
-      op: op,
-      command: command,
-      message: message,
-    );
-  }
-
-  DeviceErrorProcessKillFailure processKillFailure(
-      {required String op, required String message}) {
-    return DeviceErrorProcessKillFailure(
-      op: op,
-      message: message,
-    );
-  }
-
-  DeviceErrorFlutterFailure flutterFailure(
-      {required String op, required FlutterError error}) {
-    return DeviceErrorFlutterFailure(
-      op: op,
-      error: error,
-    );
-  }
-
-  DeviceErrorUnimplementedFailure unimplemented() {
-    return const DeviceErrorUnimplementedFailure();
-  }
-
-  DeviceErrorForeachFailure foreachFailure(
-      {required String phase, required String message, DeviceState? device}) {
-    return DeviceErrorForeachFailure(
-      phase: phase,
-      message: message,
-      device: device,
-    );
-  }
-}
-
-/// @nodoc
-const $DeviceError = _$DeviceErrorTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$DeviceError {
@@ -146,25 +100,26 @@ class _$DeviceErrorCopyWithImpl<$Res> implements $DeviceErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $DeviceErrorToolchainFailureCopyWith<$Res> {
-  factory $DeviceErrorToolchainFailureCopyWith(
-          DeviceErrorToolchainFailure value,
-          $Res Function(DeviceErrorToolchainFailure) then) =
-      _$DeviceErrorToolchainFailureCopyWithImpl<$Res>;
+abstract class _$$DeviceErrorToolchainFailureCopyWith<$Res> {
+  factory _$$DeviceErrorToolchainFailureCopyWith(
+          _$DeviceErrorToolchainFailure value,
+          $Res Function(_$DeviceErrorToolchainFailure) then) =
+      __$$DeviceErrorToolchainFailureCopyWithImpl<$Res>;
   $Res call({String op, String command, String message});
 }
 
 /// @nodoc
-class _$DeviceErrorToolchainFailureCopyWithImpl<$Res>
+class __$$DeviceErrorToolchainFailureCopyWithImpl<$Res>
     extends _$DeviceErrorCopyWithImpl<$Res>
-    implements $DeviceErrorToolchainFailureCopyWith<$Res> {
-  _$DeviceErrorToolchainFailureCopyWithImpl(DeviceErrorToolchainFailure _value,
-      $Res Function(DeviceErrorToolchainFailure) _then)
-      : super(_value, (v) => _then(v as DeviceErrorToolchainFailure));
+    implements _$$DeviceErrorToolchainFailureCopyWith<$Res> {
+  __$$DeviceErrorToolchainFailureCopyWithImpl(
+      _$DeviceErrorToolchainFailure _value,
+      $Res Function(_$DeviceErrorToolchainFailure) _then)
+      : super(_value, (v) => _then(v as _$DeviceErrorToolchainFailure));
 
   @override
-  DeviceErrorToolchainFailure get _value =>
-      super._value as DeviceErrorToolchainFailure;
+  _$DeviceErrorToolchainFailure get _value =>
+      super._value as _$DeviceErrorToolchainFailure;
 
   @override
   $Res call({
@@ -172,7 +127,7 @@ class _$DeviceErrorToolchainFailureCopyWithImpl<$Res>
     Object? command = freezed,
     Object? message = freezed,
   }) {
-    return _then(DeviceErrorToolchainFailure(
+    return _then(_$DeviceErrorToolchainFailure(
       op: op == freezed
           ? _value.op
           : op // ignore: cast_nullable_to_non_nullable
@@ -211,7 +166,7 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceErrorToolchainFailure &&
+            other is _$DeviceErrorToolchainFailure &&
             const DeepCollectionEquality().equals(other.op, op) &&
             const DeepCollectionEquality().equals(other.command, command) &&
             const DeepCollectionEquality().equals(other.message, message));
@@ -226,9 +181,9 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
 
   @JsonKey(ignore: true)
   @override
-  $DeviceErrorToolchainFailureCopyWith<DeviceErrorToolchainFailure>
-      get copyWith => _$DeviceErrorToolchainFailureCopyWithImpl<
-          DeviceErrorToolchainFailure>(this, _$identity);
+  _$$DeviceErrorToolchainFailureCopyWith<_$DeviceErrorToolchainFailure>
+      get copyWith => __$$DeviceErrorToolchainFailureCopyWithImpl<
+          _$DeviceErrorToolchainFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -322,46 +277,46 @@ class _$DeviceErrorToolchainFailure implements DeviceErrorToolchainFailure {
 
 abstract class DeviceErrorToolchainFailure implements DeviceError {
   const factory DeviceErrorToolchainFailure(
-      {required String op,
-      required String command,
-      required String message}) = _$DeviceErrorToolchainFailure;
+      {required final String op,
+      required final String command,
+      required final String message}) = _$DeviceErrorToolchainFailure;
 
-  String get op;
-  String get command;
-  String get message;
+  String get op => throw _privateConstructorUsedError;
+  String get command => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DeviceErrorToolchainFailureCopyWith<DeviceErrorToolchainFailure>
+  _$$DeviceErrorToolchainFailureCopyWith<_$DeviceErrorToolchainFailure>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DeviceErrorProcessKillFailureCopyWith<$Res> {
-  factory $DeviceErrorProcessKillFailureCopyWith(
-          DeviceErrorProcessKillFailure value,
-          $Res Function(DeviceErrorProcessKillFailure) then) =
-      _$DeviceErrorProcessKillFailureCopyWithImpl<$Res>;
+abstract class _$$DeviceErrorProcessKillFailureCopyWith<$Res> {
+  factory _$$DeviceErrorProcessKillFailureCopyWith(
+          _$DeviceErrorProcessKillFailure value,
+          $Res Function(_$DeviceErrorProcessKillFailure) then) =
+      __$$DeviceErrorProcessKillFailureCopyWithImpl<$Res>;
   $Res call({String op, String message});
 }
 
 /// @nodoc
-class _$DeviceErrorProcessKillFailureCopyWithImpl<$Res>
+class __$$DeviceErrorProcessKillFailureCopyWithImpl<$Res>
     extends _$DeviceErrorCopyWithImpl<$Res>
-    implements $DeviceErrorProcessKillFailureCopyWith<$Res> {
-  _$DeviceErrorProcessKillFailureCopyWithImpl(
-      DeviceErrorProcessKillFailure _value,
-      $Res Function(DeviceErrorProcessKillFailure) _then)
-      : super(_value, (v) => _then(v as DeviceErrorProcessKillFailure));
+    implements _$$DeviceErrorProcessKillFailureCopyWith<$Res> {
+  __$$DeviceErrorProcessKillFailureCopyWithImpl(
+      _$DeviceErrorProcessKillFailure _value,
+      $Res Function(_$DeviceErrorProcessKillFailure) _then)
+      : super(_value, (v) => _then(v as _$DeviceErrorProcessKillFailure));
 
   @override
-  DeviceErrorProcessKillFailure get _value =>
-      super._value as DeviceErrorProcessKillFailure;
+  _$DeviceErrorProcessKillFailure get _value =>
+      super._value as _$DeviceErrorProcessKillFailure;
 
   @override
   $Res call({
     Object? op = freezed,
     Object? message = freezed,
   }) {
-    return _then(DeviceErrorProcessKillFailure(
+    return _then(_$DeviceErrorProcessKillFailure(
       op: op == freezed
           ? _value.op
           : op // ignore: cast_nullable_to_non_nullable
@@ -394,7 +349,7 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceErrorProcessKillFailure &&
+            other is _$DeviceErrorProcessKillFailure &&
             const DeepCollectionEquality().equals(other.op, op) &&
             const DeepCollectionEquality().equals(other.message, message));
   }
@@ -407,9 +362,9 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
 
   @JsonKey(ignore: true)
   @override
-  $DeviceErrorProcessKillFailureCopyWith<DeviceErrorProcessKillFailure>
-      get copyWith => _$DeviceErrorProcessKillFailureCopyWithImpl<
-          DeviceErrorProcessKillFailure>(this, _$identity);
+  _$$DeviceErrorProcessKillFailureCopyWith<_$DeviceErrorProcessKillFailure>
+      get copyWith => __$$DeviceErrorProcessKillFailureCopyWithImpl<
+          _$DeviceErrorProcessKillFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -503,44 +458,45 @@ class _$DeviceErrorProcessKillFailure implements DeviceErrorProcessKillFailure {
 
 abstract class DeviceErrorProcessKillFailure implements DeviceError {
   const factory DeviceErrorProcessKillFailure(
-      {required String op,
-      required String message}) = _$DeviceErrorProcessKillFailure;
+      {required final String op,
+      required final String message}) = _$DeviceErrorProcessKillFailure;
 
-  String get op;
-  String get message;
+  String get op => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DeviceErrorProcessKillFailureCopyWith<DeviceErrorProcessKillFailure>
+  _$$DeviceErrorProcessKillFailureCopyWith<_$DeviceErrorProcessKillFailure>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DeviceErrorFlutterFailureCopyWith<$Res> {
-  factory $DeviceErrorFlutterFailureCopyWith(DeviceErrorFlutterFailure value,
-          $Res Function(DeviceErrorFlutterFailure) then) =
-      _$DeviceErrorFlutterFailureCopyWithImpl<$Res>;
+abstract class _$$DeviceErrorFlutterFailureCopyWith<$Res> {
+  factory _$$DeviceErrorFlutterFailureCopyWith(
+          _$DeviceErrorFlutterFailure value,
+          $Res Function(_$DeviceErrorFlutterFailure) then) =
+      __$$DeviceErrorFlutterFailureCopyWithImpl<$Res>;
   $Res call({String op, FlutterError error});
 
   $FlutterErrorCopyWith<$Res> get error;
 }
 
 /// @nodoc
-class _$DeviceErrorFlutterFailureCopyWithImpl<$Res>
+class __$$DeviceErrorFlutterFailureCopyWithImpl<$Res>
     extends _$DeviceErrorCopyWithImpl<$Res>
-    implements $DeviceErrorFlutterFailureCopyWith<$Res> {
-  _$DeviceErrorFlutterFailureCopyWithImpl(DeviceErrorFlutterFailure _value,
-      $Res Function(DeviceErrorFlutterFailure) _then)
-      : super(_value, (v) => _then(v as DeviceErrorFlutterFailure));
+    implements _$$DeviceErrorFlutterFailureCopyWith<$Res> {
+  __$$DeviceErrorFlutterFailureCopyWithImpl(_$DeviceErrorFlutterFailure _value,
+      $Res Function(_$DeviceErrorFlutterFailure) _then)
+      : super(_value, (v) => _then(v as _$DeviceErrorFlutterFailure));
 
   @override
-  DeviceErrorFlutterFailure get _value =>
-      super._value as DeviceErrorFlutterFailure;
+  _$DeviceErrorFlutterFailure get _value =>
+      super._value as _$DeviceErrorFlutterFailure;
 
   @override
   $Res call({
     Object? op = freezed,
     Object? error = freezed,
   }) {
-    return _then(DeviceErrorFlutterFailure(
+    return _then(_$DeviceErrorFlutterFailure(
       op: op == freezed
           ? _value.op
           : op // ignore: cast_nullable_to_non_nullable
@@ -579,7 +535,7 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceErrorFlutterFailure &&
+            other is _$DeviceErrorFlutterFailure &&
             const DeepCollectionEquality().equals(other.op, op) &&
             const DeepCollectionEquality().equals(other.error, error));
   }
@@ -592,9 +548,9 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
 
   @JsonKey(ignore: true)
   @override
-  $DeviceErrorFlutterFailureCopyWith<DeviceErrorFlutterFailure> get copyWith =>
-      _$DeviceErrorFlutterFailureCopyWithImpl<DeviceErrorFlutterFailure>(
-          this, _$identity);
+  _$$DeviceErrorFlutterFailureCopyWith<_$DeviceErrorFlutterFailure>
+      get copyWith => __$$DeviceErrorFlutterFailureCopyWithImpl<
+          _$DeviceErrorFlutterFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -688,36 +644,36 @@ class _$DeviceErrorFlutterFailure implements DeviceErrorFlutterFailure {
 
 abstract class DeviceErrorFlutterFailure implements DeviceError {
   const factory DeviceErrorFlutterFailure(
-      {required String op,
-      required FlutterError error}) = _$DeviceErrorFlutterFailure;
+      {required final String op,
+      required final FlutterError error}) = _$DeviceErrorFlutterFailure;
 
-  String get op;
-  FlutterError get error;
+  String get op => throw _privateConstructorUsedError;
+  FlutterError get error => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DeviceErrorFlutterFailureCopyWith<DeviceErrorFlutterFailure> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DeviceErrorFlutterFailureCopyWith<_$DeviceErrorFlutterFailure>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DeviceErrorUnimplementedFailureCopyWith<$Res> {
-  factory $DeviceErrorUnimplementedFailureCopyWith(
-          DeviceErrorUnimplementedFailure value,
-          $Res Function(DeviceErrorUnimplementedFailure) then) =
-      _$DeviceErrorUnimplementedFailureCopyWithImpl<$Res>;
+abstract class _$$DeviceErrorUnimplementedFailureCopyWith<$Res> {
+  factory _$$DeviceErrorUnimplementedFailureCopyWith(
+          _$DeviceErrorUnimplementedFailure value,
+          $Res Function(_$DeviceErrorUnimplementedFailure) then) =
+      __$$DeviceErrorUnimplementedFailureCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$DeviceErrorUnimplementedFailureCopyWithImpl<$Res>
+class __$$DeviceErrorUnimplementedFailureCopyWithImpl<$Res>
     extends _$DeviceErrorCopyWithImpl<$Res>
-    implements $DeviceErrorUnimplementedFailureCopyWith<$Res> {
-  _$DeviceErrorUnimplementedFailureCopyWithImpl(
-      DeviceErrorUnimplementedFailure _value,
-      $Res Function(DeviceErrorUnimplementedFailure) _then)
-      : super(_value, (v) => _then(v as DeviceErrorUnimplementedFailure));
+    implements _$$DeviceErrorUnimplementedFailureCopyWith<$Res> {
+  __$$DeviceErrorUnimplementedFailureCopyWithImpl(
+      _$DeviceErrorUnimplementedFailure _value,
+      $Res Function(_$DeviceErrorUnimplementedFailure) _then)
+      : super(_value, (v) => _then(v as _$DeviceErrorUnimplementedFailure));
 
   @override
-  DeviceErrorUnimplementedFailure get _value =>
-      super._value as DeviceErrorUnimplementedFailure;
+  _$DeviceErrorUnimplementedFailure get _value =>
+      super._value as _$DeviceErrorUnimplementedFailure;
 }
 
 /// @nodoc
@@ -735,7 +691,7 @@ class _$DeviceErrorUnimplementedFailure
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceErrorUnimplementedFailure);
+            other is _$DeviceErrorUnimplementedFailure);
   }
 
   @override
@@ -837,26 +793,27 @@ abstract class DeviceErrorUnimplementedFailure implements DeviceError {
 }
 
 /// @nodoc
-abstract class $DeviceErrorForeachFailureCopyWith<$Res> {
-  factory $DeviceErrorForeachFailureCopyWith(DeviceErrorForeachFailure value,
-          $Res Function(DeviceErrorForeachFailure) then) =
-      _$DeviceErrorForeachFailureCopyWithImpl<$Res>;
+abstract class _$$DeviceErrorForeachFailureCopyWith<$Res> {
+  factory _$$DeviceErrorForeachFailureCopyWith(
+          _$DeviceErrorForeachFailure value,
+          $Res Function(_$DeviceErrorForeachFailure) then) =
+      __$$DeviceErrorForeachFailureCopyWithImpl<$Res>;
   $Res call({String phase, String message, DeviceState? device});
 
   $DeviceStateCopyWith<$Res>? get device;
 }
 
 /// @nodoc
-class _$DeviceErrorForeachFailureCopyWithImpl<$Res>
+class __$$DeviceErrorForeachFailureCopyWithImpl<$Res>
     extends _$DeviceErrorCopyWithImpl<$Res>
-    implements $DeviceErrorForeachFailureCopyWith<$Res> {
-  _$DeviceErrorForeachFailureCopyWithImpl(DeviceErrorForeachFailure _value,
-      $Res Function(DeviceErrorForeachFailure) _then)
-      : super(_value, (v) => _then(v as DeviceErrorForeachFailure));
+    implements _$$DeviceErrorForeachFailureCopyWith<$Res> {
+  __$$DeviceErrorForeachFailureCopyWithImpl(_$DeviceErrorForeachFailure _value,
+      $Res Function(_$DeviceErrorForeachFailure) _then)
+      : super(_value, (v) => _then(v as _$DeviceErrorForeachFailure));
 
   @override
-  DeviceErrorForeachFailure get _value =>
-      super._value as DeviceErrorForeachFailure;
+  _$DeviceErrorForeachFailure get _value =>
+      super._value as _$DeviceErrorForeachFailure;
 
   @override
   $Res call({
@@ -864,7 +821,7 @@ class _$DeviceErrorForeachFailureCopyWithImpl<$Res>
     Object? message = freezed,
     Object? device = freezed,
   }) {
-    return _then(DeviceErrorForeachFailure(
+    return _then(_$DeviceErrorForeachFailure(
       phase: phase == freezed
           ? _value.phase
           : phase // ignore: cast_nullable_to_non_nullable
@@ -914,7 +871,7 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is DeviceErrorForeachFailure &&
+            other is _$DeviceErrorForeachFailure &&
             const DeepCollectionEquality().equals(other.phase, phase) &&
             const DeepCollectionEquality().equals(other.message, message) &&
             const DeepCollectionEquality().equals(other.device, device));
@@ -929,9 +886,9 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
 
   @JsonKey(ignore: true)
   @override
-  $DeviceErrorForeachFailureCopyWith<DeviceErrorForeachFailure> get copyWith =>
-      _$DeviceErrorForeachFailureCopyWithImpl<DeviceErrorForeachFailure>(
-          this, _$identity);
+  _$$DeviceErrorForeachFailureCopyWith<_$DeviceErrorForeachFailure>
+      get copyWith => __$$DeviceErrorForeachFailureCopyWithImpl<
+          _$DeviceErrorForeachFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1025,14 +982,14 @@ class _$DeviceErrorForeachFailure implements DeviceErrorForeachFailure {
 
 abstract class DeviceErrorForeachFailure implements DeviceError {
   const factory DeviceErrorForeachFailure(
-      {required String phase,
-      required String message,
-      DeviceState? device}) = _$DeviceErrorForeachFailure;
+      {required final String phase,
+      required final String message,
+      final DeviceState? device}) = _$DeviceErrorForeachFailure;
 
-  String get phase;
-  String get message;
-  DeviceState? get device;
+  String get phase => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
+  DeviceState? get device => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DeviceErrorForeachFailureCopyWith<DeviceErrorForeachFailure> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DeviceErrorForeachFailureCopyWith<_$DeviceErrorForeachFailure>
+      get copyWith => throw _privateConstructorUsedError;
 }

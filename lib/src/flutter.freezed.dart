@@ -12,36 +12,11 @@ part of 'flutter.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
-
-/// @nodoc
-class _$FlutterErrorTearOff {
-  const _$FlutterErrorTearOff();
-
-  FlutterErrorToolchainFailure toolchainFailure(
-      {required String op, required String message}) {
-    return FlutterErrorToolchainFailure(
-      op: op,
-      message: message,
-    );
-  }
-
-  FlutterErrorDeviceFailure deviceFailure(
-      {required DeviceState state, required String message}) {
-    return FlutterErrorDeviceFailure(
-      state: state,
-      message: message,
-    );
-  }
-}
-
-/// @nodoc
-const $FlutterError = _$FlutterErrorTearOff();
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$FlutterError {
   String get message => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String op, String message) toolchainFailure,
@@ -117,35 +92,35 @@ class _$FlutterErrorCopyWithImpl<$Res> implements $FlutterErrorCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $FlutterErrorToolchainFailureCopyWith<$Res>
+abstract class _$$FlutterErrorToolchainFailureCopyWith<$Res>
     implements $FlutterErrorCopyWith<$Res> {
-  factory $FlutterErrorToolchainFailureCopyWith(
-          FlutterErrorToolchainFailure value,
-          $Res Function(FlutterErrorToolchainFailure) then) =
-      _$FlutterErrorToolchainFailureCopyWithImpl<$Res>;
+  factory _$$FlutterErrorToolchainFailureCopyWith(
+          _$FlutterErrorToolchainFailure value,
+          $Res Function(_$FlutterErrorToolchainFailure) then) =
+      __$$FlutterErrorToolchainFailureCopyWithImpl<$Res>;
   @override
   $Res call({String op, String message});
 }
 
 /// @nodoc
-class _$FlutterErrorToolchainFailureCopyWithImpl<$Res>
+class __$$FlutterErrorToolchainFailureCopyWithImpl<$Res>
     extends _$FlutterErrorCopyWithImpl<$Res>
-    implements $FlutterErrorToolchainFailureCopyWith<$Res> {
-  _$FlutterErrorToolchainFailureCopyWithImpl(
-      FlutterErrorToolchainFailure _value,
-      $Res Function(FlutterErrorToolchainFailure) _then)
-      : super(_value, (v) => _then(v as FlutterErrorToolchainFailure));
+    implements _$$FlutterErrorToolchainFailureCopyWith<$Res> {
+  __$$FlutterErrorToolchainFailureCopyWithImpl(
+      _$FlutterErrorToolchainFailure _value,
+      $Res Function(_$FlutterErrorToolchainFailure) _then)
+      : super(_value, (v) => _then(v as _$FlutterErrorToolchainFailure));
 
   @override
-  FlutterErrorToolchainFailure get _value =>
-      super._value as FlutterErrorToolchainFailure;
+  _$FlutterErrorToolchainFailure get _value =>
+      super._value as _$FlutterErrorToolchainFailure;
 
   @override
   $Res call({
     Object? op = freezed,
     Object? message = freezed,
   }) {
-    return _then(FlutterErrorToolchainFailure(
+    return _then(_$FlutterErrorToolchainFailure(
       op: op == freezed
           ? _value.op
           : op // ignore: cast_nullable_to_non_nullable
@@ -178,7 +153,7 @@ class _$FlutterErrorToolchainFailure implements FlutterErrorToolchainFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is FlutterErrorToolchainFailure &&
+            other is _$FlutterErrorToolchainFailure &&
             const DeepCollectionEquality().equals(other.op, op) &&
             const DeepCollectionEquality().equals(other.message, message));
   }
@@ -191,9 +166,9 @@ class _$FlutterErrorToolchainFailure implements FlutterErrorToolchainFailure {
 
   @JsonKey(ignore: true)
   @override
-  $FlutterErrorToolchainFailureCopyWith<FlutterErrorToolchainFailure>
-      get copyWith => _$FlutterErrorToolchainFailureCopyWithImpl<
-          FlutterErrorToolchainFailure>(this, _$identity);
+  _$$FlutterErrorToolchainFailureCopyWith<_$FlutterErrorToolchainFailure>
+      get copyWith => __$$FlutterErrorToolchainFailureCopyWithImpl<
+          _$FlutterErrorToolchainFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -261,24 +236,25 @@ class _$FlutterErrorToolchainFailure implements FlutterErrorToolchainFailure {
 
 abstract class FlutterErrorToolchainFailure implements FlutterError {
   const factory FlutterErrorToolchainFailure(
-      {required String op,
-      required String message}) = _$FlutterErrorToolchainFailure;
+      {required final String op,
+      required final String message}) = _$FlutterErrorToolchainFailure;
 
-  String get op;
+  String get op => throw _privateConstructorUsedError;
   @override
-  String get message;
+  String get message => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $FlutterErrorToolchainFailureCopyWith<FlutterErrorToolchainFailure>
+  _$$FlutterErrorToolchainFailureCopyWith<_$FlutterErrorToolchainFailure>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FlutterErrorDeviceFailureCopyWith<$Res>
+abstract class _$$FlutterErrorDeviceFailureCopyWith<$Res>
     implements $FlutterErrorCopyWith<$Res> {
-  factory $FlutterErrorDeviceFailureCopyWith(FlutterErrorDeviceFailure value,
-          $Res Function(FlutterErrorDeviceFailure) then) =
-      _$FlutterErrorDeviceFailureCopyWithImpl<$Res>;
+  factory _$$FlutterErrorDeviceFailureCopyWith(
+          _$FlutterErrorDeviceFailure value,
+          $Res Function(_$FlutterErrorDeviceFailure) then) =
+      __$$FlutterErrorDeviceFailureCopyWithImpl<$Res>;
   @override
   $Res call({DeviceState state, String message});
 
@@ -286,23 +262,23 @@ abstract class $FlutterErrorDeviceFailureCopyWith<$Res>
 }
 
 /// @nodoc
-class _$FlutterErrorDeviceFailureCopyWithImpl<$Res>
+class __$$FlutterErrorDeviceFailureCopyWithImpl<$Res>
     extends _$FlutterErrorCopyWithImpl<$Res>
-    implements $FlutterErrorDeviceFailureCopyWith<$Res> {
-  _$FlutterErrorDeviceFailureCopyWithImpl(FlutterErrorDeviceFailure _value,
-      $Res Function(FlutterErrorDeviceFailure) _then)
-      : super(_value, (v) => _then(v as FlutterErrorDeviceFailure));
+    implements _$$FlutterErrorDeviceFailureCopyWith<$Res> {
+  __$$FlutterErrorDeviceFailureCopyWithImpl(_$FlutterErrorDeviceFailure _value,
+      $Res Function(_$FlutterErrorDeviceFailure) _then)
+      : super(_value, (v) => _then(v as _$FlutterErrorDeviceFailure));
 
   @override
-  FlutterErrorDeviceFailure get _value =>
-      super._value as FlutterErrorDeviceFailure;
+  _$FlutterErrorDeviceFailure get _value =>
+      super._value as _$FlutterErrorDeviceFailure;
 
   @override
   $Res call({
     Object? state = freezed,
     Object? message = freezed,
   }) {
-    return _then(FlutterErrorDeviceFailure(
+    return _then(_$FlutterErrorDeviceFailure(
       state: state == freezed
           ? _value.state
           : state // ignore: cast_nullable_to_non_nullable
@@ -342,7 +318,7 @@ class _$FlutterErrorDeviceFailure implements FlutterErrorDeviceFailure {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is FlutterErrorDeviceFailure &&
+            other is _$FlutterErrorDeviceFailure &&
             const DeepCollectionEquality().equals(other.state, state) &&
             const DeepCollectionEquality().equals(other.message, message));
   }
@@ -355,9 +331,9 @@ class _$FlutterErrorDeviceFailure implements FlutterErrorDeviceFailure {
 
   @JsonKey(ignore: true)
   @override
-  $FlutterErrorDeviceFailureCopyWith<FlutterErrorDeviceFailure> get copyWith =>
-      _$FlutterErrorDeviceFailureCopyWithImpl<FlutterErrorDeviceFailure>(
-          this, _$identity);
+  _$$FlutterErrorDeviceFailureCopyWith<_$FlutterErrorDeviceFailure>
+      get copyWith => __$$FlutterErrorDeviceFailureCopyWithImpl<
+          _$FlutterErrorDeviceFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -425,14 +401,14 @@ class _$FlutterErrorDeviceFailure implements FlutterErrorDeviceFailure {
 
 abstract class FlutterErrorDeviceFailure implements FlutterError {
   const factory FlutterErrorDeviceFailure(
-      {required DeviceState state,
-      required String message}) = _$FlutterErrorDeviceFailure;
+      {required final DeviceState state,
+      required final String message}) = _$FlutterErrorDeviceFailure;
 
-  DeviceState get state;
+  DeviceState get state => throw _privateConstructorUsedError;
   @override
-  String get message;
+  String get message => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  $FlutterErrorDeviceFailureCopyWith<FlutterErrorDeviceFailure> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$FlutterErrorDeviceFailureCopyWith<_$FlutterErrorDeviceFailure>
+      get copyWith => throw _privateConstructorUsedError;
 }
