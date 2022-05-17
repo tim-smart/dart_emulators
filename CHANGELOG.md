@@ -1,3 +1,7 @@
+## 0.4.10
+
+- Update deps
+
 ## 0.4.9
 
 - Support `ANDROID_HOME` environment variable
