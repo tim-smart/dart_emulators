@@ -70,9 +70,16 @@ class Emulators {
     required String iosPath,
     required String androidPath,
     List<String> suffixes = const [],
+    bool disable = false,
   }) =>
       ScreenshotHelper(
-        device: device ?? currentDevice().p(O.toNullable),
+        device: disable
+            ? null
+            : device ??
+                currentDevice().p(O.fold(
+                  () => throw 'screenshotHelper: cannot find current device',
+                  (d) => d,
+                )),
         androidPath: androidPath,
         iosPath: iosPath,
         suffixes: suffixes,
