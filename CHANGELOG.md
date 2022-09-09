@@ -1,3 +1,7 @@
+## 0.4.12
+
+- Allow disabling the ScreenshotHelper, for running tests without screenshots.
+
 ## 0.4.11
 
 - Add optional `modifyState` callback to Device#clone
