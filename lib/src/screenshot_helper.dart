@@ -11,18 +11,20 @@ class ScreenshotHelper {
     this.suffixes = const [],
   });
 
-  final Device device;
+  final Device? device;
   final String androidPath;
   final String iosPath;
   final List<String> suffixes;
 
-  Future<void> cleanStatusBar() => device.cleanStatusBar();
+  Future<void> cleanStatusBar() => device?.cleanStatusBar() ?? Future.value();
 
   Future<void> capture(String name) async {
-    final image = await device.screenshot();
-    final file = [device.state.name, ...suffixes, '$name.png'].join('_');
+    if (device == null) return;
+
+    final image = await device!.screenshot();
+    final file = [device!.state.name, ...suffixes, '$name.png'].join('_');
     final basePath =
-        device.state.platform == DevicePlatform.ios ? iosPath : androidPath;
+        device!.state.platform == DevicePlatform.ios ? iosPath : androidPath;
     final filePath = path.join(basePath, file);
 
     await Directory(basePath).create(recursive: true);
