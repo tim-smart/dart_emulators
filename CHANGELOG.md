@@ -1,3 +1,7 @@
+## 0.4.11
+
+- Add optional `modifyState` callback to Device#clone
+
 ## 0.4.10
 
 - Update deps

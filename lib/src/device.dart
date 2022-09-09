@@ -46,5 +46,8 @@ class Device {
   }) =>
       _run(Ops.waitUntilRunning).timeout(timeout);
 
-  Device clone() => Device(state: state, toolchain: toolchain);
+  Device clone([DeviceState Function(DeviceState s)? modifyState]) => Device(
+        state: modifyState?.call(state) ?? state,
+        toolchain: toolchain,
+      );
 }
