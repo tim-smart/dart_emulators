@@ -10,6 +10,8 @@ typedef DeviceOp<R>
     = StateReaderTaskEither<DeviceState, Toolchain, DeviceError, R>;
 
 DeviceOp<DeviceState> opGet() => get();
+DeviceOp<A> opDo<A>(DoFunction<DeviceState, Toolchain, DeviceError, A> f) =>
+    Do(f);
 
 DeviceOp<R> platformOp<R>({
   required DeviceOp<R> android,

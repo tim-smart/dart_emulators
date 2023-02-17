@@ -20,7 +20,8 @@ class Device {
   DeviceState get state => _s.state;
   Toolchain get toolchain => _s.context;
 
-  Future<T> _run<T>(DeviceOp<T> op) => _s.evaluate(op).then(E.unwrap);
+  Future<T> _run<T>(DeviceOp<T> op) =>
+      Future.value(_s.evaluate(op).flatMap(E.unwrap));
 
   /// Boot the device
   Future<void> boot() => _run(Ops.boot);

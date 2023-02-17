@@ -54,13 +54,15 @@ class Toolchain with _$Toolchain {
     required String xcrunPath,
   }) = _Toolchain;
 
-  static Future<Toolchain> build() => T.sequence([
+  static Future<Toolchain> build() => T
+      .sequence([
         _adbPath,
         _avdmanagerPath,
         _emulatorPath,
         _flutterPath,
         _xcrunPath,
-      ]).p(T.map(
+      ])
+      .p(T.map(
         (paths) => Toolchain(
           adbPath: paths[0],
           avdmanagerPath: paths[1],
@@ -68,7 +70,8 @@ class Toolchain with _$Toolchain {
           flutterPath: paths[3],
           xcrunPath: paths[4],
         ),
-      ))();
+      ))
+      .p(Future.sync);
 
   /// Wrapper for the `flutter` CLI tool.
   ProcessRunner flutter(
