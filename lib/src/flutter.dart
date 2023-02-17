@@ -45,19 +45,25 @@ final _resolveDeviceNames = (IList<Device> devices) => devices
         ))
     .p(TE.sequence);
 
-FlutterOp<IList<Device>> running({bool onlyEmulators = true}) => _ask()
-    .p(RTE.chainTryCatchK(
-      (tc) => tc.flutter(['devices']).string(),
-      (err, stackTrace) => FlutterError.toolchainFailure(
-        op: 'running',
-        message: '$err',
-      ),
-    ))
-    .p(RTE.flatMapReader(_devicesFromOutput))
-    .p(RTE.map((devices) => onlyEmulators
-        ? devices.where((d) => d.state.emulator).toIList()
-        : devices))
-    .p(RTE.flatMapFirst(_resolveDeviceNames.c(RTE.fromTaskEither)));
+FlutterOp<IList<Device>> running({bool onlyEmulators = true}) =>
+    RTE.Do(($, tc) async {
+      final output = await $(RTE.tryCatch(
+        () => tc.flutter(['devices']).string(),
+        (err, stackTrace) => FlutterError.toolchainFailure(
+          op: 'running',
+          message: '$err',
+        ),
+      ));
+
+      var devices = _devicesFromOutput(output)(tc);
+      if (onlyEmulators) {
+        devices = devices.where((d) => d.state.emulator).toIList();
+      }
+
+      await $(RTE.fromTaskEither(_resolveDeviceNames(devices)));
+
+      return devices;
+    });
 
 /// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take

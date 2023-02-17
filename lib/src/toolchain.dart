@@ -71,7 +71,7 @@ class Toolchain with _$Toolchain {
           xcrunPath: paths[4],
         ),
       ))
-      .p(Future.sync);
+      .p((_) => Future.sync(_.call));
 
   /// Wrapper for the `flutter` CLI tool.
   ProcessRunner flutter(

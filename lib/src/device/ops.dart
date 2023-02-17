@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:emulators/emulators.dart';
 import 'package:emulators/src/device/platforms/android.dart' as android;
 import 'package:emulators/src/device/platforms/ios.dart' as ios;
@@ -6,14 +8,13 @@ import 'package:emulators/src/flutter.dart' as flutter;
 import 'package:fpdt/either.dart' as E;
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/option.dart' as O;
+import 'package:fpdt/task_either.dart' as TE;
 import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart' as SRTE;
-import 'package:fpdt/task_either.dart' as TE;
 
-// == list
 final list = RTE.sequence([
-  android.list.c(logOrElse(IList())),
-  ios.list.c(logOrElse(IList())),
+  android.list.p(logOrElse(IList())),
+  ios.list.p(logOrElse(IList())),
 ]).p(RTE.map((l) => l.expand<Device>(identity).toIList()));
 
 // == forEach
@@ -36,7 +37,7 @@ final _processDevice =
             device: d.state,
           ),
         )
-        .p(TE.flatMap(TE.tryCatchK(
+        .p(TE.chainTryCatchK(
           (booted) async {
             try {
               await d.waitUntilRunning(timeout: timeout);
@@ -50,37 +51,39 @@ final _processDevice =
             message: err.toString(),
             device: d.state,
           ),
-        )));
+        ))
+        .p(TE.asUnit);
 
 final forEach = ({
   required ProcessDevice process,
   required Iterable<String> nameOrIds,
   Duration timeout = const Duration(minutes: 3),
 }) =>
-    list
-        .p(RTE.flatMapTaskEither(
-          (devices) => nameOrIds
-              .map(_findDevice(devices)
-                  .c(TE.fromEither)
-                  .c(TE.flatMap(_processDevice(process, timeout)))
-                  .c(logOrElse(null)))
-              .p(TE.sequenceSeq),
-        ))
-        .p(RTE.map((_) => unit));
+    toolchainDo(($, tc) async {
+      final devices = await $(list);
 
-// == boot
+      final task = nameOrIds
+          .map(_findDevice(devices)
+              .c(TE.fromEither)
+              .c(TE.flatMap(_processDevice(process, timeout)))
+              .c(TE.tapLeft((left) => stderr.writeln(left)))
+              .c(TE.orElse(TE.unit())))
+          .p(TE.sequence);
+      await $(RTE.fromTaskEither(task));
+
+      return unit;
+    });
+
 final boot = platformOp(
   android: android.boot,
   ios: ios.boot,
 );
 
-// == shutdown
 final shutdown = platformOp(
   android: android.shutdown,
   ios: ios.shutdown,
 );
 
-// == shutdownAll
 final shutdownAll = flutter
     .running()
     .p(RTE.mapLeft((l) => DeviceError.flutterFailure(
@@ -92,25 +95,21 @@ final shutdownAll = flutter
     ))
     .p(RTE.map((_) => unit));
 
-// == cleanStatusBar
 final cleanStatusBar = platformOp(
   android: android.cleanStatusBar,
   ios: ios.cleanStatusBar,
 );
 
-// == screenshot
 final screenshot = platformOp(
   android: android.screenshot,
   ios: ios.screenshot,
 );
 
-// == maybeResolveName
 final maybeResolveName = platformOp(
   android: android.maybeResolveName,
   ios: ios.maybeResolveName,
 );
 
-// == waitUntilRunning
 final findRunning = (DeviceState s) => flutter
     .running()
     .p(RTE.map((devices) => devices.firstWhereOption((d) => d.similar(s))))
@@ -123,6 +122,6 @@ final DeviceOp<Unit> waitUntilRunning =
     opGet().p(SRTE.flatMapReaderTaskEither(findRunning)).p(SRTE.flatMap(O.fold(
           () => opGet()
               .p(SRTE.delay(const Duration(seconds: 2)))
-              .p(SRTE.replace(waitUntilRunning)),
+              .p(SRTE.zipRight(waitUntilRunning)),
           (running) => SRTE.put(running.state),
         )));

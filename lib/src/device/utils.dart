@@ -4,6 +4,7 @@ import 'package:emulators/src/device.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:fpdt/fpdt.dart';
 import 'package:fpdt/task_either.dart' as TE;
+import 'package:fpdt/reader_task_either.dart' as RTE;
 import 'package:fpdt/state_reader_task_either.dart';
 
 typedef DeviceOp<R>
@@ -12,6 +13,11 @@ typedef DeviceOp<R>
 DeviceOp<DeviceState> opGet() => get();
 DeviceOp<A> opDo<A>(DoFunction<DeviceState, Toolchain, DeviceError, A> f) =>
     Do(f);
+
+ReaderTaskEither<Toolchain, DeviceError, A> toolchainDo<A>(
+  RTE.DoFunction<Toolchain, DeviceError, A> f,
+) =>
+    RTE.Do(f);
 
 DeviceOp<R> platformOp<R>({
   required DeviceOp<R> android,
@@ -26,7 +32,7 @@ DeviceOp<R> platformOp<R>({
           (s) => s.platform == DevicePlatform.ios ? ios : android,
         ));
 
-final logOrElse = <L, R>(R r) => TE.alt<L, R>((left) {
+final logOrElse = <C, L, R>(R r) => RTE.alt<C, L, R>((left) {
       stderr.writeln(left);
-      return TE.right(r);
+      return RTE.right(r);
     });

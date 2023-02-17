@@ -181,10 +181,10 @@ packages:
     dependency: "direct main"
     description:
       name: fpdt
-      sha256: "31bade1473c4219b275aacd4304d0da77c14050768e1c929687ee8563dfa5063"
+      sha256: ff0d5ab65b9d1a5c824cb77e1625e3169fdab680f5e62dc8cbbc2ef35deaf66c
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.73"
+    version: "0.1.2"
   freezed:
     dependency: "direct dev"
     description:
