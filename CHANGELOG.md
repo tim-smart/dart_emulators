@@ -1,3 +1,7 @@
+## 0.4.13
+
+- pub upgrade
+
 ## 0.4.12
 
 - Allow disabling the ScreenshotHelper, for running tests without screenshots.
