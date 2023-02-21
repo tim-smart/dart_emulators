@@ -28,7 +28,7 @@ final list = ZIO
     )
     .map(_parseDevices)
     .flatMapEnv(
-      (devices, env) => ZIO.succeedLift(
+      (devices, env) => ZIO.succeed(
         devices.map((d) => Device(state: d, toolchain: env)).toIList(),
       ),
     );
@@ -41,7 +41,7 @@ final boot = DeviceIO.tryCatchEnv(
     message: '$error',
   ),
 ) //
-    .zipLeft(ZIO.sleepLift(const Duration(seconds: 3)))
+    .zipLeft(ZIO.sleep(const Duration(seconds: 3)))
     .flatMapEnv(
       (a, env) => env.ref.update((s) => s.copyWith(booted: true)).lift(),
     );
@@ -54,7 +54,7 @@ final shutdown = DeviceIO.tryCatchEnv(
     message: '$error',
   ),
 ) //
-    .zipLeft(ZIO.sleepLift(const Duration(seconds: 3)))
+    .zipLeft(ZIO.sleep(const Duration(seconds: 3)))
     .flatMapEnv(
       (a, env) => env.ref.update((s) => s.copyWith(booted: false)).lift(),
     );
@@ -93,6 +93,6 @@ final cleanStatusBar = DeviceIO.tryCatchEnv(
     command: 'simctl status_bar',
     message: '$error',
   ),
-).zipRight(ZIO.sleepLift(const Duration(seconds: 2)));
+).zipRight(ZIO.sleep(const Duration(seconds: 2)));
 
-final DeviceIO<Unit> maybeResolveName = ZIO.unitLift();
+final DeviceIO<Unit> maybeResolveName = ZIO.unit();

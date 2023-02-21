@@ -6,7 +6,7 @@ import 'package:emulators/src/device/ops.dart';
 import 'package:emulators/src/utils/strings.dart';
 
 final list = ToolchainIO.envWithZIO(
-  (env) => ToolchainIO.tryCatchLift(
+  (env) => ToolchainIO.tryCatch(
     () => env.emulator(["-list-avds"]).string(),
     (err, stackTrace) => DeviceError.toolchainFailure(
       op: 'list',
@@ -52,9 +52,9 @@ final _adbKill = DeviceIO.tryCatchEnv(
     command: 'adb emu kill',
     message: '$error',
   ),
-).zipRight(ZIO.sleepLift(const Duration(seconds: 3)));
+).zipRight(ZIO.sleep(const Duration(seconds: 3)));
 
-final _processKill = (Process process) => ZIO.tryCatch(
+final _processKill = (Process process) => EIO.tryCatch(
       () {
         process.kill(ProcessSignal.sigint);
         return process.stdout.forEach((_) {});
@@ -79,7 +79,7 @@ final _shutdown = DeviceIO.envWithZIO(
 );
 
 final shutdown = DeviceIO.envWithZIO(
-  (env) => env.state.booted ? _shutdown : ZIO.unitLift(),
+  (env) => env.state.booted ? _shutdown : ZIO.unit(),
 );
 
 final cleanStatusBar = [
@@ -148,6 +148,6 @@ final maybeResolveName = DeviceIO.tryCatchEnv(
     message: '$err',
   ),
 ).map(maybeParseName).flatMapEnv((a, env) => a.match(
-      () => ZIO.unit.lift(),
+      () => ZIO.unit(),
       (name) => env.ref.update((s) => s.copyWith(name: name)).lift(),
     ));

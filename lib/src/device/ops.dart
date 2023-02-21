@@ -25,7 +25,7 @@ final _findDevice = (IList<Device> devices, String nameOrId) => devices
         ));
 
 final _processDevice =
-    (ProcessDevice process, Duration timeout) => (Device d) => ZIO
+    (ProcessDevice process, Duration timeout) => (Device d) => EIO
             .tryCatch(
           () => d.boot().then((_) => d.clone()),
           (err, stackTrace) => DeviceError.foreachFailure(

@@ -9,9 +9,9 @@ import 'package:path/path.dart' as P;
 
 part 'toolchain.freezed.dart';
 
-IOOption<String> _which(String exec) => ZIO
-    .tryCatchOption(() => run('which', [exec]).string())
-    .filter((_) => _.isNotEmpty);
+IOOption<String> _which(String exec) =>
+    IOOption.tryCatchOption(() => run('which', [exec]).string())
+        .filter((_) => _.isNotEmpty);
 
 final _androidSdk =
     Option.fromNullable(Platform.environment['ANDROID_SDK_ROOT'])

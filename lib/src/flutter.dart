@@ -32,7 +32,7 @@ final _devicesFromOutput = (Toolchain tc, String out) => splitLines(out)
     .toIList();
 
 final _resolveDeviceNames = (IList<Device> devices) => devices
-    .map((d) => ZIO.tryCatch(
+    .map((d) => EIO.tryCatch(
           () => d.maybeResolveName(),
           (err, stackTrace) => FlutterError.deviceFailure(
             state: d.state,
