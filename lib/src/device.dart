@@ -1,27 +1,42 @@
+import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device/device_error.dart';
 import 'package:emulators/src/device/device_state.dart';
 import 'package:emulators/src/device/ops.dart' as Ops;
-import 'package:emulators/src/device/utils.dart';
 import 'package:emulators/src/toolchain.dart';
-import 'package:fpdt/either.dart' as E;
-import 'package:fpdt/fpdt.dart';
 
 export 'package:emulators/src/device/device_error.dart';
 export 'package:emulators/src/device/device_state.dart';
+
+typedef DeviceIO<A> = ZIO<DeviceEnv, DeviceError, A>;
+
+class DeviceEnv {
+  DeviceEnv({
+    required this.ref,
+    required this.toolchain,
+  });
+
+  final Ref<DeviceState> ref;
+  final Toolchain toolchain;
+
+  DeviceState get state => ref.unsafeGet();
+  String get id => state.id;
+}
 
 /// Wraps [DeviceState] and [Toolchain], providing an interface to control devices.
 class Device {
   Device({
     required DeviceState state,
     required Toolchain toolchain,
-  }) : _s = StateRTEMachine(state, toolchain);
+  }) : unsafeEnv = DeviceEnv(
+          ref: Ref.unsafeMake(state),
+          toolchain: toolchain,
+        );
 
-  final StateRTEMachine<DeviceState, Toolchain, DeviceError> _s;
-  DeviceState get state => _s.state;
-  Toolchain get toolchain => _s.context;
+  final DeviceEnv unsafeEnv;
+  DeviceState get state => unsafeEnv.state;
+  Toolchain get toolchain => unsafeEnv.toolchain;
 
-  Future<T> _run<T>(DeviceOp<T> op) =>
-      Future.value(_s.evaluate(op).flatMap(E.unwrap));
+  Future<T> _run<T>(DeviceIO<T> op) => op.provide(unsafeEnv).runFuture();
 
   /// Boot the device
   Future<void> boot() => _run(Ops.boot);

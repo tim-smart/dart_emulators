@@ -1,14 +1,12 @@
 import 'dart:io';
 
+import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/device/ops.dart' as Ops;
 import 'package:emulators/src/environment.dart';
 import 'package:emulators/src/flutter.dart' as Flutter;
 import 'package:emulators/src/screenshot_helper.dart';
 import 'package:emulators/src/toolchain.dart';
-import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/task_either.dart' as TE;
 
 class Emulators {
   Emulators({required this.toolchain});
@@ -19,18 +17,19 @@ class Emulators {
   final Toolchain toolchain;
 
   /// Attempt to load the current device from the `EMULATORS_DEVICE` env variable.
-  Option<Device> currentDevice() =>
-      Environment.device.p(O.map((state) => Device(
-            state: state,
-            toolchain: toolchain,
-          )));
+  Option<Device> currentDevice() => Environment.device.map((state) => Device(
+        state: state,
+        toolchain: toolchain,
+      ));
 
   /// List the available emulators
-  Future<IList<Device>> list() => Ops.list(toolchain).p(TE.toFuture);
+  Future<IList<Device>> list() => Ops.list.provide(toolchain).runFuture();
 
   /// List the running emulators
   Future<IList<Device>> running({bool onlyEmulators = true}) =>
-      Flutter.running(onlyEmulators: onlyEmulators)(toolchain).p(TE.toFuture);
+      Flutter.running(onlyEmulators: onlyEmulators)
+          .provide(toolchain)
+          .runFuture();
 
   /// Flutter drive helper
   Future<Process> drive(
@@ -44,8 +43,7 @@ class Emulators {
         target,
         args: args,
         config: config,
-      )(toolchain)
-          .p(TE.toFuture);
+      ).provide(toolchain).runFuture();
 
   /// Flutter test helper
   Future<Process> test(
@@ -59,11 +57,10 @@ class Emulators {
         target,
         args: args,
         config: config,
-      )(toolchain)
-          .p(TE.toFuture);
+      ).provide(toolchain).runFuture();
 
   /// Attempt to shutdown all running emulators on the host.
-  Future<void> shutdownAll() => Ops.shutdownAll(toolchain).p(TE.toFuture);
+  Future<void> shutdownAll() => Ops.shutdownAll.provide(toolchain).runFuture();
 
   ScreenshotHelper screenshotHelper({
     Device? device,
@@ -76,10 +73,10 @@ class Emulators {
         device: disable
             ? null
             : device ??
-                currentDevice().p(O.fold(
+                currentDevice().match(
                   () => throw 'screenshotHelper: cannot find current device',
                   (d) => d,
-                )),
+                ),
         androidPath: androidPath,
         iosPath: iosPath,
         suffixes: suffixes,
@@ -93,6 +90,5 @@ class Emulators {
             nameOrIds: nameOrIds,
             timeout: timeout,
             process: process,
-          )(toolchain)
-              .p(TE.toFuture);
+          ).provide(toolchain).runFuture();
 }

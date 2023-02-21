@@ -19,7 +19,7 @@ Map<String, dynamic> _$$_DeviceStateToJson(_$_DeviceState instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'platform': _$DevicePlatformEnumMap[instance.platform],
+      'platform': _$DevicePlatformEnumMap[instance.platform]!,
       'emulator': instance.emulator,
       'booted': instance.booted,
     };

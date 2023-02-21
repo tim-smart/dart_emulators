@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'device_state.dart';
 
@@ -39,7 +39,8 @@ mixin _$DeviceState {
 abstract class $DeviceStateCopyWith<$Res> {
   factory $DeviceStateCopyWith(
           DeviceState value, $Res Function(DeviceState) then) =
-      _$DeviceStateCopyWithImpl<$Res>;
+      _$DeviceStateCopyWithImpl<$Res, DeviceState>;
+  @useResult
   $Res call(
       {String id,
       String name,
@@ -50,48 +51,51 @@ abstract class $DeviceStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$DeviceStateCopyWithImpl<$Res> implements $DeviceStateCopyWith<$Res> {
+class _$DeviceStateCopyWithImpl<$Res, $Val extends DeviceState>
+    implements $DeviceStateCopyWith<$Res> {
   _$DeviceStateCopyWithImpl(this._value, this._then);
 
-  final DeviceState _value;
   // ignore: unused_field
-  final $Res Function(DeviceState) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? platform = freezed,
-    Object? emulator = freezed,
-    Object? booted = freezed,
-    Object? process = freezed,
+    Object? id = null,
+    Object? name = null,
+    Object? platform = null,
+    Object? emulator = null,
+    Object? booted = null,
+    Object? process = null,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      platform: platform == freezed
+      platform: null == platform
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as DevicePlatform,
-      emulator: emulator == freezed
+      emulator: null == emulator
           ? _value.emulator
           : emulator // ignore: cast_nullable_to_non_nullable
               as bool,
-      booted: booted == freezed
+      booted: null == booted
           ? _value.booted
           : booted // ignore: cast_nullable_to_non_nullable
               as bool,
-      process: process == freezed
+      process: null == process
           ? _value.process
           : process // ignore: cast_nullable_to_non_nullable
               as Option<Process>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -102,6 +106,7 @@ abstract class _$$_DeviceStateCopyWith<$Res>
           _$_DeviceState value, $Res Function(_$_DeviceState) then) =
       __$$_DeviceStateCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String id,
       String name,
@@ -112,46 +117,45 @@ abstract class _$$_DeviceStateCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_DeviceStateCopyWithImpl<$Res> extends _$DeviceStateCopyWithImpl<$Res>
+class __$$_DeviceStateCopyWithImpl<$Res>
+    extends _$DeviceStateCopyWithImpl<$Res, _$_DeviceState>
     implements _$$_DeviceStateCopyWith<$Res> {
   __$$_DeviceStateCopyWithImpl(
       _$_DeviceState _value, $Res Function(_$_DeviceState) _then)
-      : super(_value, (v) => _then(v as _$_DeviceState));
+      : super(_value, _then);
 
-  @override
-  _$_DeviceState get _value => super._value as _$_DeviceState;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? name = freezed,
-    Object? platform = freezed,
-    Object? emulator = freezed,
-    Object? booted = freezed,
-    Object? process = freezed,
+    Object? id = null,
+    Object? name = null,
+    Object? platform = null,
+    Object? emulator = null,
+    Object? booted = null,
+    Object? process = null,
   }) {
     return _then(_$_DeviceState(
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      platform: platform == freezed
+      platform: null == platform
           ? _value.platform
           : platform // ignore: cast_nullable_to_non_nullable
               as DevicePlatform,
-      emulator: emulator == freezed
+      emulator: null == emulator
           ? _value.emulator
           : emulator // ignore: cast_nullable_to_non_nullable
               as bool,
-      booted: booted == freezed
+      booted: null == booted
           ? _value.booted
           : booted // ignore: cast_nullable_to_non_nullable
               as bool,
-      process: process == freezed
+      process: null == process
           ? _value.process
           : process // ignore: cast_nullable_to_non_nullable
               as Option<Process>,
@@ -168,7 +172,7 @@ class _$_DeviceState extends _DeviceState {
       required this.platform,
       required this.emulator,
       this.booted = false,
-      @JsonKey(ignore: true) this.process = kNone})
+      @JsonKey(ignore: true) this.process = const None()})
       : super._();
 
   factory _$_DeviceState.fromJson(Map<String, dynamic> json) =>
@@ -200,33 +204,32 @@ class _$_DeviceState extends _DeviceState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DeviceState &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.platform, platform) &&
-            const DeepCollectionEquality().equals(other.emulator, emulator) &&
-            const DeepCollectionEquality().equals(other.booted, booted) &&
-            const DeepCollectionEquality().equals(other.process, process));
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.platform, platform) ||
+                other.platform == platform) &&
+            (identical(other.emulator, emulator) ||
+                other.emulator == emulator) &&
+            (identical(other.booted, booted) || other.booted == booted) &&
+            (identical(other.process, process) || other.process == process));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(platform),
-      const DeepCollectionEquality().hash(emulator),
-      const DeepCollectionEquality().hash(booted),
-      const DeepCollectionEquality().hash(process));
+  int get hashCode =>
+      Object.hash(runtimeType, id, name, platform, emulator, booted, process);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_DeviceStateCopyWith<_$_DeviceState> get copyWith =>
       __$$_DeviceStateCopyWithImpl<_$_DeviceState>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DeviceStateToJson(this);
+    return _$$_DeviceStateToJson(
+      this,
+    );
   }
 }
 
@@ -244,18 +247,18 @@ abstract class _DeviceState extends DeviceState {
       _$_DeviceState.fromJson;
 
   @override
-  String get id => throw _privateConstructorUsedError;
+  String get id;
   @override
-  String get name => throw _privateConstructorUsedError;
+  String get name;
   @override
-  DevicePlatform get platform => throw _privateConstructorUsedError;
+  DevicePlatform get platform;
   @override
-  bool get emulator => throw _privateConstructorUsedError;
+  bool get emulator;
   @override
-  bool get booted => throw _privateConstructorUsedError;
+  bool get booted;
   @override // ignore: invalid_annotation_target
   @JsonKey(ignore: true)
-  Option<Process> get process => throw _privateConstructorUsedError;
+  Option<Process> get process;
   @override
   @JsonKey(ignore: true)
   _$$_DeviceStateCopyWith<_$_DeviceState> get copyWith =>

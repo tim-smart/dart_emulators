@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fpdt/fpdt.dart';
+import 'package:elemental/elemental.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'device_state.freezed.dart';
@@ -25,7 +25,7 @@ class DeviceState with _$DeviceState {
     required bool emulator,
     @Default(false) bool booted,
     // ignore: invalid_annotation_target
-    @JsonKey(ignore: true) @Default(kNone) Option<Process> process,
+    @JsonKey(ignore: true) @Default(None()) Option<Process> process,
   }) = _DeviceState;
 
   factory DeviceState.fromJson(Map<String, dynamic> json) =>

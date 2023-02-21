@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.4"
+  elemental:
+    dependency: "direct main"
+    description:
+      name: elemental
+      sha256: "906e4fb232cc115f3a11ee5f6c93613f31893e7d842a224cf3511f070923e11c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.40"
   fast_immutable_collections:
     dependency: transitive
     description:
@@ -177,14 +185,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  fpdt:
-    dependency: "direct main"
+  fpdart:
+    dependency: transitive
     description:
-      name: fpdt
-      sha256: ff0d5ab65b9d1a5c824cb77e1625e3169fdab680f5e62dc8cbbc2ef35deaf66c
+      name: fpdart
+      sha256: "19db038cf3bb49bfe28b2a0b363ce84cf2e6a0f471a93ae09271cfef03dae935"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.2"
+    version: "0.4.0"
   freezed:
     dependency: "direct dev"
     description:
@@ -313,6 +321,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  nucleus:
+    dependency: transitive
+    description:
+      name: nucleus
+      sha256: "6ae834b04af28548731b3ff6d8e18744d2f7c4f86875f19cc97669d7ba8051fb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.14"
   package_config:
     dependency: transitive
     description:

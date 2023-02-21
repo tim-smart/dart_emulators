@@ -1,13 +1,10 @@
 import 'dart:io';
 
+import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:emulators/src/utils/adb.dart';
 import 'package:emulators/src/utils/strings.dart';
-import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/reader_task_either.dart' as RTE;
-import 'package:fpdt/task_either.dart' as TE;
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'flutter.freezed.dart';
@@ -25,56 +22,51 @@ class FlutterError with _$FlutterError {
   }) = FlutterErrorDeviceFailure;
 }
 
-typedef FlutterOp<R> = ReaderTaskEither<Toolchain, FlutterError, R>;
-FlutterOp<Toolchain> _ask() => RTE.ask();
+typedef FlutterIO<A> = ZIO<Toolchain, FlutterError, A>;
 
-final _devicesFromOutput = (String out) => (Toolchain tc) => splitLines(out)
-    .expand<Device>((line) => parseDevicesLine(line).p(O.fold(
+final _devicesFromOutput = (Toolchain tc, String out) => splitLines(out)
+    .expand<Device>((line) => parseDevicesLine(line).match(
           () => [],
           (d) => [Device(state: d, toolchain: tc)],
-        )))
+        ))
     .toIList();
 
 final _resolveDeviceNames = (IList<Device> devices) => devices
-    .map((d) => TE.tryCatch(
+    .map((d) => ZIO.tryCatch(
           () => d.maybeResolveName(),
           (err, stackTrace) => FlutterError.deviceFailure(
             state: d.state,
             message: err.toString(),
           ),
         ))
-    .p(TE.sequence);
+    .collectParDiscard();
 
-FlutterOp<IList<Device>> running({bool onlyEmulators = true}) =>
-    RTE.Do(($, tc) async {
-      final output = await $(RTE.tryCatch(
-        () => tc.flutter(['devices']).string(),
-        (err, stackTrace) => FlutterError.toolchainFailure(
-          op: 'running',
-          message: '$err',
-        ),
-      ));
-
-      var devices = _devicesFromOutput(output)(tc);
-      if (onlyEmulators) {
-        devices = devices.where((d) => d.state.emulator).toIList();
-      }
-
-      await $(RTE.fromTaskEither(_resolveDeviceNames(devices)));
-
-      return devices;
-    });
+FlutterIO<IList<Device>> running({bool onlyEmulators = true}) =>
+    FlutterIO.tryCatchEnv(
+      (tc) => tc
+          .flutter(['devices'])
+          .string()
+          .then((value) => _devicesFromOutput(tc, value)),
+      (err, stackTrace) => FlutterError.toolchainFailure(
+        op: 'running',
+        message: '$err',
+      ),
+    )
+        .map(
+          (_) => onlyEmulators ? _.where((d) => d.state.emulator).toIList() : _,
+        )
+        .tap((_) => _resolveDeviceNames(_).lift());
 
 /// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
 /// screenshots etc. in your flutter_driver test script.
-FlutterOp<Process> drive(
+FlutterIO<Process> drive(
   Device device,
   String target, {
   List<String> args = const [],
   Map<String, dynamic> config = const {},
 }) =>
-    _ask().p(RTE.chainTryCatchK(
+    FlutterIO.tryCatchEnv(
       (tc) => tc
           .flutterWithDevice(
             'drive',
@@ -90,18 +82,18 @@ FlutterOp<Process> drive(
         op: 'drive',
         message: '$err',
       ),
-    ));
+    );
 
 /// Wrapper for the `flutter test` CLI command. Runs it on the given [DeviceState],
 /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
 /// screenshots etc. in your integration test script.
-FlutterOp<Process> test(
+FlutterIO<Process> test(
   Device device,
   String target, {
   List<String> args = const [],
   Map<String, dynamic> config = const {},
 }) =>
-    _ask().p(RTE.chainTryCatchK(
+    FlutterIO.tryCatchEnv(
       (tc) => tc
           .flutterWithDevice(
             'test',
@@ -114,4 +106,4 @@ FlutterOp<Process> test(
         op: 'test',
         message: '$err',
       ),
-    ));
+    );

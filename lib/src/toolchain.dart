@@ -1,45 +1,40 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device.dart';
 import 'package:emulators/src/utils/process.dart';
-import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/option.dart' as O;
-import 'package:fpdt/task.dart' as T;
-import 'package:fpdt/task_option.dart' as TO;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:path/path.dart' as P;
 
 part 'toolchain.freezed.dart';
 
-TO.TaskOption<String> _which(String exec) => TO
-    .tryCatch(() => run('which', [exec]).string())
-    .p(TO.filter((path) => path.isNotEmpty));
+IOOption<String> _which(String exec) => ZIO
+    .tryCatchOption(() => run('which', [exec]).string())
+    .filter((_) => _.isNotEmpty);
 
-final _androidSdk = O
-    .fromNullable(Platform.environment['ANDROID_SDK_ROOT'])
-    .p(O.alt(() => O.fromNullable(Platform.environment["ANDROID_HOME"])));
+final _androidSdk =
+    Option.fromNullable(Platform.environment['ANDROID_SDK_ROOT'])
+        .alt(() => Option.fromNullable(Platform.environment["ANDROID_HOME"]));
 
 final _adbPath = _which('adb')
-    .p(TO.alt(() => _androidSdk
-        .p(O.map((sdk) => P.join(sdk, 'platform-tools/adb')))
-        .p(TO.fromOption)))
-    .p(TO.getOrElse(() => 'adb'));
+    .catchError((_) =>
+        _androidSdk.map((sdk) => P.join(sdk, 'platform-tools/adb')).toZIO())
+    .getOrElse((_) => 'adb');
 
 final _avdmanagerPath = _androidSdk
-    .p(O.map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager')))
-    .p(TO.fromOption)
-    .p(TO.alt(() => _which('avdmanager')))
-    .p(TO.getOrElse(() => 'avdmanager'));
+    .map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager'))
+    .toZIO()
+    .catchError((_) => _which('avdmanager'))
+    .getOrElse((_) => 'avdmanager');
 
 final _emulatorPath = _which('emulator')
-    .p(TO.alt(() => _androidSdk
-        .p(O.map((sdk) => P.join(sdk, 'emulator/emulator')))
-        .p(TO.fromOption)))
-    .p(TO.getOrElse(() => 'emulator'));
+    .catchError((_) =>
+        _androidSdk.map((sdk) => P.join(sdk, 'emulator/emulator')).toZIO())
+    .getOrElse((_) => 'emulator');
 
-final _flutterPath = _which('flutter').p(TO.getOrElse(() => 'flutter'));
-final _xcrunPath = _which('xcrun').p(TO.getOrElse(() => 'xcrun'));
+final _flutterPath = _which('flutter').getOrElse((_) => 'flutter');
+final _xcrunPath = _which('xcrun').getOrElse((_) => 'xcrun');
 
 /// [Toolchain] represents the CLI tools we will use.
 @freezed
@@ -54,24 +49,24 @@ class Toolchain with _$Toolchain {
     required String xcrunPath,
   }) = _Toolchain;
 
-  static Future<Toolchain> build() => T
-      .sequence([
+  static Future<Toolchain> build() => [
         _adbPath,
         _avdmanagerPath,
         _emulatorPath,
         _flutterPath,
         _xcrunPath,
-      ])
-      .p(T.map(
-        (paths) => Toolchain(
-          adbPath: paths[0],
-          avdmanagerPath: paths[1],
-          emulatorPath: paths[2],
-          flutterPath: paths[3],
-          xcrunPath: paths[4],
-        ),
-      ))
-      .p((_) => Future.sync(_.call));
+      ]
+          .collectPar()
+          .map(
+            (paths) => Toolchain(
+              adbPath: paths[0],
+              avdmanagerPath: paths[1],
+              emulatorPath: paths[2],
+              flutterPath: paths[3],
+              xcrunPath: paths[4],
+            ),
+          )
+          .runFuture();
 
   /// Wrapper for the `flutter` CLI tool.
   ProcessRunner flutter(

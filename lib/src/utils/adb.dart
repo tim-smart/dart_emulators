@@ -1,11 +1,10 @@
+import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device/device_state.dart';
-import 'package:fpdt/fpdt.dart';
-import 'package:fpdt/option.dart' as O;
 
-Option<DeviceState> parseDevicesLine(String input) => O
-        .some(input.split('•').map((s) => s.trim()).toList())
-        .p(O.filter((parts) => parts.length == 4))
-        .p(O.map((parts) {
+Option<DeviceState> parseDevicesLine(String input) =>
+    Option.of(input.split('•').map((s) => s.trim()).toList())
+        .filter((parts) => parts.length == 4)
+        .map((parts) {
       final name =
           parts[0].replaceAll(RegExp(r'\((web|mobile|desktop)\)'), '').trim();
       final id = parts[1];
@@ -19,7 +18,7 @@ Option<DeviceState> parseDevicesLine(String input) => O
         emulator: emulator,
         booted: true,
       );
-    }));
+    });
 
 DevicePlatform parseKind(String input) {
   if (input.contains('ios')) {
