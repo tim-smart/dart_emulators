@@ -23,13 +23,14 @@ class Emulators {
       ));
 
   /// List the available emulators
-  Future<IList<Device>> list() => Ops.list.provide(toolchain).runFuture();
+  Future<IList<Device>> list() =>
+      Ops.list.provide(toolchain).runFutureOrThrow();
 
   /// List the running emulators
   Future<IList<Device>> running({bool onlyEmulators = true}) =>
       Flutter.running(onlyEmulators: onlyEmulators)
           .provide(toolchain)
-          .runFuture();
+          .runFutureOrThrow();
 
   /// Flutter drive helper
   Future<Process> drive(
@@ -43,7 +44,7 @@ class Emulators {
         target,
         args: args,
         config: config,
-      ).provide(toolchain).runFuture();
+      ).provide(toolchain).runFutureOrThrow();
 
   /// Flutter test helper
   Future<Process> test(
@@ -57,7 +58,7 @@ class Emulators {
         target,
         args: args,
         config: config,
-      ).provide(toolchain).runFuture();
+      ).provide(toolchain).runFutureOrThrow();
 
   /// Attempt to shutdown all running emulators on the host.
   Future<void> shutdownAll() => Ops.shutdownAll.provide(toolchain).runFuture();

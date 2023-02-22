@@ -13,17 +13,17 @@ Option<Map<String, dynamic>> _parseJson(String s) =>
 
 class Environment {
   /// Get the current device from the EMULATORS_DEVICE environment variable.
-  static Option<DeviceState> get device =>
-      Option.fromNullable(Platform.environment['EMULATORS_DEVICE'])
-          .alt(() => stringOption(_kDeviceJson))
-          .flatMap(_parseJson)
-          .map((json) => DeviceState.fromJson(json));
+  static Option<DeviceState> get device => Platform.environment
+      .lookup('EMULATORS_DEVICE')
+      .alt(() => stringOption(_kDeviceJson))
+      .flatMap(_parseJson)
+      .map((json) => DeviceState.fromJson(json));
 
   /// Get the current config from the EMULATORS_CONFIG environment variable.
-  static Option<Map<String, dynamic>> get config =>
-      Option.fromNullable(Platform.environment['EMULATORS_CONFIG'])
-          .alt(() => stringOption(_kConfigJson))
-          .flatMap(_parseJson);
+  static Option<Map<String, dynamic>> get config => Platform.environment
+      .lookup('EMULATORS_CONFIG')
+      .alt(() => stringOption(_kConfigJson))
+      .flatMap(_parseJson);
 
   static Option<T> getOption<T>(String key) => config.extract<T>(key);
 

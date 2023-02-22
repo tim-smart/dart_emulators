@@ -110,7 +110,7 @@ final cleanStatusBar = [
         ),
       ),
     )
-    .collect()
+    .collect
     .asUnit;
 
 final screenshot = DeviceIO.tryCatchEnv(

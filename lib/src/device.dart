@@ -36,7 +36,7 @@ class Device {
   DeviceState get state => unsafeEnv.state;
   Toolchain get toolchain => unsafeEnv.toolchain;
 
-  Future<T> _run<T>(DeviceIO<T> op) => op.provide(unsafeEnv).runFuture();
+  Future<T> _run<T>(DeviceIO<T> op) => op.provide(unsafeEnv).runFutureOrThrow();
 
   /// Boot the device
   Future<void> boot() => _run(Ops.boot);

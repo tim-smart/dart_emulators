@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device.dart';
+import 'package:emulators/src/device/ops.dart';
 import 'package:emulators/src/toolchain.dart';
 import 'package:emulators/src/utils/adb.dart';
 import 'package:emulators/src/utils/strings.dart';
@@ -32,14 +33,15 @@ final _devicesFromOutput = (Toolchain tc, String out) => splitLines(out)
     .toIList();
 
 final _resolveDeviceNames = (IList<Device> devices) => devices
-    .map((d) => EIO.tryCatch(
-          () => d.maybeResolveName(),
-          (err, stackTrace) => FlutterError.deviceFailure(
+    .map((d) => maybeResolveName //
+        .provide(d.unsafeEnv)
+        .mapError(
+          (_) => FlutterError.deviceFailure(
             state: d.state,
-            message: err.toString(),
+            message: _.toString(),
           ),
         ))
-    .collectParDiscard();
+    .collectParDiscard;
 
 FlutterIO<IList<Device>> running({bool onlyEmulators = true}) =>
     FlutterIO.tryCatchEnv(

@@ -13,24 +13,24 @@ IOOption<String> _which(String exec) =>
     IOOption.tryCatchOption(() => run('which', [exec]).string())
         .filter((_) => _.isNotEmpty);
 
-final _androidSdk =
-    Option.fromNullable(Platform.environment['ANDROID_SDK_ROOT'])
-        .alt(() => Option.fromNullable(Platform.environment["ANDROID_HOME"]));
+final _androidSdk = Platform.environment
+    .lookup('ANDROID_SDK_ROOT')
+    .alt(() => Platform.environment.lookup('ANDROID_HOME'));
 
 final _adbPath = _which('adb')
     .catchError((_) =>
-        _androidSdk.map((sdk) => P.join(sdk, 'platform-tools/adb')).toZIO())
+        _androidSdk.map((sdk) => P.join(sdk, 'platform-tools/adb')).toZIO)
     .getOrElse((_) => 'adb');
 
 final _avdmanagerPath = _androidSdk
     .map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager'))
-    .toZIO()
+    .toZIO
     .catchError((_) => _which('avdmanager'))
     .getOrElse((_) => 'avdmanager');
 
 final _emulatorPath = _which('emulator')
-    .catchError((_) =>
-        _androidSdk.map((sdk) => P.join(sdk, 'emulator/emulator')).toZIO())
+    .catchError(
+        (_) => _androidSdk.map((sdk) => P.join(sdk, 'emulator/emulator')).toZIO)
     .getOrElse((_) => 'emulator');
 
 final _flutterPath = _which('flutter').getOrElse((_) => 'flutter');
@@ -56,7 +56,7 @@ class Toolchain with _$Toolchain {
         _flutterPath,
         _xcrunPath,
       ]
-          .collectPar()
+          .collectPar
           .map(
             (paths) => Toolchain(
               adbPath: paths[0],
@@ -66,7 +66,7 @@ class Toolchain with _$Toolchain {
               xcrunPath: paths[4],
             ),
           )
-          .runFuture();
+          .runFutureOrThrow();
 
   /// Wrapper for the `flutter` CLI tool.
   ProcessRunner flutter(

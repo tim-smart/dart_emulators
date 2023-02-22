@@ -11,7 +11,7 @@ typedef ToolchainIO<A> = ZIO<Toolchain, DeviceError, A>;
 final list = [
   android.list.logOrElse(IList()),
   ios.list.logOrElse(IList()),
-].collectPar().map((l) => l.expand<Device>(identity).toIList());
+].collectPar.map((l) => l.expand<Device>(identity).toIList());
 
 // == forEach
 typedef ProcessDevice = Future<void> Function(Device);
@@ -62,7 +62,7 @@ final forEach = ({
                 .flatMap(_processDevice(process, timeout))
                 .ignoreLogged,
           )
-          .collectDiscard()
+          .collectDiscard
           .lift(),
     );
 
@@ -84,7 +84,7 @@ final shutdownAll = flutter
         ))
     .flatMap((devices) => devices
         .map((d) => shutdown.provide(d.unsafeEnv))
-        .collectParDiscard()
+        .collectParDiscard
         .lift());
 
 final cleanStatusBar = platformOp(
