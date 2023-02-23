@@ -85,6 +85,10 @@ class Device {
         ),
   ).flatMap((_) => _.map((d) => d.platform.shutdown).collectDiscard.lift());
 
+  ZIO<Scope, DeviceError, Device> get safeBoot => platform.boot
+      .acquireRelease((_) => clone().platform.shutdown.ignoreLogged)
+      .as(this);
+
   static RIO<Toolchain, Unit> forEach({
     required Future<void> Function(Device device) process,
     required Iterable<String> nameOrIds,
@@ -116,8 +120,7 @@ DeviceIO<Unit> _processDevice(
   Future<void> Function(Device device) process,
   Duration timeout,
 ) =>
-    device.platform.boot
-        .acquireRelease((_) => device.clone().platform.shutdown.ignoreLogged)
+    device.safeBoot
         .zipLeft(
           PlatformDevice.waitUntilRunning(device.platform)
               .provide(device.toolchain)
