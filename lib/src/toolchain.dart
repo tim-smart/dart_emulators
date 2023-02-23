@@ -30,7 +30,8 @@ final _avdmanagerPath = _androidSdk
 
 final _emulatorPath = _which('emulator')
     .catchError(
-        (_) => _androidSdk.map((sdk) => P.join(sdk, 'emulator/emulator')).toZIO)
+      (_) => _androidSdk.map((sdk) => P.join(sdk, 'emulator/emulator')).toZIO,
+    )
     .getOrElse((_) => 'emulator');
 
 final _flutterPath = _which('flutter').getOrElse((_) => 'flutter');

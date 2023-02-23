@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:elemental/elemental.dart';
 import 'package:emulators/src/device.dart';
-import 'package:emulators/src/device/ops.dart' as Ops;
 import 'package:emulators/src/environment.dart';
-import 'package:emulators/src/flutter.dart' as Flutter;
+import 'package:emulators/src/flutter.dart';
 import 'package:emulators/src/screenshot_helper.dart';
 import 'package:emulators/src/toolchain.dart';
 
@@ -15,6 +14,7 @@ class Emulators {
       Emulators(toolchain: await Toolchain.build());
 
   final Toolchain toolchain;
+  late final flutter = Flutter(toolchain);
 
   /// Attempt to load the current device from the `EMULATORS_DEVICE` env variable.
   Option<Device> currentDevice() => Environment.device.map((state) => Device(
@@ -24,13 +24,11 @@ class Emulators {
 
   /// List the available emulators
   Future<IList<Device>> list() =>
-      Ops.list.provide(toolchain).runFutureOrThrow();
+      Device.list.provide(toolchain).runFutureOrThrow();
 
   /// List the running emulators
   Future<IList<Device>> running({bool onlyEmulators = true}) =>
-      Flutter.running(onlyEmulators: onlyEmulators)
-          .provide(toolchain)
-          .runFutureOrThrow();
+      flutter.running(onlyEmulators: onlyEmulators).runFutureOrThrow();
 
   /// Flutter drive helper
   Future<Process> drive(
@@ -39,12 +37,14 @@ class Emulators {
     List<String> args = const [],
     Map<String, dynamic> config = const {},
   }) =>
-      Flutter.drive(
-        device,
-        target,
-        args: args,
-        config: config,
-      ).provide(toolchain).runFutureOrThrow();
+      flutter
+          .drive(
+            device,
+            target,
+            args: args,
+            config: config,
+          )
+          .runFutureOrThrow();
 
   /// Flutter test helper
   Future<Process> test(
@@ -53,15 +53,18 @@ class Emulators {
     List<String> args = const [],
     Map<String, dynamic> config = const {},
   }) =>
-      Flutter.test(
-        device,
-        target,
-        args: args,
-        config: config,
-      ).provide(toolchain).runFutureOrThrow();
+      flutter
+          .test(
+            device,
+            target,
+            args: args,
+            config: config,
+          )
+          .runFutureOrThrow();
 
   /// Attempt to shutdown all running emulators on the host.
-  Future<void> shutdownAll() => Ops.shutdownAll.provide(toolchain).runFuture();
+  Future<void> shutdownAll() =>
+      Device.shutdownAll.provide(toolchain).runFuture();
 
   ScreenshotHelper screenshotHelper({
     Device? device,
@@ -83,11 +86,11 @@ class Emulators {
         suffixes: suffixes,
       );
 
-  Future<void> Function(Ops.ProcessDevice process) forEach(
+  Future<void> Function(Future<void> Function(Device device) process) forEach(
     Iterable<String> nameOrIds, {
     Duration timeout = const Duration(minutes: 3),
   }) =>
-      (process) => Ops.forEach(
+      (process) => Device.forEach(
             nameOrIds: nameOrIds,
             timeout: timeout,
             process: process,
