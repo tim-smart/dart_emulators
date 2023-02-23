@@ -43,7 +43,7 @@ final boot = DeviceIO.tryCatchEnv(
 ) //
     .zipLeft(ZIO.sleep(const Duration(seconds: 3)))
     .flatMapEnv(
-      (a, env) => env.ref.update((s) => s.copyWith(booted: true)).lift(),
+      (a, env) => env.ref.update((s) => s.copyWith(booted: true)),
     );
 
 final shutdown = DeviceIO.tryCatchEnv(
@@ -56,7 +56,7 @@ final shutdown = DeviceIO.tryCatchEnv(
 ) //
     .zipLeft(ZIO.sleep(const Duration(seconds: 3)))
     .flatMapEnv(
-      (a, env) => env.ref.update((s) => s.copyWith(booted: false)).lift(),
+      (a, env) => env.ref.update((s) => s.copyWith(booted: false)),
     );
 
 final screenshot = DeviceIO.tryCatchEnv(

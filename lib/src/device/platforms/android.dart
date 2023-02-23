@@ -33,12 +33,10 @@ final boot = DeviceIO.tryCatchEnv(
     message: '$error',
   ),
 ) //
-    .flatMapEnv((process, env) => env.ref
-        .update((s) => s.copyWith(
-              booted: true,
-              process: Option.of(process),
-            ))
-        .lift());
+    .flatMapEnv((process, env) => env.ref.update((s) => s.copyWith(
+          booted: true,
+          process: Option.of(process),
+        )));
 
 final _adbKill = DeviceIO.tryCatchEnv(
   (env) => env.toolchain.adb([
@@ -72,9 +70,7 @@ final _shutdown = DeviceIO.envWithZIO(
         (process) => _processKill(process).lift<DeviceEnv>(),
       )
       .zipRight(
-        env.ref
-            .update((s) => s.copyWith(booted: false, process: const None()))
-            .lift(),
+        env.ref.update((s) => s.copyWith(booted: false, process: const None())),
       ),
 );
 
@@ -149,5 +145,5 @@ final maybeResolveName = DeviceIO.tryCatchEnv(
   ),
 ).map(maybeParseName).flatMapEnv((a, env) => a.match(
       () => ZIO.unit(),
-      (name) => env.ref.update((s) => s.copyWith(name: name)).lift(),
+      (name) => env.ref.update((s) => s.copyWith(name: name)),
     ));

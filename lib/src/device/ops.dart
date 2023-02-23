@@ -115,6 +115,6 @@ final DeviceIO<Unit> waitUntilRunning = DeviceIO.envWithZIO(
 ).flatMapEnv(
   (_, env) => _.match(
     () => waitUntilRunning.delay(const Duration(seconds: 2)),
-    (running) => env.ref.set(running.state).lift(),
+    (running) => env.ref.set(running.state),
   ),
 );
