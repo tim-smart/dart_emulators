@@ -1,3 +1,8 @@
+## 0.5.0
+
+- drop dart v2
+- add shutdown timeout option to forEach
+
 ## 0.4.13
 
 - pub upgrade
