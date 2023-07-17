@@ -25,7 +25,9 @@ class DeviceState with _$DeviceState {
     required bool emulator,
     @Default(false) bool booted,
     // ignore: invalid_annotation_target
-    @JsonKey(ignore: true) @Default(None()) Option<Process> process,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default(None())
+    Option<Process> process,
   }) = _DeviceState;
 
   factory DeviceState.fromJson(Map<String, dynamic> json) =>

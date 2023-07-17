@@ -88,11 +88,13 @@ class Emulators {
 
   Future<void> Function(Future<void> Function(Device device) process) forEach(
     Iterable<String> nameOrIds, {
-    Duration timeout = const Duration(minutes: 3),
+    Duration bootTimeout = const Duration(minutes: 3),
+    Duration shutdownTimeout = const Duration(seconds: 15),
   }) =>
       (process) => Device.forEach(
             nameOrIds: nameOrIds,
-            timeout: timeout,
+            bootTimeout: bootTimeout,
+            shutdownTimeout: shutdownTimeout,
             process: process,
           ).provide(toolchain).runFuture();
 }

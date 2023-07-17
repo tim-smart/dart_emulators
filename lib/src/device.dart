@@ -83,22 +83,38 @@ class Device {
             error: _,
           ),
         ),
-  ).flatMap((_) => _.map((d) => d.platform.shutdown).collectDiscard.lift());
+  ).flatMap(
+    (_) => _.map((d) => d.platform.shutdown).collectDiscard.lift(),
+  );
 
-  ZIO<Scope, DeviceError, Device> get safeBoot => platform.boot
-      .acquireRelease((_) => clone().platform.shutdown.ignoreLogged)
-      .as(this);
+  ZIO<Scope<NoEnv>, DeviceError, Device> safeBoot({
+    Duration shutdownTimeout = const Duration(seconds: 30),
+  }) =>
+      platform.boot
+          .acquireRelease(
+            (_) =>
+                clone().platform.shutdown.timeout(shutdownTimeout).ignoreLogged,
+          )
+          .as(this);
 
   static RIO<Toolchain, Unit> forEach({
     required Future<void> Function(Device device) process,
     required Iterable<String> nameOrIds,
-    Duration timeout = const Duration(minutes: 3),
+    Duration bootTimeout = const Duration(minutes: 3),
+    Duration shutdownTimeout = const Duration(seconds: 15),
   }) =>
       list.flatMap(
         (devices) => nameOrIds
             .map(
               (d) => _findDevice(devices, d)
-                  .flatMap((_) => _processDevice(_, process, timeout))
+                  .flatMap(
+                    (_) => _processDevice(
+                      _,
+                      process,
+                      bootTimeout: bootTimeout,
+                      shutdownTimeout: shutdownTimeout,
+                    ),
+                  )
                   .ignoreLogged,
             )
             .collectDiscard
@@ -117,15 +133,18 @@ final _findDevice = (IList<Device> devices, String nameOrId) => devices
 
 DeviceIO<Unit> _processDevice(
   Device device,
-  Future<void> Function(Device device) process,
-  Duration timeout,
-) =>
-    device.safeBoot
+  Future<void> Function(Device device) process, {
+  required Duration bootTimeout,
+  required Duration shutdownTimeout,
+}) =>
+    device
+        .safeBoot(shutdownTimeout: shutdownTimeout)
         .zipLeft(
           PlatformDevice.waitUntilRunning(device.platform)
               .provide(device.toolchain)
               .lift(),
         )
+        .timeout(bootTimeout)
         .flatMapThrowable(
           (_) => process(device),
           (err, stackTrace) => DeviceError.foreachFailure(

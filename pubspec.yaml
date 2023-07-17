@@ -4,10 +4,10 @@ version: 0.4.13
 repository: https://github.com/tim-smart/dart_emulators.git
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  elemental: ^0.0.68
+  elemental: ^0.1.0
   freezed_annotation: any
   json_annotation: ^4.8.0
   path: ^1.8.0

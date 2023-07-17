@@ -40,10 +40,11 @@ class Flutter {
         ),
       )
           .map(
-            (_) =>
-                onlyEmulators ? _.where((d) => d.state.emulator).toIList() : _,
+            (devices) => onlyEmulators
+                ? devices.where((d) => d.state.emulator).toIList()
+                : devices,
           )
-          .tap((_) => _resolveDeviceNames(_).lift());
+          .tap((devices) => _resolveDeviceNames(devices).lift());
 
   /// Wrapper for the `flutter drive` CLI command. Runs it on the given [Device],
   /// and sets the `EMULATORS_DEVICE` environment variable so you can easily take
