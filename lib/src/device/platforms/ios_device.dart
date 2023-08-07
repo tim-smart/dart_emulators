@@ -97,7 +97,7 @@ class IosDevice implements PlatformDevice {
       ).zipRight(ZIO.sleep(const Duration(seconds: 2)));
 
   @override
-  DeviceIO<Unit> get maybeResolveName => ZIO.unit();
+  DeviceIO<Unit> get maybeResolveName => ZIO.unitIO;
 }
 
 // ==== helpers ====

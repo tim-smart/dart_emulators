@@ -151,10 +151,10 @@ class AndroidDevice implements PlatformDevice {
         ),
       ) //
           .map(maybeParseName)
-          .flatMapEnv(
-            (a, env) => a.match(
-              () => ZIO.unit(),
-              (name) => ref.update((s) => s.copyWith(name: name)),
+          .flatMap(
+            (a) => a.match(
+              () => ZIO.unitIO,
+              (name) => ref.updateIO((s) => s.copyWith(name: name)),
             ),
           );
 }

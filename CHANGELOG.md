@@ -1,3 +1,7 @@
+## 0.5.1
+
+- fix type error when resolving ios device names
+
 ## 0.5.0
 
 - drop dart v2
