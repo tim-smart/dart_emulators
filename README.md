@@ -13,6 +13,14 @@ Flutter project.
 
 # FAQ
 
+## iOS status bar not aesthetically correct
+
+Make sure you have iOS 16 or lower in the simulator (so not iOS 16.1 or higher) if you want a default status bar (time, battery, etc.) to make it the same for all screenshots.
+
+Make sure you have iOS 15.5 or lower in the simulator for phones (such as iPhone 8 Plus) that have the carrier name in the status bar, so the plugin will remove it and add cellular signal bars.
+
+See https://stackoverflow.com/questions/74507031/xcrun-simctl-status-bar-not-working-on-xcode-14-1
+
 ## Random errors / hangs with Android emulators
 
 You might hit an `adb` bug. A symptom is that the output of the command
