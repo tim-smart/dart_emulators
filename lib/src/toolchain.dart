@@ -11,7 +11,7 @@ part 'toolchain.freezed.dart';
 
 IOOption<String> _which(String exec) =>
     IOOption.tryCatchOption(() => run('which', [exec]).string())
-        .filter((_) => _.isNotEmpty);
+        .filter((result) => result.isNotEmpty);
 
 final _androidSdk = Platform.environment
     .lookup('ANDROID_SDK_ROOT')

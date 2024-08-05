@@ -1,3 +1,7 @@
+## 0.6.0
+
+- Update dependencies
+
 ## 0.5.1
 
 - fix type error when resolving ios device names
