@@ -1,3 +1,7 @@
+## 0.6.1
+
+- prioritise `which` for avdmanager
+
 ## 0.6.0
 
 - Update dependencies

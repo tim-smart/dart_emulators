@@ -18,14 +18,14 @@ final _androidSdk = Platform.environment
     .alt(() => Platform.environment.lookup('ANDROID_HOME'));
 
 final _adbPath = _which('adb')
-    .catchError((_) =>
-        _androidSdk.map((sdk) => P.join(sdk, 'platform-tools/adb')).toZIO)
+    .catchError(
+      (_) => _androidSdk.map((sdk) => P.join(sdk, 'platform-tools/adb')),
+    )
     .getOrElse((_) => 'adb');
 
-final _avdmanagerPath = _androidSdk
-    .map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager'))
-    .toZIO
-    .catchError((_) => _which('avdmanager'))
+final _avdmanagerPath = _which('avdmanager')
+    .catchError((_) => _androidSdk
+        .map((sdk) => P.join(sdk, 'cmdline-tools/latest/bin/avdmanager')))
     .getOrElse((_) => 'avdmanager');
 
 final _emulatorPath = _which('emulator')
