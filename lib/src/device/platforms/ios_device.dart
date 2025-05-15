@@ -102,6 +102,22 @@ class IosDevice implements PlatformDevice {
 
   @override
   DeviceIO<Unit> get maybeResolveName => ZIO.unitIO;
+
+  @override
+  DeviceIO<Unit> setAppearance(Appearance appearance) {
+    final darkOrLight = switch (appearance) {
+      Appearance.dark => "dark",
+      Appearance.light => "light",
+    };
+    return DeviceIO.tryCatch(
+          () => toolchain.simctl(['ui', state.id, 'appearance', darkOrLight]).string(),
+          (err, stackTrace) => DeviceError.toolchainFailure(
+        op: 'screenshot',
+        command: 'xrun simctl cmd uimode night $darkOrLight',
+        message: '$err',
+      ),
+    ).asUnit;
+  }
 }
 
 // ==== helpers ====

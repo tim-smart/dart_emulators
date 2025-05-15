@@ -157,6 +157,22 @@ class AndroidDevice implements PlatformDevice {
               (name) => ref.updateIO((s) => s.copyWith(name: name)),
             ),
           );
+
+  @override
+  DeviceIO<Unit> setAppearance(Appearance appearance) {
+    final yesOrNo = switch (appearance) {
+      Appearance.dark => "yes",
+      Appearance.light => "no",
+    };
+    return DeviceIO.tryCatch(
+      () => toolchain.adb(["shell", "cmd uimode night $yesOrNo"]).string(),
+      (err, stackTrace) => DeviceError.toolchainFailure(
+        op: 'screenshot',
+        command: 'adb cmd uimode night $yesOrNo',
+        message: '$err',
+      ),
+    ).asUnit;
+  }
 }
 
 final maybeParseName = stringOption.c((_) => _
