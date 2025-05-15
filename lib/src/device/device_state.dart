@@ -15,7 +15,7 @@ enum DevicePlatform {
 
 /// Represents an emulator or real device.
 @freezed
-class DeviceState with _$DeviceState {
+abstract class DeviceState with _$DeviceState {
   const DeviceState._();
 
   const factory DeviceState({
