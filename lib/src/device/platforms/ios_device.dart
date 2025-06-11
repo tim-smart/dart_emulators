@@ -75,7 +75,7 @@ class IosDevice implements PlatformDevice {
           state.id,
           "override",
           "--time",
-          "2021-06-30T12:00:00+00:00",
+          "2021-06-30T12:00:00.000+00:00",
           "--dataNetwork",
           "wifi",
           "--wifiMode",
