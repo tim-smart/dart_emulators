@@ -6,8 +6,7 @@ part of 'device_state.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_DeviceState _$$_DeviceStateFromJson(Map<String, dynamic> json) =>
-    _$_DeviceState(
+_DeviceState _$DeviceStateFromJson(Map<String, dynamic> json) => _DeviceState(
       id: json['id'] as String,
       name: json['name'] as String,
       platform: $enumDecode(_$DevicePlatformEnumMap, json['platform']),
@@ -15,7 +14,7 @@ _$_DeviceState _$$_DeviceStateFromJson(Map<String, dynamic> json) =>
       booted: json['booted'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$_DeviceStateToJson(_$_DeviceState instance) =>
+Map<String, dynamic> _$DeviceStateToJson(_DeviceState instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

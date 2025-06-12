@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,87 +10,54 @@ part of 'toolchain.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$Toolchain {
-  String get adbPath => throw _privateConstructorUsedError;
-  String get avdmanagerPath => throw _privateConstructorUsedError;
-  String get emulatorPath => throw _privateConstructorUsedError;
-  String get flutterPath => throw _privateConstructorUsedError;
-  String get xcrunPath => throw _privateConstructorUsedError;
+  String get adbPath;
+  String get avdmanagerPath;
+  String get emulatorPath;
+  String get flutterPath;
+  String get xcrunPath;
 
-  @JsonKey(ignore: true)
-  $ToolchainCopyWith<Toolchain> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ToolchainCopyWith<$Res> {
-  factory $ToolchainCopyWith(Toolchain value, $Res Function(Toolchain) then) =
-      _$ToolchainCopyWithImpl<$Res, Toolchain>;
-  @useResult
-  $Res call(
-      {String adbPath,
-      String avdmanagerPath,
-      String emulatorPath,
-      String flutterPath,
-      String xcrunPath});
-}
-
-/// @nodoc
-class _$ToolchainCopyWithImpl<$Res, $Val extends Toolchain>
-    implements $ToolchainCopyWith<$Res> {
-  _$ToolchainCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
+  /// Create a copy of Toolchain
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
+  $ToolchainCopyWith<Toolchain> get copyWith =>
+      _$ToolchainCopyWithImpl<Toolchain>(this as Toolchain, _$identity);
+
   @override
-  $Res call({
-    Object? adbPath = null,
-    Object? avdmanagerPath = null,
-    Object? emulatorPath = null,
-    Object? flutterPath = null,
-    Object? xcrunPath = null,
-  }) {
-    return _then(_value.copyWith(
-      adbPath: null == adbPath
-          ? _value.adbPath
-          : adbPath // ignore: cast_nullable_to_non_nullable
-              as String,
-      avdmanagerPath: null == avdmanagerPath
-          ? _value.avdmanagerPath
-          : avdmanagerPath // ignore: cast_nullable_to_non_nullable
-              as String,
-      emulatorPath: null == emulatorPath
-          ? _value.emulatorPath
-          : emulatorPath // ignore: cast_nullable_to_non_nullable
-              as String,
-      flutterPath: null == flutterPath
-          ? _value.flutterPath
-          : flutterPath // ignore: cast_nullable_to_non_nullable
-              as String,
-      xcrunPath: null == xcrunPath
-          ? _value.xcrunPath
-          : xcrunPath // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is Toolchain &&
+            (identical(other.adbPath, adbPath) || other.adbPath == adbPath) &&
+            (identical(other.avdmanagerPath, avdmanagerPath) ||
+                other.avdmanagerPath == avdmanagerPath) &&
+            (identical(other.emulatorPath, emulatorPath) ||
+                other.emulatorPath == emulatorPath) &&
+            (identical(other.flutterPath, flutterPath) ||
+                other.flutterPath == flutterPath) &&
+            (identical(other.xcrunPath, xcrunPath) ||
+                other.xcrunPath == xcrunPath));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, adbPath, avdmanagerPath,
+      emulatorPath, flutterPath, xcrunPath);
+
+  @override
+  String toString() {
+    return 'Toolchain(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
   }
 }
 
 /// @nodoc
-abstract class _$$_ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
-  factory _$$_ToolchainCopyWith(
-          _$_Toolchain value, $Res Function(_$_Toolchain) then) =
-      __$$_ToolchainCopyWithImpl<$Res>;
-  @override
+abstract mixin class $ToolchainCopyWith<$Res> {
+  factory $ToolchainCopyWith(Toolchain value, $Res Function(Toolchain) _then) =
+      _$ToolchainCopyWithImpl;
   @useResult
   $Res call(
       {String adbPath,
@@ -100,13 +68,14 @@ abstract class _$$_ToolchainCopyWith<$Res> implements $ToolchainCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ToolchainCopyWithImpl<$Res>
-    extends _$ToolchainCopyWithImpl<$Res, _$_Toolchain>
-    implements _$$_ToolchainCopyWith<$Res> {
-  __$$_ToolchainCopyWithImpl(
-      _$_Toolchain _value, $Res Function(_$_Toolchain) _then)
-      : super(_value, _then);
+class _$ToolchainCopyWithImpl<$Res> implements $ToolchainCopyWith<$Res> {
+  _$ToolchainCopyWithImpl(this._self, this._then);
 
+  final Toolchain _self;
+  final $Res Function(Toolchain) _then;
+
+  /// Create a copy of Toolchain
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -116,25 +85,25 @@ class __$$_ToolchainCopyWithImpl<$Res>
     Object? flutterPath = null,
     Object? xcrunPath = null,
   }) {
-    return _then(_$_Toolchain(
+    return _then(_self.copyWith(
       adbPath: null == adbPath
-          ? _value.adbPath
+          ? _self.adbPath
           : adbPath // ignore: cast_nullable_to_non_nullable
               as String,
       avdmanagerPath: null == avdmanagerPath
-          ? _value.avdmanagerPath
+          ? _self.avdmanagerPath
           : avdmanagerPath // ignore: cast_nullable_to_non_nullable
               as String,
       emulatorPath: null == emulatorPath
-          ? _value.emulatorPath
+          ? _self.emulatorPath
           : emulatorPath // ignore: cast_nullable_to_non_nullable
               as String,
       flutterPath: null == flutterPath
-          ? _value.flutterPath
+          ? _self.flutterPath
           : flutterPath // ignore: cast_nullable_to_non_nullable
               as String,
       xcrunPath: null == xcrunPath
-          ? _value.xcrunPath
+          ? _self.xcrunPath
           : xcrunPath // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -143,8 +112,8 @@ class __$$_ToolchainCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Toolchain extends _Toolchain {
-  const _$_Toolchain(
+class _Toolchain extends Toolchain {
+  const _Toolchain(
       {required this.adbPath,
       required this.avdmanagerPath,
       required this.emulatorPath,
@@ -163,16 +132,19 @@ class _$_Toolchain extends _Toolchain {
   @override
   final String xcrunPath;
 
+  /// Create a copy of Toolchain
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'Toolchain(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$ToolchainCopyWith<_Toolchain> get copyWith =>
+      __$ToolchainCopyWithImpl<_Toolchain>(this, _$identity);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Toolchain &&
+            other is _Toolchain &&
             (identical(other.adbPath, adbPath) || other.adbPath == adbPath) &&
             (identical(other.avdmanagerPath, avdmanagerPath) ||
                 other.avdmanagerPath == avdmanagerPath) &&
@@ -188,34 +160,69 @@ class _$_Toolchain extends _Toolchain {
   int get hashCode => Object.hash(runtimeType, adbPath, avdmanagerPath,
       emulatorPath, flutterPath, xcrunPath);
 
-  @JsonKey(ignore: true)
+  @override
+  String toString() {
+    return 'Toolchain(adbPath: $adbPath, avdmanagerPath: $avdmanagerPath, emulatorPath: $emulatorPath, flutterPath: $flutterPath, xcrunPath: $xcrunPath)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$ToolchainCopyWith<$Res>
+    implements $ToolchainCopyWith<$Res> {
+  factory _$ToolchainCopyWith(
+          _Toolchain value, $Res Function(_Toolchain) _then) =
+      __$ToolchainCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String adbPath,
+      String avdmanagerPath,
+      String emulatorPath,
+      String flutterPath,
+      String xcrunPath});
+}
+
+/// @nodoc
+class __$ToolchainCopyWithImpl<$Res> implements _$ToolchainCopyWith<$Res> {
+  __$ToolchainCopyWithImpl(this._self, this._then);
+
+  final _Toolchain _self;
+  final $Res Function(_Toolchain) _then;
+
+  /// Create a copy of Toolchain
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  _$$_ToolchainCopyWith<_$_Toolchain> get copyWith =>
-      __$$_ToolchainCopyWithImpl<_$_Toolchain>(this, _$identity);
+  $Res call({
+    Object? adbPath = null,
+    Object? avdmanagerPath = null,
+    Object? emulatorPath = null,
+    Object? flutterPath = null,
+    Object? xcrunPath = null,
+  }) {
+    return _then(_Toolchain(
+      adbPath: null == adbPath
+          ? _self.adbPath
+          : adbPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      avdmanagerPath: null == avdmanagerPath
+          ? _self.avdmanagerPath
+          : avdmanagerPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      emulatorPath: null == emulatorPath
+          ? _self.emulatorPath
+          : emulatorPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      flutterPath: null == flutterPath
+          ? _self.flutterPath
+          : flutterPath // ignore: cast_nullable_to_non_nullable
+              as String,
+      xcrunPath: null == xcrunPath
+          ? _self.xcrunPath
+          : xcrunPath // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
-abstract class _Toolchain extends Toolchain {
-  const factory _Toolchain(
-      {required final String adbPath,
-      required final String avdmanagerPath,
-      required final String emulatorPath,
-      required final String flutterPath,
-      required final String xcrunPath}) = _$_Toolchain;
-  const _Toolchain._() : super._();
-
-  @override
-  String get adbPath;
-  @override
-  String get avdmanagerPath;
-  @override
-  String get emulatorPath;
-  @override
-  String get flutterPath;
-  @override
-  String get xcrunPath;
-  @override
-  @JsonKey(ignore: true)
-  _$$_ToolchainCopyWith<_$_Toolchain> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

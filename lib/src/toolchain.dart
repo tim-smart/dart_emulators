@@ -39,7 +39,7 @@ final _xcrunPath = _which('xcrun').getOrElse((_) => 'xcrun');
 
 /// [Toolchain] represents the CLI tools we will use.
 @freezed
-class Toolchain with _$Toolchain {
+abstract class Toolchain with _$Toolchain {
   const Toolchain._();
 
   const factory Toolchain({

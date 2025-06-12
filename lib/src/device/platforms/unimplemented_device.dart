@@ -27,4 +27,8 @@ class UnimplementedDevice extends PlatformDevice {
   @override
   DeviceIO<Unit> get maybeResolveName =>
       ZIO.fail(const DeviceError.unimplemented());
+
+  @override
+  DeviceIO<Unit> setAppearance(Appearance appearance) =>
+      ZIO.fail(const DeviceError.unimplemented());
 }

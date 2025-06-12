@@ -91,12 +91,13 @@ class AndroidDevice implements PlatformDevice {
   DeviceIO<Unit> get cleanStatusBar => [
         // enable
         'shell settings put global sysui_demo_allowed 1',
+        'shell am broadcast -a com.android.systemui.demo -e command enter'
         // display time 12:00
         'shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200',
         // Display full wifi
-        'shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4',
+        'shell am broadcast -a com.android.systemui.demo -e command network -e wifi show -e level 4 -e fully true',
         // Display full mobile data without type
-        'shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype false',
+        'shell am broadcast -a com.android.systemui.demo -e command network -e mobile show -e level 4 -e datatype none',
         // Hide notifications
         'shell am broadcast -a com.android.systemui.demo -e command notifications -e visible false',
         // Show full battery but not in charging state
@@ -157,6 +158,22 @@ class AndroidDevice implements PlatformDevice {
               (name) => ref.updateIO((s) => s.copyWith(name: name)),
             ),
           );
+
+  @override
+  DeviceIO<Unit> setAppearance(Appearance appearance) {
+    final yesOrNo = switch (appearance) {
+      Appearance.dark => "yes",
+      Appearance.light => "no",
+    };
+    return DeviceIO.tryCatch(
+      () => toolchain.adb(["shell", "cmd uimode night $yesOrNo"]).string(),
+      (err, stackTrace) => DeviceError.toolchainFailure(
+        op: 'setAppearance',
+        command: 'adb cmd uimode night $yesOrNo',
+        message: '$err',
+      ),
+    ).asUnit;
+  }
 }
 
 final maybeParseName = stringOption.c((_) => _

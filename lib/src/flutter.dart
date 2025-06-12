@@ -10,7 +10,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'flutter.freezed.dart';
 
 @freezed
-class FlutterError with _$FlutterError {
+abstract class FlutterError with _$FlutterError {
   const factory FlutterError.toolchainFailure({
     required String op,
     required String message,

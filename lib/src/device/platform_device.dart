@@ -12,6 +12,11 @@ part 'platforms/unimplemented_device.dart';
 typedef DeviceIO<A> = EIO<DeviceError, A>;
 typedef ToolchainIO<A> = ZIO<Toolchain, DeviceError, A>;
 
+enum Appearance {
+  light,
+  dark,
+}
+
 abstract class PlatformDevice {
   DeviceState get state;
 
@@ -21,6 +26,7 @@ abstract class PlatformDevice {
   DeviceIO<List<int>> get screenshot;
   DeviceIO<Unit> get maybeResolveName;
   DeviceIO<Unit> setState(DeviceState state);
+  DeviceIO<Unit> setAppearance(Appearance appearance);
 
   static ToolchainIO<Unit> waitUntilRunning(PlatformDevice device) =>
       findRunning(device.state).flatMap(

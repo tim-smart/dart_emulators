@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,126 +10,64 @@ part of 'flutter.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
 mixin _$FlutterError {
-  String get message => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String op, String message) toolchainFailure,
-    required TResult Function(DeviceState state, String message) deviceFailure,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String op, String message)? toolchainFailure,
-    TResult? Function(DeviceState state, String message)? deviceFailure,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String op, String message)? toolchainFailure,
-    TResult Function(DeviceState state, String message)? deviceFailure,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FlutterErrorToolchainFailure value)
-        toolchainFailure,
-    required TResult Function(FlutterErrorDeviceFailure value) deviceFailure,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult? Function(FlutterErrorDeviceFailure value)? deviceFailure,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult Function(FlutterErrorDeviceFailure value)? deviceFailure,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  String get message;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
   $FlutterErrorCopyWith<FlutterError> get copyWith =>
-      throw _privateConstructorUsedError;
+      _$FlutterErrorCopyWithImpl<FlutterError>(
+          this as FlutterError, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FlutterError &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @override
+  String toString() {
+    return 'FlutterError(message: $message)';
+  }
 }
 
 /// @nodoc
-abstract class $FlutterErrorCopyWith<$Res> {
+abstract mixin class $FlutterErrorCopyWith<$Res> {
   factory $FlutterErrorCopyWith(
-          FlutterError value, $Res Function(FlutterError) then) =
-      _$FlutterErrorCopyWithImpl<$Res, FlutterError>;
+          FlutterError value, $Res Function(FlutterError) _then) =
+      _$FlutterErrorCopyWithImpl;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class _$FlutterErrorCopyWithImpl<$Res, $Val extends FlutterError>
-    implements $FlutterErrorCopyWith<$Res> {
-  _$FlutterErrorCopyWithImpl(this._value, this._then);
+class _$FlutterErrorCopyWithImpl<$Res> implements $FlutterErrorCopyWith<$Res> {
+  _$FlutterErrorCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final FlutterError _self;
+  final $Res Function(FlutterError) _then;
 
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? message = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_self.copyWith(
       message: null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$FlutterErrorToolchainFailureCopyWith<$Res>
-    implements $FlutterErrorCopyWith<$Res> {
-  factory _$$FlutterErrorToolchainFailureCopyWith(
-          _$FlutterErrorToolchainFailure value,
-          $Res Function(_$FlutterErrorToolchainFailure) then) =
-      __$$FlutterErrorToolchainFailureCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String op, String message});
-}
-
-/// @nodoc
-class __$$FlutterErrorToolchainFailureCopyWithImpl<$Res>
-    extends _$FlutterErrorCopyWithImpl<$Res, _$FlutterErrorToolchainFailure>
-    implements _$$FlutterErrorToolchainFailureCopyWith<$Res> {
-  __$$FlutterErrorToolchainFailureCopyWithImpl(
-      _$FlutterErrorToolchainFailure _value,
-      $Res Function(_$FlutterErrorToolchainFailure) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? op = null,
-    Object? message = null,
-  }) {
-    return _then(_$FlutterErrorToolchainFailure(
-      op: null == op
-          ? _value.op
-          : op // ignore: cast_nullable_to_non_nullable
-              as String,
-      message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
@@ -137,25 +76,27 @@ class __$$FlutterErrorToolchainFailureCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FlutterErrorToolchainFailure implements FlutterErrorToolchainFailure {
-  const _$FlutterErrorToolchainFailure(
-      {required this.op, required this.message});
+class FlutterErrorToolchainFailure implements FlutterError {
+  const FlutterErrorToolchainFailure({required this.op, required this.message});
 
-  @override
   final String op;
   @override
   final String message;
 
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'FlutterError.toolchainFailure(op: $op, message: $message)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FlutterErrorToolchainFailureCopyWith<FlutterErrorToolchainFailure>
+      get copyWith => _$FlutterErrorToolchainFailureCopyWithImpl<
+          FlutterErrorToolchainFailure>(this, _$identity);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$FlutterErrorToolchainFailure &&
+            other is FlutterErrorToolchainFailure &&
             (identical(other.op, op) || other.op == op) &&
             (identical(other.message, message) || other.message == message));
   }
@@ -163,98 +104,95 @@ class _$FlutterErrorToolchainFailure implements FlutterErrorToolchainFailure {
   @override
   int get hashCode => Object.hash(runtimeType, op, message);
 
-  @JsonKey(ignore: true)
   @override
-  @pragma('vm:prefer-inline')
-  _$$FlutterErrorToolchainFailureCopyWith<_$FlutterErrorToolchainFailure>
-      get copyWith => __$$FlutterErrorToolchainFailureCopyWithImpl<
-          _$FlutterErrorToolchainFailure>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String op, String message) toolchainFailure,
-    required TResult Function(DeviceState state, String message) deviceFailure,
-  }) {
-    return toolchainFailure(op, message);
+  String toString() {
+    return 'FlutterError.toolchainFailure(op: $op, message: $message)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String op, String message)? toolchainFailure,
-    TResult? Function(DeviceState state, String message)? deviceFailure,
-  }) {
-    return toolchainFailure?.call(op, message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String op, String message)? toolchainFailure,
-    TResult Function(DeviceState state, String message)? deviceFailure,
-    required TResult orElse(),
-  }) {
-    if (toolchainFailure != null) {
-      return toolchainFailure(op, message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FlutterErrorToolchainFailure value)
-        toolchainFailure,
-    required TResult Function(FlutterErrorDeviceFailure value) deviceFailure,
-  }) {
-    return toolchainFailure(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult? Function(FlutterErrorDeviceFailure value)? deviceFailure,
-  }) {
-    return toolchainFailure?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult Function(FlutterErrorDeviceFailure value)? deviceFailure,
-    required TResult orElse(),
-  }) {
-    if (toolchainFailure != null) {
-      return toolchainFailure(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FlutterErrorToolchainFailure implements FlutterError {
-  const factory FlutterErrorToolchainFailure(
-      {required final String op,
-      required final String message}) = _$FlutterErrorToolchainFailure;
-
-  String get op;
-  @override
-  String get message;
-  @override
-  @JsonKey(ignore: true)
-  _$$FlutterErrorToolchainFailureCopyWith<_$FlutterErrorToolchainFailure>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$FlutterErrorDeviceFailureCopyWith<$Res>
+abstract mixin class $FlutterErrorToolchainFailureCopyWith<$Res>
     implements $FlutterErrorCopyWith<$Res> {
-  factory _$$FlutterErrorDeviceFailureCopyWith(
-          _$FlutterErrorDeviceFailure value,
-          $Res Function(_$FlutterErrorDeviceFailure) then) =
-      __$$FlutterErrorDeviceFailureCopyWithImpl<$Res>;
+  factory $FlutterErrorToolchainFailureCopyWith(
+          FlutterErrorToolchainFailure value,
+          $Res Function(FlutterErrorToolchainFailure) _then) =
+      _$FlutterErrorToolchainFailureCopyWithImpl;
+  @override
+  @useResult
+  $Res call({String op, String message});
+}
+
+/// @nodoc
+class _$FlutterErrorToolchainFailureCopyWithImpl<$Res>
+    implements $FlutterErrorToolchainFailureCopyWith<$Res> {
+  _$FlutterErrorToolchainFailureCopyWithImpl(this._self, this._then);
+
+  final FlutterErrorToolchainFailure _self;
+  final $Res Function(FlutterErrorToolchainFailure) _then;
+
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? op = null,
+    Object? message = null,
+  }) {
+    return _then(FlutterErrorToolchainFailure(
+      op: null == op
+          ? _self.op
+          : op // ignore: cast_nullable_to_non_nullable
+              as String,
+      message: null == message
+          ? _self.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class FlutterErrorDeviceFailure implements FlutterError {
+  const FlutterErrorDeviceFailure({required this.state, required this.message});
+
+  final DeviceState state;
+  @override
+  final String message;
+
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $FlutterErrorDeviceFailureCopyWith<FlutterErrorDeviceFailure> get copyWith =>
+      _$FlutterErrorDeviceFailureCopyWithImpl<FlutterErrorDeviceFailure>(
+          this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is FlutterErrorDeviceFailure &&
+            (identical(other.state, state) || other.state == state) &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, state, message);
+
+  @override
+  String toString() {
+    return 'FlutterError.deviceFailure(state: $state, message: $message)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $FlutterErrorDeviceFailureCopyWith<$Res>
+    implements $FlutterErrorCopyWith<$Res> {
+  factory $FlutterErrorDeviceFailureCopyWith(FlutterErrorDeviceFailure value,
+          $Res Function(FlutterErrorDeviceFailure) _then) =
+      _$FlutterErrorDeviceFailureCopyWithImpl;
   @override
   @useResult
   $Res call({DeviceState state, String message});
@@ -263,149 +201,42 @@ abstract class _$$FlutterErrorDeviceFailureCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$FlutterErrorDeviceFailureCopyWithImpl<$Res>
-    extends _$FlutterErrorCopyWithImpl<$Res, _$FlutterErrorDeviceFailure>
-    implements _$$FlutterErrorDeviceFailureCopyWith<$Res> {
-  __$$FlutterErrorDeviceFailureCopyWithImpl(_$FlutterErrorDeviceFailure _value,
-      $Res Function(_$FlutterErrorDeviceFailure) _then)
-      : super(_value, _then);
+class _$FlutterErrorDeviceFailureCopyWithImpl<$Res>
+    implements $FlutterErrorDeviceFailureCopyWith<$Res> {
+  _$FlutterErrorDeviceFailureCopyWithImpl(this._self, this._then);
 
-  @pragma('vm:prefer-inline')
+  final FlutterErrorDeviceFailure _self;
+  final $Res Function(FlutterErrorDeviceFailure) _then;
+
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
   @override
+  @pragma('vm:prefer-inline')
   $Res call({
     Object? state = null,
     Object? message = null,
   }) {
-    return _then(_$FlutterErrorDeviceFailure(
+    return _then(FlutterErrorDeviceFailure(
       state: null == state
-          ? _value.state
+          ? _self.state
           : state // ignore: cast_nullable_to_non_nullable
               as DeviceState,
       message: null == message
-          ? _value.message
+          ? _self.message
           : message // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
 
+  /// Create a copy of FlutterError
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DeviceStateCopyWith<$Res> get state {
-    return $DeviceStateCopyWith<$Res>(_value.state, (value) {
-      return _then(_value.copyWith(state: value));
+    return $DeviceStateCopyWith<$Res>(_self.state, (value) {
+      return _then(_self.copyWith(state: value));
     });
   }
 }
 
-/// @nodoc
-
-class _$FlutterErrorDeviceFailure implements FlutterErrorDeviceFailure {
-  const _$FlutterErrorDeviceFailure(
-      {required this.state, required this.message});
-
-  @override
-  final DeviceState state;
-  @override
-  final String message;
-
-  @override
-  String toString() {
-    return 'FlutterError.deviceFailure(state: $state, message: $message)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$FlutterErrorDeviceFailure &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.message, message) || other.message == message));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, state, message);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$FlutterErrorDeviceFailureCopyWith<_$FlutterErrorDeviceFailure>
-      get copyWith => __$$FlutterErrorDeviceFailureCopyWithImpl<
-          _$FlutterErrorDeviceFailure>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String op, String message) toolchainFailure,
-    required TResult Function(DeviceState state, String message) deviceFailure,
-  }) {
-    return deviceFailure(state, message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String op, String message)? toolchainFailure,
-    TResult? Function(DeviceState state, String message)? deviceFailure,
-  }) {
-    return deviceFailure?.call(state, message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String op, String message)? toolchainFailure,
-    TResult Function(DeviceState state, String message)? deviceFailure,
-    required TResult orElse(),
-  }) {
-    if (deviceFailure != null) {
-      return deviceFailure(state, message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(FlutterErrorToolchainFailure value)
-        toolchainFailure,
-    required TResult Function(FlutterErrorDeviceFailure value) deviceFailure,
-  }) {
-    return deviceFailure(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult? Function(FlutterErrorDeviceFailure value)? deviceFailure,
-  }) {
-    return deviceFailure?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(FlutterErrorToolchainFailure value)? toolchainFailure,
-    TResult Function(FlutterErrorDeviceFailure value)? deviceFailure,
-    required TResult orElse(),
-  }) {
-    if (deviceFailure != null) {
-      return deviceFailure(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class FlutterErrorDeviceFailure implements FlutterError {
-  const factory FlutterErrorDeviceFailure(
-      {required final DeviceState state,
-      required final String message}) = _$FlutterErrorDeviceFailure;
-
-  DeviceState get state;
-  @override
-  String get message;
-  @override
-  @JsonKey(ignore: true)
-  _$$FlutterErrorDeviceFailureCopyWith<_$FlutterErrorDeviceFailure>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

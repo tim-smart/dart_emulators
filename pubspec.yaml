@@ -9,11 +9,11 @@ environment:
 dependencies:
   elemental: ^0.2.1
   freezed_annotation: any
-  json_annotation: ^4.8.0
+  json_annotation: ^4.9.0
   path: ^1.8.0
 
 dev_dependencies:
   build_runner: ^2.0.4
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   freezed: any
   json_serializable: ^6.0.1
