@@ -6,6 +6,7 @@ analyzer:
     - "**/*.freezed.dart"
   errors:
     duplicate_ignore: ignore
+    no_wildcard_variable_uses: ignore
       
 linter:
   rules:
