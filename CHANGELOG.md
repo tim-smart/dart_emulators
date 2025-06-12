@@ -1,3 +1,8 @@
+## 0.7.0
+
+- update dependencies
+- add support for toggling dark/light mode
+
 ## 0.6.1
 
 - prioritise `which` for avdmanager
