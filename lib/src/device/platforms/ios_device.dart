@@ -112,7 +112,7 @@ class IosDevice implements PlatformDevice {
     return DeviceIO.tryCatch(
           () => toolchain.simctl(['ui', state.id, 'appearance', darkOrLight]).string(),
           (err, stackTrace) => DeviceError.toolchainFailure(
-        op: 'screenshot',
+        op: 'setAppearance',
         command: 'xrun simctl cmd uimode night $darkOrLight',
         message: '$err',
       ),

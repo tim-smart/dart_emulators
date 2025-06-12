@@ -168,7 +168,7 @@ class AndroidDevice implements PlatformDevice {
     return DeviceIO.tryCatch(
       () => toolchain.adb(["shell", "cmd uimode night $yesOrNo"]).string(),
       (err, stackTrace) => DeviceError.toolchainFailure(
-        op: 'screenshot',
+        op: 'setAppearance',
         command: 'adb cmd uimode night $yesOrNo',
         message: '$err',
       ),
